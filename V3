@@ -1,0 +1,4637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransCS Pro Ultimate v3.0 - Sistema Completo de Fretes</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #8b5cf6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #06b6d4;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --gray-light: #f3f4f6;
+            --gray-dark: #374151;
+            --white: #ffffff;
+            --black: #000000;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Enhanced Header */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--gray-dark) 100%);
+            color: var(--white);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: headerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.1; }
+        }
+
+        .header-content {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 2rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-left h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left .version-badge {
+            font-size: 0.75rem;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .header-left p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .header-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quick-stat {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .quick-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .quick-stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .user-panel {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: right;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.offline {
+            background: var(--danger);
+            animation: none;
+        }
+
+        /* Enhanced Navigation */
+        .nav-container {
+            background: var(--dark);
+            border-bottom: 3px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            flex: 0 0 auto;
+            min-width: 160px;
+            padding: 1.25rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .nav-tab i {
+            font-size: 1.1rem;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+        }
+
+        .nav-tab .badge {
+            background: var(--danger);
+            color: var(--white);
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Content Layout */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            display: none;
+            padding: 2rem;
+            flex: 1;
+            background: var(--gray-light);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Enhanced Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gray-light);
+            background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-footer {
+            padding: 1rem 2rem;
+            background: var(--gray-light);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Stats Grid Enhanced */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-card.editable {
+            cursor: pointer;
+        }
+
+        .stat-card.editable:hover::after {
+            content: '✏️ Clique para editar';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+        .stat-icon.secondary { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+        .stat-icon.accent { background: linear-gradient(135deg, var(--accent), #7c3aed); }
+        .stat-icon.warning { background: linear-gradient(135deg, var(--warning), #d97706); }
+        .stat-icon.danger { background: linear-gradient(135deg, var(--danger), #dc2626); }
+        .stat-icon.info { background: linear-gradient(135deg, var(--info), #0891b2); }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .stat-change.positive { 
+            color: var(--success); 
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .stat-change.negative { 
+            color: var(--danger); 
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .stat-change.neutral { 
+            color: var(--gray); 
+            background: rgba(107, 114, 128, 0.1);
+        }
+
+        /* Enhanced Forms */
+        .form-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-input.error, .form-select.error, .form-textarea.error {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.success, .form-select.success, .form-textarea.success {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-help {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            white-space: nowrap;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #7c3aed);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-accent:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info), #0891b2);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--gray);
+            box-shadow: none;
+        }
+
+        .btn-ghost:hover:not(:disabled) {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-lg {
+            padding: 1.25rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-xl {
+            padding: 1.5rem 2.5rem;
+            font-size: 1.25rem;
+        }
+
+        /* Enhanced Tables */
+        .table-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gray-light);
+            background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, var(--dark), var(--gray-dark));
+            color: var(--white);
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .table th:first-child {
+            border-top-left-radius: var(--border-radius);
+        }
+
+        .table th:last-child {
+            border-top-right-radius: var(--border-radius);
+        }
+
+        .table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .table tbody tr {
+            transition: var(--transition-fast);
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            transform: scale(1.01);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table .editable-cell {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .table .editable-cell:hover::after {
+            content: '✏️';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+        }
+
+        .table .cell-input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+        }
+
+        .table .cell-input:focus {
+            outline: 2px solid var(--primary);
+            border-radius: 4px;
+            padding: 0.25rem;
+        }
+
+        /* Enhanced Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            flex: 1;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-input, .filter-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            background: var(--white);
+            transition: var(--transition);
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Enhanced Charts */
+        .chart-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chart-control {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--gray-light);
+            background: var(--white);
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .chart-control:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .chart-control.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .chart-canvas {
+            width: 100% !important;
+            height: 400px !important;
+        }
+
+        /* Enhanced Progress Bars */
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .progress-value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: var(--gray-light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.3) 50%, transparent 50%, transparent 75%, rgba(255,255,255,0.3) 75%);
+            background-size: 20px 20px;
+            animation: progressShine 1.5s linear infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(20px); }
+        }
+
+        /* Enhanced Alerts */
+        .alert {
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border-left: 4px solid;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border-left-color: var(--success);
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border-left-color: var(--warning);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
+            color: #1e40af;
+            border-left-color: var(--info);
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            border-left-color: var(--danger);
+        }
+
+        .alert-icon {
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-dismissible {
+            position: relative;
+            padding-right: 3rem;
+        }
+
+        .alert-dismiss {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-dismiss:hover {
+            opacity: 1;
+        }
+
+        /* Enhanced Notifications */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            max-width: 400px;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--border-radius);
+            color: var(--white);
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(450px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success { 
+            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
+        }
+        .notification.error { 
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+        .notification.info { 
+            background: linear-gradient(135deg, var(--info), #0891b2);
+        }
+        .notification.warning { 
+            background: linear-gradient(135deg, var(--warning), #d97706);
+        }
+
+        .notification-icon {
+            font-size: 1.25rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-message {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: var(--white);
+            backdrop-filter: blur(5px);
+        }
+
+        .loading.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 64px;
+            height: 64px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Enhanced Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Enhanced Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-trigger {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+
+        .dropdown.show .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: var(--dark);
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+
+        .dropdown-item i {
+            margin-right: 0.75rem;
+            width: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .header-content {
+                grid-template-columns: 1fr auto;
+                gap: 1.5rem;
+            }
+
+            .header-center {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem;
+            }
+
+            .header-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .header-left h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                scrollbar-width: thin;
+            }
+
+            .nav-tab {
+                min-width: 140px;
+                font-size: 0.85rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                min-width: auto;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .chart-controls {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .table-actions {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+
+            .notification {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+
+            .modal {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                max-height: 95vh;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-actions {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-left h1 {
+                font-size: 1.75rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tab {
+                font-size: 0.8rem;
+                padding: 0.875rem 1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-sm {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-down {
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .scale-in {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .text-success { color: var(--success); }
+        .text-danger { color: var(--danger); }
+        .text-warning { color: var(--warning); }
+        .text-info { color: var(--info); }
+        .text-primary { color: var(--primary); }
+        .text-gray { color: var(--gray); }
+        .text-dark { color: var(--dark); }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+        .font-normal { font-weight: 400; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-0 { margin-top: 0; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .p-0 { padding: 0; }
+        .p-1 { padding: 0.25rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .hidden { display: none !important; }
+        .block { display: block !important; }
+        .inline { display: inline !important; }
+        .inline-block { display: inline-block !important; }
+        .flex { display: flex !important; }
+        .inline-flex { display: inline-flex !important; }
+        .grid { display: grid !important; }
+        .items-start { align-items: flex-start; }
+        .items-center { align-items: center; }
+        .items-end { align-items: flex-end; }
+        .justify-start { justify-content: flex-start; }
+        .justify-center { justify-content: center; }
+        .justify-end { justify-content: flex-end; }
+        .justify-between { justify-content: space-between; }
+        .justify-around { justify-content: space-around; }
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .cursor-pointer { cursor: pointer; }
+        .cursor-not-allowed { cursor: not-allowed; }
+        .select-none { user-select: none; }
+        .rounded { border-radius: var(--border-radius); }
+        .rounded-lg { border-radius: var(--border-radius-lg); }
+        .shadow { box-shadow: var(--shadow); }
+        .shadow-lg { box-shadow: var(--shadow-lg); }
+        .shadow-xl { box-shadow: var(--shadow-xl); }
+        .border { border: 1px solid var(--gray-light); }
+        .border-primary { border-color: var(--primary); }
+        .border-success { border-color: var(--success); }
+        .border-danger { border-color: var(--danger); }
+        .border-warning { border-color: var(--warning); }
+        .bg-white { background-color: var(--white); }
+        .bg-gray { background-color: var(--gray-light); }
+        .bg-primary { background-color: var(--primary); }
+        .bg-success { background-color: var(--success); }
+        .bg-danger { background-color: var(--danger); }
+        .bg-warning { background-color: var(--warning); }
+        .opacity-50 { opacity: 0.5; }
+        .opacity-75 { opacity: 0.75; }
+        .hover\:opacity-100:hover { opacity: 1; }
+        .transition { transition: var(--transition); }
+        .transition-fast { transition: var(--transition-fast); }
+        .transform { transform: translateZ(0); }
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        .hover\:translate-y-1:hover { transform: translateY(-0.25rem); }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .disabled\:opacity-50:disabled { opacity: 0.5; }
+        .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Carregando TransCS Pro Ultimate v3.0...</div>
+        <div class="loading-subtext">Sistema Completo de Gerenciamento de Fretes</div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
+        <i class="notification-icon fas fa-check-circle"></i>
+        <div class="notification-content">
+            <div class="notification-title" id="notificationTitle">Sucesso</div>
+            <div class="notification-message" id="notificationMessage">Operação realizada com sucesso!</div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="editModalTitle">Editar Item</h3>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div id="editFormFields"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveEdit()">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmModalTitle">Confirmação</h3>
+                <button class="modal-close" onclick="closeConfirmModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="flex items-center gap-4">
+                    <div class="text-warning text-3xl">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <p id="confirmModalMessage">Tem certeza que deseja realizar esta ação?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" onclick="closeConfirmModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmModalAction">
+                    <i class="fas fa-check"></i> Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Enhanced Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>
+                        <i class="fas fa-truck"></i> 
+                        TransCS Pro Ultimate
+                        <span class="version-badge">v3.0</span>
+                    </h1>
+                    <p>Sistema Completo de Gerenciamento de Fretes com IA</p>
+                </div>
+                <div class="header-center">
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="headerTotalTrips">0</div>
+                            <div class="quick-stat-label">Viagens</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="headerTotalRevenue">R$ 0</div>
+                            <div class="quick-stat-label">Receita</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="headerTotalProfit">R$ 0</div>
+                            <div class="quick-stat-label">Lucro</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-panel">
+                        <div><i class="fas fa-user"></i> <span id="userName">Sistema Local</span></div>
+                        <div><i class="fas fa-calendar"></i> <span id="currentDate"></span></div>
+                        <div><i class="fas fa-clock"></i> <span id="currentTime"></span></div>
+                        <div class="connection-status">
+                            <div class="status-indicator" id="statusIndicator"></div>
+                            <span id="connectionStatus">Sistema Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Enhanced Navigation -->
+        <nav class="nav-container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('dashboard')">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </button>
+                <button class="nav-tab" onclick="showTab('trips')">
+                    <i class="fas fa-plus-circle"></i> Viagens
+                    <span class="badge" id="newTripsBadge" style="display: none;">0</span>
+                </button>
+                <button class="nav-tab" onclick="showTab('reports')">
+                    <i class="fas fa-file-alt"></i> Relatórios
+                </button>
+                <button class="nav-tab" onclick="showTab('financial')">
+                    <i class="fas fa-dollar-sign"></i> Financeiro
+                </button>
+                <button class="nav-tab" onclick="showTab('analytics')">
+                    <i class="fas fa-chart-pie"></i> Analytics
+                </button>
+                <button class="nav-tab" onclick="showTab('tools')">
+                    <i class="fas fa-calculator"></i> Ferramentas
+                </button>
+                <button class="nav-tab" onclick="showTab('settings')">
+                    <i class="fas fa-cog"></i> Configurações
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Content -->
+            <section id="dashboard" class="content active">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard Executivo
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                        <button class="btn btn-primary" onclick="showTab('trips')">
+                            <i class="fas fa-plus"></i> Nova Viagem
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Goal Alert -->
+                <div id="goalAlert" class="alert hidden">
+                    <i class="alert-icon fas fa-target"></i>
+                    <div class="alert-content">
+                        <div class="alert-title">Meta Atingida!</div>
+                        <span id="goalAlertText"></span>
+                    </div>
+                </div>
+
+                <!-- Main Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card editable" onclick="editStat('revenue')">
+                        <div class="stat-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalReceita">R$ 0,00</div>
+                        <div class="stat-label">Receita Total</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="receitaChange">+0%</span> vs mês anterior
+                        </div>
+                    </div>
+
+                    <div class="stat-card editable" onclick="editStat('profit')">
+                        <div class="stat-header">
+                            <div class="stat-icon secondary">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalLucro">R$ 0,00</div>
+                        <div class="stat-label">Lucro Total</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span id="lucroChange">+0%</span> vs mês anterior
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="margemMedia">0%</div>
+                        <div class="stat-label">Margem Média</div>
+                        <div class="stat-change neutral">
+                            <span id="margemChange">Estável</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon info">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalViagens">0</div>
+                        <div class="stat-label">Total de Viagens</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-plus"></i>
+                            <span id="viagensChange">0</span> este mês
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-road"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalKm">0 km</div>
+                        <div class="stat-label">KM Rodados</div>
+                        <div class="stat-change neutral">
+                            <span id="kmMedio">R$ 0,00/km</span> média
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalClientes">0</div>
+                        <div class="stat-label">Clientes Ativos</div>
+                        <div class="stat-change neutral">
+                            <span id="clienteTop">-</span> mais lucrativo
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Goal Progress -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-target"></i>
+                            Progresso da Meta Mensal
+                        </h3>
+                        <button class="btn btn-sm btn-outline" onclick="editGoals()">
+                            <i class="fas fa-edit"></i> Editar Meta
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <span class="progress-label">Meta de Lucro Mensal</span>
+                                <span class="progress-value" id="goalProgress">0% atingido</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="goalProgressBar" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between mt-4 text-sm text-gray">
+                                <span>R$ <span id="goalCurrent">0,00</span> atual</span>
+                                <span>R$ <span id="goalTarget">0,00</span> meta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-area"></i>
+                                Evolução Mensal
+                            </h3>
+                            <div class="chart-controls">
+                                <button class="chart-control active" onclick="updateMainChart('lucro')">Lucro</button>
+                                <button class="chart-control" onclick="updateMainChart('receita')">Receita</button>
+                                <button class="chart-control" onclick="updateMainChart('margem')">Margem</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="mainChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie"></i>
+                                Distribuição de Custos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="costChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-brain"></i>
+                            Insights Inteligentes
+                        </h3>
+                        <button class="btn btn-sm btn-accent" onclick="generateInsights()">
+                            <i class="fas fa-magic"></i> Gerar Insights
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="aiInsights" class="grid gap-4">
+                            <div class="alert alert-info">
+                                <i class="alert-icon fas fa-lightbulb"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Dica do Sistema</div>
+                                    Adicione mais viagens para obter insights personalizados baseados em IA.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Clients Ranking -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-trophy"></i>
+                            Top 10 Clientes Mais Lucrativos
+                        </h3>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-secondary" onclick="exportClientRanking()">
+                                <i class="fas fa-download"></i> Exportar
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="refreshClientRanking()">
+                                <i class="fas fa-sync-alt"></i> Atualizar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="clientRanking" class="space-y-4">
+                            <div class="text-center p-8 text-gray">
+                                <i class="fas fa-truck text-6xl mb-4 opacity-30"></i>
+                                <p class="text-lg">Nenhum cliente cadastrado ainda</p>
+                                <p class="text-sm">Adicione viagens para ver o ranking</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trips Content -->
+            <section id="trips" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-plus-circle"></i>
+                        Gerenciamento de Viagens
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="duplicateLastTrip()">
+                            <i class="fas fa-copy"></i> Duplicar Última
+                        </button>
+                        <button class="btn btn-outline" onclick="clearTripForm()">
+                            <i class="fas fa-eraser"></i> Limpar Formulário
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-truck"></i>
+                            Nova Viagem
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="tripForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-user"></i> Cliente
+                                    </label>
+                                    <input type="text" class="form-input" name="cliente" required placeholder="Nome do cliente">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-calendar"></i> Data da Viagem
+                                    </label>
+                                    <input type="date" class="form-input" name="data" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-map-marker-alt"></i> Origem
+                                    </label>
+                                    <input type="text" class="form-input" name="origem" placeholder="Cidade de origem">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-flag-checkered"></i> Destino
+                                    </label>
+                                    <input type="text" class="form-input" name="destino" placeholder="Cidade de destino">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-road"></i> Quilometragem (KM)
+                                    </label>
+                                    <input type="number" class="form-input" name="km" step="0.1" required placeholder="0.0">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-dollar-sign"></i> Receita (R$)
+                                    </label>
+                                    <input type="number" class="form-input" name="receita" step="0.01" required placeholder="0,00">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-gas-pump"></i> Custo Variável (R$)
+                                    </label>
+                                    <input type="number" class="form-input" name="custoVariavel" step="0.01" required placeholder="Combustível, pedágio...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">
+                                        <i class="fas fa-tools"></i> Custo Fixo (R$)
+                                    </label>
+                                    <input type="number" class="form-input" name="custoFixo" step="0.01" required placeholder="Manutenção, seguro...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-boxes"></i> Tipo de Carga
+                                    </label>
+                                    <select class="form-select" name="tipoCarga">
+                                        <option value="">Selecione o tipo...</option>
+                                        <option value="Geral">Carga Geral</option>
+                                        <option value="Frigorífica">Carga Frigorífica</option>
+                                        <option value="Granel">Granel Sólido</option>
+                                        <option value="Líquida">Carga Líquida</option>
+                                        <option value="Perigosa">Carga Perigosa</option>
+                                        <option value="Containers">Containers</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-user-tie"></i> Motorista
+                                    </label>
+                                    <input type="text" class="form-input" name="motorista" placeholder="Nome do motorista">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-car"></i> Placa do Veículo
+                                    </label>
+                                    <input type="text" class="form-input" name="placa" placeholder="ABC-1234" maxlength="8">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-sticky-note"></i> Observações
+                                    </label>
+                                    <textarea class="form-textarea" name="observacoes" placeholder="Observações adicionais..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Preview -->
+                            <div id="tripPreview" class="alert alert-info hidden">
+                                <i class="alert-icon fas fa-calculator"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Prévia dos Cálculos</div>
+                                    <div class="grid grid-cols-4 gap-4 mt-2">
+                                        <div>Custo Total: <span class="font-bold" id="previewCustoTotal">R$ 0,00</span></div>
+                                        <div>Lucro: <span class="font-bold" id="previewLucro">R$ 0,00</span></div>
+                                        <div>Margem: <span class="font-bold" id="previewMargem">0%</span></div>
+                                        <div>Lucro/KM: <span class="font-bold" id="previewLucroKm">R$ 0,00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4 flex-wrap">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Salvar Viagem
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="saveAndNew()">
+                                    <i class="fas fa-plus"></i> Salvar e Nova
+                                </button>
+                                <button type="button" class="btn btn-outline" onclick="clearTripForm()">
+                                    <i class="fas fa-eraser"></i> Limpar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Recent Trips -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-history"></i>
+                            Viagens Recentes
+                        </h3>
+                        <button class="btn btn-sm btn-outline" onclick="refreshRecentTrips()">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="recentTrips" class="space-y-3">
+                            <!-- Recent trips will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Content -->
+            <section id="reports" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        Relatórios Avançados
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="transcsApp.exportCSV()">
+                            <i class="fas fa-file-csv"></i> CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="transcsApp.exportExcel()">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                        <button class="btn btn-secondary" onclick="transcsApp.exportPDF()">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-filter"></i>
+                            Filtros Avançados
+                        </h3>
+                        <button class="btn btn-sm btn-outline" onclick="clearAllFilters()">
+                            <i class="fas fa-eraser"></i> Limpar Filtros
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user"></i> Cliente
+                                </label>
+                                <input type="text" class="filter-input" id="filterCliente" placeholder="Filtrar por cliente">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-calendar"></i> Data Início
+                                </label>
+                                <input type="date" class="filter-input" id="filterDataInicio">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-calendar"></i> Data Fim
+                                </label>
+                                <input type="date" class="filter-input" id="filterDataFim">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-boxes"></i> Tipo de Carga
+                                </label>
+                                <select class="filter-select" id="filterTipoCarga">
+                                    <option value="">Todos os tipos</option>
+                                    <option value="Geral">Carga Geral</option>
+                                    <option value="Frigorífica">Carga Frigorífica</option>
+                                    <option value="Granel">Granel Sólido</option>
+                                    <option value="Líquida">Carga Líquida</option>
+                                    <option value="Perigosa">Carga Perigosa</option>
+                                    <option value="Containers">Containers</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user-tie"></i> Motorista
+                                </label>
+                                <input type="text" class="filter-input" id="filterMotorista" placeholder="Filtrar por motorista">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-dollar-sign"></i> Lucro Mínimo
+                                </label>
+                                <input type="number" class="filter-input" id="filterLucroMin" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Summary -->
+                <div id="filterSummary" class="alert alert-info hidden">
+                    <i class="alert-icon fas fa-filter"></i>
+                    <div class="alert-content">
+                        <span id="filterSummaryText"></span>
+                    </div>
+                </div>
+
+                <!-- Reports Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">
+                            <i class="fas fa-list"></i>
+                            Lista de Viagens
+                        </h3>
+                        <div class="table-actions">
+                            <span id="recordCount" class="text-gray">0 registros</span>
+                            <button class="btn btn-sm btn-danger hidden" id="deleteSelectedBtn" onclick="deleteSelectedTrips()">
+                                <i class="fas fa-trash"></i> Excluir Selecionados
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                    </th>
+                                    <th>Cliente</th>
+                                    <th>Data</th>
+                                    <th>Rota</th>
+                                    <th>KM</th>
+                                    <th>Receita</th>
+                                    <th>Custos</th>
+                                    <th>Lucro</th>
+                                    <th>Margem</th>
+                                    <th>R$/KM</th>
+                                    <th>Tipo</th>
+                                    <th>Motorista</th>
+                                    <th style="width: 120px;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tripsTable">
+                                <tr>
+                                    <td colspan="13" class="text-center p-8 text-gray">
+                                        <i class="fas fa-truck text-6xl mb-4 opacity-30"></i><br>
+                                        Nenhuma viagem cadastrada ainda
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Financial Content -->
+            <section id="financial" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-dollar-sign"></i>
+                        Análise Financeira Detalhada
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="generateFinancialReport()">
+                            <i class="fas fa-chart-line"></i> Gerar Relatório
+                        </button>
+                        <button class="btn btn-outline" onclick="exportFinancialData()">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Financial KPIs -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="receitaMediaViagem">R$ 0,00</div>
+                        <div class="stat-label">Receita Média por Viagem</div>
+                        <div class="stat-change neutral">
+                            <span>Baseado em todas as viagens</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="custoMedioViagem">R$ 0,00</div>
+                        <div class="stat-label">Custo Médio por Viagem</div>
+                        <div class="stat-change neutral">
+                            <span>Custos fixos + variáveis</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon secondary">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="lucroMedioViagem">R$ 0,00</div>
+                        <div class="stat-label">Lucro Médio por Viagem</div>
+                        <div class="stat-change neutral">
+                            <span>Receita - custos totais</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon info">
+                                <i class="fas fa-road"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="receitaPorKm">R$ 0,00</div>
+                        <div class="stat-label">Receita por KM</div>
+                        <div class="stat-change neutral">
+                            <span>Eficiência operacional</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="custoPorKm">R$ 0,00</div>
+                        <div class="stat-label">Custo por KM</div>
+                        <div class="stat-change neutral">
+                            <span>Controle de custos</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="margemLucroMedia">0%</div>
+                        <div class="stat-label">Margem de Lucro Média</div>
+                        <div class="stat-change neutral">
+                            <span>Rentabilidade geral</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Charts -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie"></i>
+                                Composição de Custos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="costBreakdownChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Receita vs Custos Mensais
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueVsCostChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Lucratividade por Cliente (Top 10)
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="clientProfitabilityChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Financial Insights -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Insights Financeiros
+                        </h3>
+                        <button class="btn btn-sm btn-accent" onclick="generateFinancialInsights()">
+                            <i class="fas fa-magic"></i> Gerar Insights
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="financialInsights">
+                            <!-- Financial insights will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Content -->
+            <section id="analytics" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Analytics Avançado
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshAnalytics()">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                        <button class="btn btn-outline" onclick="exportAnalyticsData()">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analytics KPIs -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="melhorCliente">-</div>
+                        <div class="stat-label">Cliente Mais Lucrativo</div>
+                        <div class="stat-change neutral">
+                            <span>Baseado no lucro total</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon secondary">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="melhorMes">-</div>
+                        <div class="stat-label">Melhor Mês do Ano</div>
+                        <div class="stat-change neutral">
+                            <span>Maior lucro mensal</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-route"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="melhorRota">-</div>
+                        <div class="stat-label">Rota Mais Lucrativa</div>
+                        <div class="stat-change neutral">
+                            <span>Origem → Destino</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="crescimentoMensal">0%</div>
+                        <div class="stat-label">Crescimento Mensal</div>
+                        <div class="stat-change neutral">
+                            <span>Comparado ao mês anterior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Charts -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-boxes"></i>
+                                Performance por Tipo de Carga
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="cargoTypeChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-calendar-week"></i>
+                                Distribuição por Dia da Semana
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="weekdayChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-area"></i>
+                            Tendência de Margem de Lucro
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="marginTrendChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Predictions and Forecasting -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-crystal-ball"></i>
+                            Previsões e Projeções
+                        </h3>
+                        <button class="btn btn-sm btn-accent" onclick="generatePredictions()">
+                            <i class="fas fa-magic"></i> Gerar Previsões
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="predictions" class="grid gap-4">
+                            <!-- Predictions will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Content -->
+            <section id="tools" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-calculator"></i>
+                        Ferramentas e Calculadoras
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" onclick="resetAllCalculators()">
+                            <i class="fas fa-eraser"></i> Limpar Todas
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                    <!-- Profit Calculator -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-calculator"></i>
+                                Calculadora de Lucro
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Receita (R$)</label>
+                                    <input type="number" class="form-input" id="calcReceita" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Custo Variável (R$)</label>
+                                    <input type="number" class="form-input" id="calcCustoVar" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Custo Fixo (R$)</label>
+                                    <input type="number" class="form-input" id="calcCustoFixo" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Quilometragem (KM)</label>
+                                    <input type="number" class="form-input" id="calcKm" step="0.1" placeholder="0,0">
+                                </div>
+                            </div>
+                            <div id="profitResults" class="alert alert-info">
+                                <i class="alert-icon fas fa-info-circle"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Resultados:</div>
+                                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                        <div>Custo Total: <span class="font-bold" id="resultCustoTotal">R$ 0,00</span></div>
+                                        <div>Lucro: <span class="font-bold" id="resultLucro">R$ 0,00</span></div>
+                                        <div>Margem: <span class="font-bold" id="resultMargem">0%</span></div>
+                                        <div>Lucro/KM: <span class="font-bold" id="resultLucroKm">R$ 0,00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Calculator -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-tags"></i>
+                                Calculadora de Preços
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Custo Total (R$)</label>
+                                    <input type="number" class="form-input" id="priceCustoTotal" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Margem Desejada (%)</label>
+                                    <input type="number" class="form-input" id="priceMargemDesejada" step="0.1" placeholder="0,0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Quilometragem (KM)</label>
+                                    <input type="number" class="form-input" id="priceKm" step="0.1" placeholder="0,0">
+                                </div>
+                            </div>
+                            <div id="priceResults" class="alert alert-success">
+                                <i class="alert-icon fas fa-check-circle"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Preço Sugerido:</div>
+                                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                        <div>Valor Total: <span class="font-bold" id="resultPrecoTotal">R$ 0,00</span></div>
+                                        <div>Valor/KM: <span class="font-bold" id="resultPrecoKm">R$ 0,00</span></div>
+                                        <div>Lucro Estimado: <span class="font-bold" id="resultLucroEstimado">R$ 0,00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROI Calculator -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-percentage"></i>
+                                Calculadora de ROI
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Investimento Inicial (R$)</label>
+                                    <input type="number" class="form-input" id="roiInvestimento" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Receita Mensal (R$)</label>
+                                    <input type="number" class="form-input" id="roiReceitaMensal" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Custo Mensal (R$)</label>
+                                    <input type="number" class="form-input" id="roiCustoMensal" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Período (meses)</label>
+                                    <input type="number" class="form-input" id="roiPeriodo" step="1" placeholder="12">
+                                </div>
+                            </div>
+                            <div id="roiResults" class="alert alert-warning">
+                                <i class="alert-icon fas fa-chart-line"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Análise de ROI:</div>
+                                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                        <div>Lucro no Período: <span class="font-bold" id="resultLucroPeriodo">R$ 0,00</span></div>
+                                        <div>ROI: <span class="font-bold" id="resultROI">0%</span></div>
+                                        <div>Payback: <span class="font-bold" id="resultPayback">0 meses</span></div>
+                                        <div>ROI Anual: <span class="font-bold" id="resultROIAnual">0%</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fuel Calculator -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-gas-pump"></i>
+                                Calculadora de Combustível
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Distância (KM)</label>
+                                    <input type="number" class="form-input" id="fuelDistancia" step="0.1" placeholder="0,0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Consumo (KM/L)</label>
+                                    <input type="number" class="form-input" id="fuelConsumo" step="0.1" placeholder="0,0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Preço Combustível (R$/L)</label>
+                                    <input type="number" class="form-input" id="fuelPreco" step="0.01" placeholder="0,00">
+                                </div>
+                            </div>
+                            <div id="fuelResults" class="alert alert-info">
+                                <i class="alert-icon fas fa-gas-pump"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Análise de Combustível:</div>
+                                    <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                        <div>Litros: <span class="font-bold" id="resultLitros">0,00 L</span></div>
+                                        <div>Custo Total: <span class="font-bold" id="resultCustoCombustivel">R$ 0,00</span></div>
+                                        <div>Custo/KM: <span class="font-bold" id="resultCustoKmCombustivel">R$ 0,00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Content -->
+            <section id="settings" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Configurações do Sistema
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="saveAllSettings()">
+                            <i class="fas fa-save"></i> Salvar Tudo
+                        </button>
+                        <button class="btn btn-outline" onclick="resetAllSettings()">
+                            <i class="fas fa-undo"></i> Restaurar Padrões
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                    <!-- Goals and Targets -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-target"></i>
+                                Metas e Objetivos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Meta Mensal de Lucro (R$)</label>
+                                    <input type="number" class="form-input" id="metaMensal" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Meta Anual de Lucro (R$)</label>
+                                    <input type="number" class="form-input" id="metaAnual" step="0.01" placeholder="0,00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Meta de Viagens/Mês</label>
+                                    <input type="number" class="form-input" id="metaViagens" step="1" placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Meta de KM/Mês</label>
+                                    <input type="number" class="form-input" id="metaKm" step="1" placeholder="0">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="saveGoals()">
+                                <i class="fas fa-save"></i> Salvar Metas
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Company Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-building"></i>
+                                Dados da Empresa
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Nome da Empresa</label>
+                                    <input type="text" class="form-input" id="nomeEmpresa" placeholder="Sua empresa">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CNPJ</label>
+                                    <input type="text" class="form-input" id="cnpjEmpresa" placeholder="00.000.000/0001-00" maxlength="18">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">E-mail</label>
+                                    <input type="email" class="form-input" id="emailEmpresa" placeholder="contato@empresa.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Telefone</label>
+                                    <input type="tel" class="form-input" id="telefoneEmpresa" placeholder="(00) 00000-0000">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="saveCompanyData()">
+                                <i class="fas fa-save"></i> Salvar Dados
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- System Preferences -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-sliders-h"></i>
+                                Preferências do Sistema
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Auto-salvar</label>
+                                    <select class="form-select" id="autoSave">
+                                        <option value="true">Ativado</option>
+                                        <option value="false">Desativado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Backup Automático</label>
+                                    <select class="form-select" id="autoBackup">
+                                        <option value="true">Ativado</option>
+                                        <option value="false">Desativado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Notificações</label>
+                                    <select class="form-select" id="notifications">
+                                        <option value="true">Ativadas</option>
+                                        <option value="false">Desativadas</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tema</label>
+                                    <select class="form-select" id="theme">
+                                        <option value="default">Padrão</option>
+                                        <option value="dark">Escuro</option>
+                                        <option value="blue">Azul</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="saveSystemPreferences()">
+                                <i class="fas fa-save"></i> Salvar Preferências
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Data Management -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-database"></i>
+                                Gerenciamento de Dados
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="space-y-4">
+                                <button class="btn btn-secondary w-full" onclick="transcsApp.exportBackup()">
+                                    <i class="fas fa-download"></i>
+                                    Fazer Backup Completo
+                                </button>
+                                
+                                <label class="btn btn-outline w-full cursor-pointer">
+                                    <i class="fas fa-upload"></i>
+                                    Restaurar Backup
+                                    <input type="file" id="backupFile" accept=".json" style="display: none;" onchange="handleBackupRestore(event)">
+                                </label>
+                                
+                                <hr class="border-gray-300">
+                                
+                                <button class="btn btn-warning w-full" onclick="exportAllData()">
+                                    <i class="fas fa-file-export"></i>
+                                    Exportar Todos os Dados
+                                </button>
+                                
+                                <button class="btn btn-danger w-full" onclick="confirmClearAllData()">
+                                    <i class="fas fa-trash"></i>
+                                    Limpar Todos os Dados
+                                </button>
+                            </div>
+                            
+                            <div class="alert alert-warning mt-4">
+                                <i class="alert-icon fas fa-exclamation-triangle"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Importante</div>
+                                    Faça backup antes de limpar os dados!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-info-circle"></i>
+                                Informações do Sistema
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-4">
+                                <i class="alert-icon fas fa-code"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">TransCS Pro Ultimate v3.0</div>
+                                    Sistema Completo de Gerenciamento de Fretes com IA
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <strong>Total de Viagens:</strong><br>
+                                    <span id="statsViagens" class="text-lg font-bold text-primary">0</span>
+                                </div>
+                                <div>
+                                    <strong>Total de Clientes:</strong><br>
+                                    <span id="statsClientes" class="text-lg font-bold text-secondary">0</span>
+                                </div>
+                                <div>
+                                    <strong>Armazenamento Usado:</strong><br>
+                                    <span id="statsStorage" class="text-lg font-bold text-warning">0 KB</span>
+                                </div>
+                                <div>
+                                    <strong>Última Atualização:</strong><br>
+                                    <span id="statsUpdate" class="text-lg font-bold text-info">Nunca</span>
+                                </div>
+                                <div>
+                                    <strong>Versão:</strong><br>
+                                    <span class="text-lg font-bold text-accent">3.0.0</span>
+                                </div>
+                                <div>
+                                    <strong>Status:</strong><br>
+                                    <span class="text-lg font-bold text-success">Online</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Enhanced Global Variables and System
+        class TransCSPro {
+            constructor() {
+                this.version = '3.0.0';
+                this.trips = this.loadFromStorage('trips', []);
+                this.settings = this.loadFromStorage('settings', this.getDefaultSettings());
+                this.backupInterval = null;
+                this.autoSaveInterval = null;
+                this.charts = {};
+                this.editingItem = null;
+                this.confirmCallback = null;
+                
+                this.init();
+            }
+
+            getDefaultSettings() {
+                return {
+                    goalMonthly: 0,
+                    goalAnnual: 0,
+                    goalTrips: 0,
+                    goalKm: 0,
+                    companyName: '',
+                    companyCNPJ: '',
+                    companyEmail: '',
+                    companyPhone: '',
+                    autoSave: true,
+                    autoBackup: true,
+                    theme: 'default',
+                    notifications: true,
+                    currency: 'BRL',
+                    dateFormat: 'DD/MM/YYYY',
+                    backupFrequency: 24 // hours
+                };
+            }
+
+            loadFromStorage(key, defaultValue) {
+                try {
+                    const data = localStorage.getItem(key);
+                    return data ? JSON.parse(data) : defaultValue;
+                } catch (error) {
+                    console.error(`Error loading ${key} from storage:`, error);
+                    return defaultValue;
+                }
+            }
+
+            saveToStorage(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    this.updateStorageStats();
+                } catch (error) {
+                    console.error(`Error saving ${key} to storage:`, error);
+                    this.showNotification('Erro ao salvar dados!', 'error');
+                }
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.startAutoSave();
+                this.startAutoBackup();
+                this.updateDateTime();
+                this.setInterval = setInterval(() => this.updateDateTime(), 60000);
+                this.loadInitialData();
+                this.hideLoading();
+                this.showNotification('Sistema TransCS Pro Ultimate v3.0 carregado!', 'success');
+            }
+
+            setupEventListeners() {
+                // Form listeners
+                document.addEventListener('DOMContentLoaded', () => {
+                    this.setupFormValidation();
+                    this.setupTableEditing();
+                    this.setupKeyboardShortcuts();
+                });
+
+                // Window listeners
+                window.addEventListener('beforeunload', (e) => {
+                    if (this.hasUnsavedChanges()) {
+                        e.preventDefault();
+                        e.returnValue = 'Você tem alterações não salvas. Deseja sair mesmo assim?';
+                    }
+                });
+
+                // Storage listener for sync between tabs
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'trips' || e.key === 'settings') {
+                        this.handleStorageSync(e);
+                    }
+                });
+            }
+
+            setupFormValidation() {
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', (e) => {
+                        if (!this.validateForm(form)) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    // Real-time validation
+                    const inputs = form.querySelectorAll('input, select, textarea');
+                    inputs.forEach(input => {
+                        input.addEventListener('blur', () => this.validateField(input));
+                        input.addEventListener('input', () => this.clearFieldError(input));
+                    });
+                });
+            }
+
+            setupTableEditing() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('editable-cell')) {
+                        this.startInlineEdit(e.target);
+                    }
+                });
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + S = Save
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        this.quickSave();
+                    }
+                    
+                    // Ctrl/Cmd + N = New Trip
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                        e.preventDefault();
+                        this.showTab('trips');
+                    }
+                    
+                    // Escape = Close modals
+                    if (e.key === 'Escape') {
+                        this.closeAllModals();
+                    }
+                });
+            }
+
+            startAutoSave() {
+                if (this.settings.autoSave) {
+                    this.autoSaveInterval = setInterval(() => {
+                        this.autoSave();
+                    }, 30000); // Auto-save every 30 seconds
+                }
+            }
+
+            startAutoBackup() {
+                if (this.settings.autoBackup) {
+                    const frequency = this.settings.backupFrequency * 60 * 60 * 1000; // Convert hours to ms
+                    this.backupInterval = setInterval(() => {
+                        this.createAutoBackup();
+                    }, frequency);
+                }
+            }
+
+            autoSave() {
+                this.saveToStorage('trips', this.trips);
+                this.saveToStorage('settings', this.settings);
+                this.updateLastSaveTime();
+            }
+
+            quickSave() {
+                this.autoSave();
+                this.showNotification('Dados salvos!', 'success');
+            }
+
+            createAutoBackup() {
+                const backup = this.createBackupData();
+                const date = new Date().toISOString().split('T')[0];
+                this.saveToStorage(`backup_${date}`, backup);
+                this.showNotification('Backup automático criado!', 'info');
+            }
+
+            loadInitialData() {
+                this.updateAllData();
+                this.updateAllCharts();
+                this.loadSettingsToForms();
+            }
+
+            updateDateTime() {
+                const now = new Date();
+                const dateElement = document.getElementById('currentDate');
+                const timeElement = document.getElementById('currentTime');
+                
+                if (dateElement) {
+                    dateElement.textContent = now.toLocaleDateString('pt-BR');
+                }
+                
+                if (timeElement) {
+                    timeElement.textContent = now.toLocaleTimeString('pt-BR', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+            }
+
+            calculateTripMetrics(trip) {
+                const custoTotal = (trip.custoVariavel || 0) + (trip.custoFixo || 0);
+                const lucro = (trip.receita || 0) - custoTotal;
+                const margem = trip.receita > 0 ? (lucro / trip.receita) * 100 : 0;
+                const lucroKm = trip.km > 0 ? lucro / trip.km : 0;
+                const receitaKm = trip.km > 0 ? trip.receita / trip.km : 0;
+                const custoKm = trip.km > 0 ? custoTotal / trip.km : 0;
+                
+                return { custoTotal, lucro, margem, lucroKm, receitaKm, custoKm };
+            }
+
+            addTrip(tripData) {
+                const trip = {
+                    id: Date.now() + Math.random(),
+                    ...tripData,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                this.trips.push(trip);
+                this.autoSave();
+                this.updateAllData();
+                this.updateAllCharts();
+                
+                return trip;
+            }
+
+            updateTrip(id, updateData) {
+                const index = this.trips.findIndex(trip => trip.id === id);
+                if (index !== -1) {
+                    this.trips[index] = {
+                        ...this.trips[index],
+                        ...updateData,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    this.autoSave();
+                    this.updateAllData();
+                    this.updateAllCharts();
+                    
+                    return this.trips[index];
+                }
+                return null;
+            }
+
+            deleteTrip(id) {
+                const index = this.trips.findIndex(trip => trip.id === id);
+                if (index !== -1) {
+                    const deletedTrip = this.trips.splice(index, 1)[0];
+                    this.autoSave();
+                    this.updateAllData();
+                    this.updateAllCharts();
+                    
+                    return deletedTrip;
+                }
+                return null;
+            }
+
+            updateAllData() {
+                this.updateDashboard();
+                this.updateHeaderStats();
+                this.updateFinancialData();
+                this.updateAnalytics();
+                this.updateSystemStats();
+            }
+
+            updateDashboard() {
+                if (this.trips.length === 0) {
+                    this.resetDashboardValues();
+                    return;
+                }
+
+                let totalReceita = 0;
+                let totalCusto = 0;
+                let totalLucro = 0;
+                let totalKm = 0;
+                const clientesLucro = {};
+                
+                this.trips.forEach(trip => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    totalReceita += trip.receita || 0;
+                    totalCusto += metrics.custoTotal;
+                    totalLucro += metrics.lucro;
+                    totalKm += trip.km || 0;
+                    
+                    if (trip.cliente) {
+                        clientesLucro[trip.cliente] = (clientesLucro[trip.cliente] || 0) + metrics.lucro;
+                    }
+                });
+
+                const margemMedia = totalReceita > 0 ? (totalLucro / totalReceita) * 100 : 0;
+                const clientesUnicos = Object.keys(clientesLucro).length;
+                const melhorCliente = Object.entries(clientesLucro).sort((a, b) => b[1] - a[1])[0];
+
+                // Update main stats
+                this.updateElement('totalReceita', `R$ ${this.formatNumber(totalReceita)}`);
+                this.updateElement('totalLucro', `R$ ${this.formatNumber(totalLucro)}`);
+                this.updateElement('margemMedia', `${margemMedia.toFixed(1)}%`);
+                this.updateElement('totalViagens', this.trips.length);
+                this.updateElement('totalKm', `${this.formatNumber(totalKm, 0)} km`);
+                this.updateElement('totalClientes', clientesUnicos);
+
+                // Update additional stats
+                this.updateElement('kmMedio', totalKm > 0 ? `R$ ${this.formatNumber(totalReceita / totalKm)}/km` : 'R$ 0,00/km');
+                this.updateElement('clienteTop', melhorCliente ? melhorCliente[0] : '-');
+
+                // Update client ranking
+                this.updateClientRanking();
+                
+                // Update goal progress
+                this.updateGoalProgress();
+                
+                // Update changes vs previous month
+                this.updateChanges();
+                
+                // Generate insights
+                this.generateInsights();
+            }
+
+            updateHeaderStats() {
+                const totalTrips = this.trips.length;
+                const totalRevenue = this.trips.reduce((sum, trip) => sum + (trip.receita || 0), 0);
+                const totalProfit = this.trips.reduce((sum, trip) => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    return sum + metrics.lucro;
+                }, 0);
+
+                this.updateElement('headerTotalTrips', totalTrips);
+                this.updateElement('headerTotalRevenue', `R$ ${this.formatNumber(totalRevenue, 0)}`);
+                this.updateElement('headerTotalProfit', `R$ ${this.formatNumber(totalProfit, 0)}`);
+            }
+
+            resetDashboardValues() {
+                const elements = [
+                    'totalReceita', 'totalLucro', 'margemMedia', 'totalViagens', 
+                    'totalKm', 'totalClientes', 'kmMedio', 'clienteTop'
+                ];
+                
+                elements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        if (id.includes('margem')) {
+                            element.textContent = '0%';
+                        } else if (id.includes('Total') || id.includes('km')) {
+                            element.textContent = id.includes('km') && id !== 'totalKm' ? 'R$ 0,00/km' : 
+                                                  id === 'totalKm' ? '0 km' : 'R$ 0,00';
+                        } else {
+                            element.textContent = id === 'clienteTop' ? '-' : '0';
+                        }
+                    }
+                });
+
+                this.resetClientRanking();
+                this.updateGoalProgress();
+            }
+
+            updateClientRanking() {
+                const clientesLucro = {};
+                
+                this.trips.forEach(trip => {
+                    if (trip.cliente) {
+                        const metrics = this.calculateTripMetrics(trip);
+                        clientesLucro[trip.cliente] = (clientesLucro[trip.cliente] || 0) + metrics.lucro;
+                    }
+                });
+
+                const ranking = Object.entries(clientesLucro)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+
+                const rankingEl = document.getElementById('clientRanking');
+                
+                if (ranking.length === 0) {
+                    this.resetClientRanking();
+                    return;
+                }
+
+                const rankingHTML = ranking.map(([cliente, lucro], index) => {
+                    const tripCount = this.trips.filter(t => t.cliente === cliente).length;
+                    const avgLucro = lucro / tripCount;
+                    
+                    return `
+                        <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border hover:shadow-md transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white font-bold flex items-center justify-center text-lg shadow-lg">
+                                    ${index + 1}
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-dark">${cliente}</h4>
+                                    <p class="text-sm text-gray">${tripCount} viagem${tripCount > 1 ? 'ns' : ''} • R$ ${this.formatNumber(avgLucro)} média</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xl font-bold ${lucro >= 0 ? 'text-success' : 'text-danger'}">
+                                    R$ ${this.formatNumber(lucro)}
+                                </div>
+                                <div class="text-sm ${lucro >= 0 ? 'text-success' : 'text-danger'}">
+                                    ${lucro >= 0 ? '🟢 Lucro' : '🔴 Prejuízo'}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                rankingEl.innerHTML = rankingHTML;
+            }
+
+            resetClientRanking() {
+                const rankingEl = document.getElementById('clientRanking');
+                if (rankingEl) {
+                    rankingEl.innerHTML = `
+                        <div class="text-center p-8 text-gray">
+                            <i class="fas fa-truck text-6xl mb-4 opacity-30"></i>
+                            <p class="text-lg">Nenhum cliente cadastrado ainda</p>
+                            <p class="text-sm">Adicione viagens para ver o ranking</p>
+                        </div>
+                    `;
+                }
+            }
+
+            updateGoalProgress() {
+                const currentMonth = new Date().toISOString().slice(0, 7);
+                const monthlyTrips = this.trips.filter(trip => trip.data && trip.data.startsWith(currentMonth));
+                const monthlyProfit = monthlyTrips.reduce((sum, trip) => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    return sum + metrics.lucro;
+                }, 0);
+                
+                const goalMonthly = this.settings.goalMonthly || 0;
+                const progress = goalMonthly > 0 ? Math.min((monthlyProfit / goalMonthly) * 100, 100) : 0;
+                
+                this.updateElement('goalProgress', `${progress.toFixed(1)}% atingido`);
+                this.updateElement('goalCurrent', this.formatNumber(monthlyProfit));
+                this.updateElement('goalTarget', this.formatNumber(goalMonthly));
+                
+                const progressBar = document.getElementById('goalProgressBar');
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                }
+                
+                this.updateGoalAlert(progress);
+            }
+
+            updateGoalAlert(progress) {
+                const goalAlert = document.getElementById('goalAlert');
+                if (!goalAlert) return;
+                
+                const goalMonthly = this.settings.goalMonthly || 0;
+                
+                if (goalMonthly > 0) {
+                    if (progress >= 100) {
+                        goalAlert.className = 'alert alert-success';
+                        goalAlert.querySelector('.alert-title').textContent = 'Meta Atingida!';
+                        goalAlert.querySelector('#goalAlertText').textContent = '🎉 Parabéns! Você atingiu sua meta mensal de lucro!';
+                        goalAlert.classList.remove('hidden');
+                    } else if (progress >= 80) {
+                        goalAlert.className = 'alert alert-info';
+                        goalAlert.querySelector('.alert-title').textContent = 'Quase lá!';
+                        goalAlert.querySelector('#goalAlertText').textContent = '📊 Você está muito próximo da sua meta! Continue assim!';
+                        goalAlert.classList.remove('hidden');
+                    } else if (progress >= 50) {
+                        goalAlert.className = 'alert alert-warning';
+                        goalAlert.querySelector('.alert-title').textContent = 'Metade do caminho!';
+                        goalAlert.querySelector('#goalAlertText').textContent = '⚡ Você já está na metade da sua meta mensal!';
+                        goalAlert.classList.remove('hidden');
+                    } else {
+                        goalAlert.classList.add('hidden');
+                    }
+                } else {
+                    goalAlert.classList.add('hidden');
+                }
+            }
+
+            generateInsights() {
+                const insights = [];
+                
+                if (this.trips.length === 0) {
+                    insights.push({
+                        type: 'info',
+                        icon: 'fas fa-info-circle',
+                        title: 'Começando',
+                        message: 'Adicione suas primeiras viagens para começar a receber insights personalizados.',
+                        action: 'Nova Viagem',
+                        actionFn: 'showTab("trips")'
+                    });
+                } else {
+                    // Profitability analysis
+                    const profitableTrips = this.trips.filter(trip => {
+                        const metrics = this.calculateTripMetrics(trip);
+                        return metrics.lucro > 0;
+                    });
+                    
+                    const profitRate = (profitableTrips.length / this.trips.length) * 100;
+                    
+                    if (profitRate >= 90) {
+                        insights.push({
+                            type: 'success',
+                            icon: 'fas fa-trophy',
+                            title: 'Excelente Performance!',
+                            message: `${profitRate.toFixed(1)}% das suas viagens são lucrativas. Você está indo muito bem!`
+                        });
+                    } else if (profitRate < 60) {
+                        insights.push({
+                            type: 'warning',
+                            icon: 'fas fa-exclamation-triangle',
+                            title: 'Atenção aos Custos',
+                            message: `${(100 - profitRate).toFixed(1)}% das suas viagens tiveram prejuízo. Revise seus custos e preços.`,
+                            action: 'Ver Relatórios',
+                            actionFn: 'showTab("reports")'
+                        });
+                    }
+
+                    // Best client insight
+                    if (this.trips.length >= 5) {
+                        const clientProfits = {};
+                        this.trips.forEach(trip => {
+                            const profit = this.calculateTripMetrics(trip).lucro;
+                            clientProfits[trip.cliente] = (clientProfits[trip.cliente] || 0) + profit;
+                        });
+                        
+                        const bestClient = Object.entries(clientProfits).sort((a, b) => b[1] - a[1])[0];
+                        if (bestClient && bestClient[1] > 0) {
+                            const contribution = (bestClient[1] / Object.values(clientProfits).reduce((a, b) => a + b, 0)) * 100;
+                            insights.push({
+                                type: 'info',
+                                icon: 'fas fa-star',
+                                title: 'Cliente Destaque',
+                                message: `${bestClient[0]} é responsável por ${contribution.toFixed(1)}% do seu lucro total.`
+                            });
+                        }
+                    }
+
+                    // Monthly growth insight
+                    const monthlyData = this.getMonthlyData();
+                    if (monthlyData.length >= 2) {
+                        const currentMonth = monthlyData[monthlyData.length - 1];
+                        const previousMonth = monthlyData[monthlyData.length - 2];
+                        const growth = previousMonth.lucro > 0 ? 
+                            ((currentMonth.lucro - previousMonth.lucro) / previousMonth.lucro) * 100 : 0;
+
+                        if (growth > 20) {
+                            insights.push({
+                                type: 'success',
+                                icon: 'fas fa-chart-line',
+                                title: 'Crescimento Acelerado',
+                                message: `Seu lucro cresceu ${growth.toFixed(1)}% em relação ao mês anterior!`
+                            });
+                        } else if (growth < -10) {
+                            insights.push({
+                                type: 'danger',
+                                icon: 'fas fa-chart-line-down',
+                                title: 'Queda na Performance',
+                                message: `Seu lucro caiu ${Math.abs(growth).toFixed(1)}% em relação ao mês anterior. Analise os motivos.`,
+                                action: 'Ver Analytics',
+                                actionFn: 'showTab("analytics")'
+                            });
+                        }
+                    }
+
+                    // Efficiency insight
+                    const avgLucroKm = this.trips.reduce((sum, trip) => {
+                        const metrics = this.calculateTripMetrics(trip);
+                        return sum + metrics.lucroKm;
+                    }, 0) / this.trips.length;
+
+                    if (avgLucroKm > 2) {
+                        insights.push({
+                            type: 'success',
+                            icon: 'fas fa-road',
+                            title: 'Alta Eficiência',
+                            message: `Excelente! Você está ganhando R$ ${avgLucroKm.toFixed(2)} por quilômetro rodado.`
+                        });
+                    }
+                }
+
+                this.renderInsights(insights);
+            }
+
+            getMonthlyData() {
+                const monthlyData = {};
+                this.trips.forEach(trip => {
+                    const month = trip.data ? trip.data.slice(0, 7) : new Date().toISOString().slice(0, 7);
+                    if (!monthlyData[month]) {
+                        monthlyData[month] = { receita: 0, lucro: 0, trips: 0 };
+                    }
+                    const metrics = this.calculateTripMetrics(trip);
+                    monthlyData[month].receita += trip.receita || 0;
+                    monthlyData[month].lucro += metrics.lucro;
+                    monthlyData[month].trips += 1;
+                });
+
+                return Object.entries(monthlyData)
+                    .sort((a, b) => a[0].localeCompare(b[0]))
+                    .map(([month, data]) => ({ month, ...data }));
+            }
+
+            renderInsights(insights) {
+                const container = document.getElementById('aiInsights');
+                if (!container) return;
+
+                if (insights.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="alert-icon fas fa-lightbulb"></i>
+                            <div class="alert-content">
+                                <div class="alert-title">Aguardando Dados</div>
+                                Continue adicionando viagens para receber insights personalizados.
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const insightsHTML = insights.map(insight => `
+                    <div class="alert alert-${insight.type}">
+                        <i class="alert-icon ${insight.icon}"></i>
+                        <div class="alert-content">
+                            <div class="alert-title">${insight.title}</div>
+                            <div>${insight.message}</div>
+                            ${insight.action ? `
+                                <button class="btn btn-sm btn-outline mt-2" onclick="${insight.actionFn}">
+                                    ${insight.action}
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = insightsHTML;
+            }
+
+            updateChanges() {
+                const currentMonth = new Date().getMonth();
+                const currentYear = new Date().getFullYear();
+                const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+                const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+                const currentMonthTrips = this.trips.filter(trip => {
+                    const tripDate = new Date(trip.data);
+                    return tripDate.getMonth() === currentMonth && tripDate.getFullYear() === currentYear;
+                });
+
+                const lastMonthTrips = this.trips.filter(trip => {
+                    const tripDate = new Date(trip.data);
+                    return tripDate.getMonth() === lastMonth && tripDate.getFullYear() === lastMonthYear;
+                });
+
+                const currentMonthRevenue = currentMonthTrips.reduce((sum, trip) => sum + (trip.receita || 0), 0);
+                const lastMonthRevenue = lastMonthTrips.reduce((sum, trip) => sum + (trip.receita || 0), 0);
+                const revenueChange = lastMonthRevenue > 0 ? ((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0;
+
+                const currentMonthProfit = currentMonthTrips.reduce((sum, trip) => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    return sum + metrics.lucro;
+                }, 0);
+                const lastMonthProfit = lastMonthTrips.reduce((sum, trip) => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    return sum + metrics.lucro;
+                }, 0);
+                const profitChange = lastMonthProfit > 0 ? ((currentMonthProfit - lastMonthProfit) / lastMonthProfit) * 100 : 0;
+
+                this.updateElement('receitaChange', `${revenueChange >= 0 ? '+' : ''}${revenueChange.toFixed(1)}%`);
+                this.updateElement('lucroChange', `${profitChange >= 0 ? '+' : ''}${profitChange.toFixed(1)}%`);
+                this.updateElement('viagensChange', `${currentMonthTrips.length}`);
+
+                // Update change indicators
+                this.updateChangeIndicator('receitaChange', revenueChange);
+                this.updateChangeIndicator('lucroChange', profitChange);
+            }
+
+            updateChangeIndicator(elementId, value) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+
+                const parent = element.closest('.stat-change');
+                if (!parent) return;
+
+                parent.className = 'stat-change ' + (value > 0 ? 'positive' : value < 0 ? 'negative' : 'neutral');
+            }
+
+            updateFinancialData() {
+                if (this.trips.length === 0) {
+                    this.resetFinancialValues();
+                    return;
+                }
+
+                let totalReceita = 0;
+                let totalCusto = 0;
+                let totalLucro = 0;
+                let totalKm = 0;
+
+                this.trips.forEach(trip => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    totalReceita += trip.receita || 0;
+                    totalCusto += metrics.custoTotal;
+                    totalLucro += metrics.lucro;
+                    totalKm += trip.km || 0;
+                });
+
+                const numTrips = this.trips.length;
+                const avgRevenue = totalReceita / numTrips;
+                const avgCost = totalCusto / numTrips;
+                const avgProfit = totalLucro / numTrips;
+                const revenuePerKm = totalKm > 0 ? totalReceita / totalKm : 0;
+                const costPerKm = totalKm > 0 ? totalCusto / totalKm : 0;
+                const avgMargin = totalReceita > 0 ? (totalLucro / totalReceita) * 100 : 0;
+
+                this.updateElement('receitaMediaViagem', `R$ ${this.formatNumber(avgRevenue)}`);
+                this.updateElement('custoMedioViagem', `R$ ${this.formatNumber(avgCost)}`);
+                this.updateElement('lucroMedioViagem', `R$ ${this.formatNumber(avgProfit)}`);
+                this.updateElement('receitaPorKm', `R$ ${this.formatNumber(revenuePerKm)}`);
+                this.updateElement('custoPorKm', `R$ ${this.formatNumber(costPerKm)}`);
+                this.updateElement('margemLucroMedia', `${avgMargin.toFixed(1)}%`);
+            }
+
+            resetFinancialValues() {
+                const elements = ['receitaMediaViagem', 'custoMedioViagem', 'lucroMedioViagem', 'receitaPorKm', 'custoPorKm', 'margemLucroMedia'];
+                elements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = id.includes('margem') ? '0%' : 'R$ 0,00';
+                    }
+                });
+            }
+
+            updateAnalytics() {
+                if (this.trips.length === 0) {
+                    this.resetAnalyticsValues();
+                    return;
+                }
+
+                // Best client
+                const clientProfits = {};
+                this.trips.forEach(trip => {
+                    const profit = this.calculateTripMetrics(trip).lucro;
+                    clientProfits[trip.cliente] = (clientProfits[trip.cliente] || 0) + profit;
+                });
+                const bestClient = Object.entries(clientProfits).sort((a, b) => b[1] - a[1])[0];
+                this.updateElement('melhorCliente', bestClient ? bestClient[0] : '-');
+
+                // Best month
+                const monthProfits = {};
+                this.trips.forEach(trip => {
+                    const month = trip.data ? trip.data.slice(0, 7) : new Date().toISOString().slice(0, 7);
+                    const profit = this.calculateTripMetrics(trip).lucro;
+                    monthProfits[month] = (monthProfits[month] || 0) + profit;
+                });
+                const bestMonth = Object.entries(monthProfits).sort((a, b) => b[1] - a[1])[0];
+                if (bestMonth) {
+                    const [year, month] = bestMonth[0].split('-');
+                    const date = new Date(year, month - 1);
+                    this.updateElement('melhorMes', date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }));
+                }
+
+                // Best route
+                const routeProfits = {};
+                this.trips.forEach(trip => {
+                    if (trip.origem && trip.destino) {
+                        const route = `${trip.origem} → ${trip.destino}`;
+                        const profit = this.calculateTripMetrics(trip).lucro;
+                        routeProfits[route] = (routeProfits[route] || 0) + profit;
+                    }
+                });
+                const bestRoute = Object.entries(routeProfits).sort((a, b) => b[1] - a[1])[0];
+                this.updateElement('melhorRota', bestRoute ? bestRoute[0] : '-');
+
+                // Monthly growth
+                const months = Object.keys(monthProfits).sort();
+                if (months.length >= 2) {
+                    const lastMonth = monthProfits[months[months.length - 1]];
+                    const previousMonth = monthProfits[months[months.length - 2]];
+                    const growth = previousMonth > 0 ? ((lastMonth - previousMonth) / previousMonth) * 100 : 0;
+                    this.updateElement('crescimentoMensal', `${growth >= 0 ? '+' : ''}${growth.toFixed(1)}%`);
+                }
+            }
+
+            resetAnalyticsValues() {
+                const elements = ['melhorCliente', 'melhorMes', 'melhorRota', 'crescimentoMensal'];
+                elements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = id === 'crescimentoMensal' ? '0%' : '-';
+                    }
+                });
+            }
+
+            updateSystemStats() {
+                const uniqueClients = [...new Set(this.trips.map(trip => trip.cliente).filter(Boolean))].length;
+                const dataSize = JSON.stringify({ trips: this.trips, settings: this.settings }).length;
+                const lastUpdate = this.trips.length > 0 ? 
+                    new Date(Math.max(...this.trips.map(trip => new Date(trip.updatedAt || trip.createdAt || trip.data)))).toLocaleDateString('pt-BR') : 
+                    'Nunca';
+
+                this.updateElement('statsViagens', this.trips.length);
+                this.updateElement('statsClientes', uniqueClients);
+                this.updateElement('statsStorage', `${(dataSize / 1024).toFixed(1)} KB`);
+                this.updateElement('statsUpdate', lastUpdate);
+            }
+
+            updateStorageStats() {
+                const used = JSON.stringify(localStorage).length;
+                const quota = 5 * 1024 * 1024; // 5MB estimate
+                const percentage = (used / quota) * 100;
+
+                this.updateElement('storageUsed', `${(used / 1024).toFixed(1)} KB`);
+                this.updateElement('storagePercentage', `${percentage.toFixed(1)}%`);
+            }
+
+            updateAllCharts() {
+                this.updateMainChart();
+                this.updateCostChart();
+                this.updateCostBreakdownChart();
+                this.updateRevenueVsCostChart();
+                this.updateClientProfitabilityChart();
+                this.updateCargoTypeChart();
+                this.updateWeekdayChart();
+                this.updateMarginTrendChart();
+            }
+
+            updateMainChart(type = 'lucro') {
+                const ctx = document.getElementById('mainChart');
+                if (!ctx) return;
+
+                const context = ctx.getContext('2d');
+                
+                // Update active control
+                document.querySelectorAll('.chart-control').forEach(btn => btn.classList.remove('active'));
+                const activeButton = [...document.querySelectorAll('.chart-control')].find(btn => 
+                    btn.textContent.toLowerCase().includes(type));
+                if (activeButton) activeButton.classList.add('active');
+
+                const monthlyData = this.getMonthlyData();
+                
+                // Calculate margins
+                monthlyData.forEach(data => {
+                    data.margem = data.receita > 0 ? (data.lucro / data.receita) * 100 : 0;
+                });
+
+                const labels = monthlyData.map(data => {
+                    const [year, month] = data.month.split('-');
+                    const date = new Date(year, month - 1);
+                    return date.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+                });
+
+                const values = monthlyData.map(data => data[type]);
+
+                if (this.charts.main) this.charts.main.destroy();
+                
+                this.charts.main = new Chart(context, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: type === 'lucro' ? 'Lucro' : type === 'receita' ? 'Receita' : 'Margem (%)',
+                            data: values,
+                            borderColor: this.getChartColor(type),
+                            backgroundColor: this.getChartColor(type, 0.1),
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: this.getChartColor(type),
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#ffffff',
+                                borderColor: this.getChartColor(type),
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: (context) => {
+                                        const value = context.parsed.y;
+                                        if (type === 'margem') {
+                                            return `Margem: ${value.toFixed(1)}%`;
+                                        } else {
+                                            return `${type === 'lucro' ? 'Lucro' : 'Receita'}: R$ ${this.formatNumber(value)}`;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    callback: (value) => {
+                                        if (type === 'margem') {
+                                            return value.toFixed(1) + '%';
+                                        } else {
+                                            return 'R$ ' + this.formatNumber(value, 0);
+                                        }
+                                    },
+                                    color: '#6b7280'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#6b7280'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateCostChart() {
+                const ctx = document.getElementById('costChart');
+                if (!ctx) return;
+
+                const context = ctx.getContext('2d');
+                
+                let totalVariavel = 0;
+                let totalFixo = 0;
+                
+                this.trips.forEach(trip => {
+                    totalVariavel += trip.custoVariavel || 0;
+                    totalFixo += trip.custoFixo || 0;
+                });
+
+                if (this.charts.cost) this.charts.cost.destroy();
+                
+                this.charts.cost = new Chart(context, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Custos Variáveis', 'Custos Fixos'],
+                        datasets: [{
+                            data: [totalVariavel, totalFixo],
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(139, 92, 246, 0.8)'
+                            ],
+                            borderWidth: 0,
+                            hoverBackgroundColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    color: '#374151'
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#ffffff',
+                                callbacks: {
+                                    label: (context) => {
+                                        const value = context.parsed;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: R$ ${this.formatNumber(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            getChartColor(type, alpha = 1) {
+                const colors = {
+                    lucro: `rgba(16, 185, 129, ${alpha})`,
+                    receita: `rgba(59, 130, 246, ${alpha})`,
+                    margem: `rgba(245, 158, 11, ${alpha})`
+                };
+                return colors[type] || colors.lucro;
+            }
+
+            // Form validation methods
+            validateForm(form) {
+                let isValid = true;
+                const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+                
+                inputs.forEach(input => {
+                    if (!this.validateField(input)) {
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+
+            validateField(field) {
+                const value = field.value.trim();
+                const type = field.type;
+                const required = field.hasAttribute('required');
+                
+                this.clearFieldError(field);
+
+                if (required && !value) {
+                    this.setFieldError(field, 'Este campo é obrigatório');
+                    return false;
+                }
+
+                if (value) {
+                    switch (type) {
+                        case 'email':
+                            if (!this.isValidEmail(value)) {
+                                this.setFieldError(field, 'Email inválido');
+                                return false;
+                            }
+                            break;
+                        case 'number':
+                            if (isNaN(value) || value < 0) {
+                                this.setFieldError(field, 'Número inválido');
+                                return false;
+                            }
+                            break;
+                        case 'tel':
+                            if (!this.isValidPhone(value)) {
+                                this.setFieldError(field, 'Telefone inválido');
+                                return false;
+                            }
+                            break;
+                    }
+                }
+
+                field.classList.add('success');
+                return true;
+            }
+
+            setFieldError(field, message) {
+                field.classList.add('error');
+                field.classList.remove('success');
+                
+                let errorEl = field.parentNode.querySelector('.form-error');
+                if (!errorEl) {
+                    errorEl = document.createElement('div');
+                    errorEl.className = 'form-error';
+                    field.parentNode.appendChild(errorEl);
+                }
+                
+                errorEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            }
+
+            clearFieldError(field) {
+                field.classList.remove('error');
+                const errorEl = field.parentNode.querySelector('.form-error');
+                if (errorEl) {
+                    errorEl.remove();
+                }
+            }
+
+            isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            isValidPhone(phone) {
+                const re = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+                return re.test(phone);
+            }
+
+            // Utility methods
+            updateElement(id, value) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+
+            formatNumber(number, decimals = 2) {
+                return new Intl.NumberFormat('pt-BR', {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals
+                }).format(number);
+            }
+
+            formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            }
+
+            showNotification(message, type = 'info', title = null) {
+                const notification = document.getElementById('notification');
+                const titleEl = document.getElementById('notificationTitle');
+                const messageEl = document.getElementById('notificationMessage');
+                
+                const titles = {
+                    success: 'Sucesso',
+                    error: 'Erro',
+                    warning: 'Atenção',
+                    info: 'Informação'
+                };
+
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+                
+                notification.className = `notification ${type}`;
+                notification.querySelector('.notification-icon').className = `notification-icon ${icons[type]}`;
+                titleEl.textContent = title || titles[type];
+                messageEl.textContent = message;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+
+            showLoading(text = 'Carregando...') {
+                const loading = document.getElementById('loadingScreen');
+                const loadingText = loading.querySelector('.loading-text');
+                if (loadingText) loadingText.textContent = text;
+                loading.classList.remove('hidden');
+            }
+
+            hideLoading() {
+                const loading = document.getElementById('loadingScreen');
+                loading.classList.add('hidden');
+            }
+
+            // Modal methods
+            showModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            closeAllModals() {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+
+            // Edit methods
+            showEditModal(title, fields, data, saveCallback) {
+                document.getElementById('editModalTitle').textContent = title;
+                
+                const formFields = document.getElementById('editFormFields');
+                formFields.innerHTML = fields.map(field => `
+                    <div class="form-group">
+                        <label class="form-label ${field.required ? 'required' : ''}">${field.label}</label>
+                        ${field.type === 'select' ? `
+                            <select class="form-select" name="${field.name}" ${field.required ? 'required' : ''}>
+                                ${field.options.map(option => `
+                                    <option value="${option.value}" ${data[field.name] === option.value ? 'selected' : ''}>${option.label}</option>
+                                `).join('')}
+                            </select>
+                        ` : field.type === 'textarea' ? `
+                            <textarea class="form-textarea" name="${field.name}" ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">${data[field.name] || ''}</textarea>
+                        ` : `
+                            <input type="${field.type}" class="form-input" name="${field.name}" value="${data[field.name] || ''}" ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">
+                        `}
+                    </div>
+                `).join('');
+
+                this.editSaveCallback = saveCallback;
+                this.showModal('editModal');
+            }
+
+            saveEdit() {
+                const form = document.getElementById('editForm');
+                if (!this.validateForm(form)) return;
+
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                if (this.editSaveCallback) {
+                    this.editSaveCallback(data);
+                }
+
+                this.closeModal('editModal');
+            }
+
+            closeEditModal() {
+                this.closeModal('editModal');
+                this.editSaveCallback = null;
+            }
+
+            showConfirmModal(title, message, confirmCallback) {
+                document.getElementById('confirmModalTitle').textContent = title;
+                document.getElementById('confirmModalMessage').textContent = message;
+                
+                const confirmButton = document.getElementById('confirmModalAction');
+                confirmButton.onclick = () => {
+                    if (confirmCallback) confirmCallback();
+                    this.closeConfirmModal();
+                };
+
+                this.showModal('confirmModal');
+            }
+
+            closeConfirmModal() {
+                this.closeModal('confirmModal');
+            }
+
+            // Export methods
+            exportCSV() {
+                if (this.trips.length === 0) {
+                    this.showNotification('Nenhum dado para exportar!', 'warning');
+                    return;
+                }
+
+                const headers = [
+                    'Cliente', 'Data', 'Origem', 'Destino', 'KM', 'Receita', 
+                    'Custo Variável', 'Custo Fixo', 'Custo Total', 'Lucro', 
+                    'Margem %', 'Lucro/KM', 'Tipo Carga', 'Motorista', 'Placa', 'Observações'
+                ];
+
+                const rows = this.trips.map(trip => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    return [
+                        `"${trip.cliente || ''}"`,
+                        trip.data || '',
+                        `"${trip.origem || ''}"`,
+                        `"${trip.destino || ''}"`,
+                        trip.km || 0,
+                        (trip.receita || 0).toFixed(2),
+                        (trip.custoVariavel || 0).toFixed(2),
+                        (trip.custoFixo || 0).toFixed(2),
+                        metrics.custoTotal.toFixed(2),
+                        metrics.lucro.toFixed(2),
+                        metrics.margem.toFixed(2),
+                        metrics.lucroKm.toFixed(2),
+                        `"${trip.tipoCarga || ''}"`,
+                        `"${trip.motorista || ''}"`,
+                        `"${trip.placa || ''}"`,
+                        `"${trip.observacoes || ''}"`
+                    ].join(',');
+                });
+
+                const csv = [headers.join(','), ...rows].join('\n');
+                this.downloadFile(csv, `transcs-relatorio-${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
+                this.showNotification('Relatório CSV exportado com sucesso!', 'success');
+            }
+
+            exportExcel() {
+                if (this.trips.length === 0) {
+                    this.showNotification('Nenhum dado para exportar!', 'warning');
+                    return;
+                }
+
+                const ws_data = [
+                    ['Cliente', 'Data', 'Origem', 'Destino', 'KM', 'Receita', 'Custo Variável', 'Custo Fixo', 'Custo Total', 'Lucro', 'Margem %', 'Lucro/KM', 'Tipo Carga', 'Motorista', 'Placa', 'Observações']
+                ];
+
+                this.trips.forEach(trip => {
+                    const metrics = this.calculateTripMetrics(trip);
+                    ws_data.push([
+                        trip.cliente || '',
+                        trip.data || '',
+                        trip.origem || '',
+                        trip.destino || '',
+                        trip.km || 0,
+                        trip.receita || 0,
+                        trip.custoVariavel || 0,
+                        trip.custoFixo || 0,
+                        metrics.custoTotal,
+                        metrics.lucro,
+                        metrics.margem,
+                        metrics.lucroKm,
+                        trip.tipoCarga || '',
+                        trip.motorista || '',
+                        trip.placa || '',
+                        trip.observacoes || ''
+                    ]);
+                });
+
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Relatório de Viagens");
+
+                XLSX.writeFile(wb, `transcs-relatorio-${new Date().toISOString().split('T')[0]}.xlsx`);
+                this.showNotification('Relatório Excel exportado com sucesso!', 'success');
+            }
+
+            exportPDF() {
+                if (this.trips.length === 0) {
+                    this.showNotification('Nenhum dado para exportar!', 'warning');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Header
+                doc.setFontSize(20);
+                doc.text('TransCS Pro Ultimate - Relatório de Viagens', 20, 20);
+                
+                doc.setFontSize(12);
+                doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 20, 30);
+                doc.text(`Total de viagens: ${this.trips.length}`, 20, 40);
+
+                let y = 60;
+                const pageHeight = doc.internal.pageSize.height;
+
+                this.trips.forEach((trip, index) => {
+                    if (y > pageHeight - 40) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const metrics = this.calculateTripMetrics(trip);
+                    
+                    doc.text(`${index + 1}. ${trip.cliente || 'Cliente não informado'}`, 20, y);
+                    doc.text(`Data: ${trip.data || 'N/A'} | KM: ${trip.km || 0} | Receita: R$ ${this.formatNumber(trip.receita || 0)}`, 20, y + 10);
+                    doc.text(`Lucro: R$ ${this.formatNumber(metrics.lucro)} | Margem: ${metrics.margem.toFixed(1)}%`, 20, y + 20);
+                    
+                    y += 35;
+                });
+
+                doc.save(`transcs-relatorio-${new Date().toISOString().split('T')[0]}.pdf`);
+                this.showNotification('Relatório PDF exportado com sucesso!', 'success');
+            }
+
+            downloadFile(content, filename, mimeType) {
+                const blob = new Blob([content], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            // Backup methods
+            createBackupData() {
+                return {
+                    trips: this.trips,
+                    settings: this.settings,
+                    exportDate: new Date().toISOString(),
+                    version: this.version,
+                    checksum: this.calculateChecksum(this.trips)
+                };
+            }
+
+            calculateChecksum(data) {
+                const str = JSON.stringify(data);
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32bit integer
+                }
+                return hash.toString(16);
+            }
+
+            exportBackup() {
+                const backup = this.createBackupData();
+                const json = JSON.stringify(backup, null, 2);
+                this.downloadFile(json, `transcs-backup-${new Date().toISOString().split('T')[0]}.json`, 'application/json');
+                this.showNotification('Backup criado com sucesso!', 'success');
+            }
+
+            importBackup(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const backup = JSON.parse(e.target.result);
+                        
+                        if (!backup.trips || !backup.settings) {
+                            throw new Error('Arquivo de backup inválido');
+                        }
+
+                        this.showConfirmModal(
+                            'Restaurar Backup',
+                            'Tem certeza que deseja restaurar o backup? Isso substituirá todos os dados atuais.',
+                            () => {
+                                this.trips = backup.trips;
+                                this.settings = { ...this.getDefaultSettings(), ...backup.settings };
+                                
+                                this.autoSave();
+                                this.loadSettingsToForms();
+                                this.updateAllData();
+                                this.updateAllCharts();
+                                
+                                this.showNotification('Backup restaurado com sucesso!', 'success');
+                            }
+                        );
+                    } catch (error) {
+                        console.error('Error importing backup:', error);
+                        this.showNotification('Erro ao processar arquivo de backup!', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            hasUnsavedChanges() {
+                // Simple check - in a real app you'd track actual changes
+                return false;
+            }
+
+            updateLastSaveTime() {
+                const now = new Date().toLocaleTimeString('pt-BR');
+                this.updateElement('lastSaveTime', now);
+            }
+
+            handleStorageSync(event) {
+                if (event.newValue) {
+                    try {
+                        const data = JSON.parse(event.newValue);
+                        if (event.key === 'trips') {
+                            this.trips = data;
+                        } else if (event.key === 'settings') {
+                            this.settings = data;
+                        }
+                        this.updateAllData();
+                        this.updateAllCharts();
+                        this.showNotification('Dados sincronizados entre abas!', 'info');
+                    } catch (error) {
+                        console.error('Error syncing data:', error);
+                    }
+                }
+            }
+
+            loadSettingsToForms() {
+                // Load settings into various forms
+                this.updateElement('metaMensal', this.settings.goalMonthly || '');
+                this.updateElement('metaAnual', this.settings.goalAnnual || '');
+                this.updateElement('metaViagens', this.settings.goalTrips || '');
+                this.updateElement('metaKm', this.settings.goalKm || '');
+                this.updateElement('nomeEmpresa', this.settings.companyName || '');
+                this.updateElement('cnpjEmpresa', this.settings.companyCNPJ || '');
+                this.updateElement('emailEmpresa', this.settings.companyEmail || '');
+                this.updateElement('telefoneEmpresa', this.settings.companyPhone || '');
+            }
+        }
+
+        // Global functions for HTML onclick events
+        let transcsApp;
+
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            const content = document.getElementById(tabName);
+            if (content) {
+                content.classList.add('active');
+            }
+            
+            // Add active class to clicked tab
+            const activeTab = [...document.querySelectorAll('.nav-tab')].find(tab => 
+                tab.getAttribute('onclick').includes(tabName));
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Resize charts when tab becomes visible
+            setTimeout(() => {
+                Object.values(transcsApp.charts).forEach(chart => {
+                    if (chart && chart.resize) {
+                        chart.resize();
+                    }
+                });
+            }, 100);
+            
+            // Update specific tab data
+            if (tabName === 'dashboard') {
+                transcsApp.updateDashboard();
+            } else if (tabName === 'reports') {
+                // Apply filters for reports
+            } else if (tabName === 'financial') {
+                transcsApp.updateFinancialData();
+            } else if (tabName === 'analytics') {
+                transcsApp.updateAnalytics();
+            } else if (tabName === 'settings') {
+                transcsApp.updateSystemStats();
+            }
+        }
+
+        function refreshDashboard() {
+            transcsApp.showLoading('Atualizando dashboard...');
+            setTimeout(() => {
+                transcsApp.updateAllData();
+                transcsApp.updateAllCharts();
+                transcsApp.hideLoading();
+                transcsApp.showNotification('Dashboard atualizado!', 'success');
+            }, 1000);
+        }
+
+        function editStat(type) {
+            // Example of editable stats
+            if (type === 'revenue') {
+                transcsApp.showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+            } else if (type === 'profit') {
+                transcsApp.showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+            }
+        }
+
+        function editGoals() {
+            const fields = [
+                { name: 'goalMonthly', label: 'Meta Mensal (R$)', type: 'number', required: false, placeholder: '0.00' },
+                { name: 'goalAnnual', label: 'Meta Anual (R$)', type: 'number', required: false, placeholder: '0.00' },
+                { name: 'goalTrips', label: 'Meta de Viagens/Mês', type: 'number', required: false, placeholder: '0' },
+                { name: 'goalKm', label: 'Meta de KM/Mês', type: 'number', required: false, placeholder: '0' }
+            ];
+
+            const data = {
+                goalMonthly: transcsApp.settings.goalMonthly || '',
+                goalAnnual: transcsApp.settings.goalAnnual || '',
+                goalTrips: transcsApp.settings.goalTrips || '',
+                goalKm: transcsApp.settings.goalKm || ''
+            };
+
+            transcsApp.showEditModal('Editar Metas', fields, data, (formData) => {
+                transcsApp.settings.goalMonthly = parseFloat(formData.goalMonthly) || 0;
+                transcsApp.settings.goalAnnual = parseFloat(formData.goalAnnual) || 0;
+                transcsApp.settings.goalTrips = parseInt(formData.goalTrips) || 0;
+                transcsApp.settings.goalKm = parseInt(formData.goalKm) || 0;
+                
+                transcsApp.autoSave();
+                transcsApp.updateGoalProgress();
+                transcsApp.showNotification('Metas atualizadas com sucesso!', 'success');
+            });
+        }
+
+        function generateInsights() {
+            transcsApp.showLoading('Gerando insights inteligentes...');
+            setTimeout(() => {
+                transcsApp.generateInsights();
+                transcsApp.hideLoading();
+                transcsApp.showNotification('Insights atualizados!', 'success');
+            }, 1500);
+        }
+
+        function exportClientRanking() {
+            transcsApp.exportCSV(); // Will implement specific client ranking export
+        }
+
+        function refreshClientRanking() {
+            transcsApp.updateClientRanking();
+            transcsApp.showNotification('Ranking atualizado!', 'success');
+        }
+
+        function updateMainChart(type) {
+            transcsApp.updateMainChart(type);
+        }
+
+        function closeEditModal() {
+            transcsApp.closeEditModal();
+        }
+
+        function saveEdit() {
+            transcsApp.saveEdit();
+        }
+
+        function closeConfirmModal() {
+            transcsApp.closeConfirmModal();
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            transcsApp = new TransCSPro();
+        });
+    </script>
+</body>
+</html>
