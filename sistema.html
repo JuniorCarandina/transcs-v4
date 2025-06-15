@@ -1,0 +1,2681 @@
+const dadosMensais = {};
+      viagens.forEach(v => {
+        const mes = v.data.slice(0, 7);
+        if (!dadosMensais[mes]) {
+          dadosMensais[mes] = { lucro: 0, receita: 0, custo: 0 };
+        }
+        const calc = calcular(v);
+        dadosMensais[mes].lucro += calc.lucro;
+        dadosMensais[mes].receita += v.receita;
+        dadosMensais[mes].custo += calc.custoTotal;
+      });
+
+      const meses = Object.keys(dadosMensais).sort();
+      const lucros = meses.map(mes => dadosMensais[mes].lucro);
+      const metaData = meses.map(() => configuracoes.metaMensal || 0);
+
+      if (graficoLucro) {
+        graficoLucro.destroy();
+      }
+
+      graficoLucro = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: meses.map(mes => {
+            const [ano, mesNum] = mes.split('-');
+            const data = new Date(ano, mesNum - 1);
+            return data.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+          }),
+          datasets: [
+            {
+              label: 'Lucro Real',
+              data: lucros,
+              backgroundColor: 'rgba(16, 185, 129, 0.8)',
+              borderColor: 'rgb(16, 185, 129)',
+              borderWidth: 2,
+              borderRadius: 8
+            },
+            {
+              label: 'Meta Mensal',
+              data: metaData,
+              type: 'line',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              borderColor: 'rgb(239, 68, 68)',
+              borderWidth: 3,
+              fill: false,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R$ ' + value.toLocaleString('pt-BR');
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico de custos
+    function atualizarGraficoCustos() {
+      const ctx = document.getElementById('graficoCustos')?.getContext('2d');
+      if (!ctx || viagens.length === 0) return;
+
+      let totalCustoVariavel = 0;
+      let totalCustoFixo = 0;
+
+      viagens.forEach(v => {
+        totalCustoVariavel += v.custoVariavel;
+        totalCustoFixo += v.custoFixo;
+      });
+
+      if (graficoCustos) {
+        graficoCustos.destroy();
+      }
+
+      graficoCustos = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Custos Variáveis', 'Custos Fixos'],
+          datasets: [{
+            data: [totalCustoVariavel, totalCustoFixo],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(139, 92, 246, 0.8)'
+            ],
+            borderColor: [
+              'rgb(59, 130, 246)',
+              'rgb(139, 92, 246)'
+            ],
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = 'R$ ' + context.parsed.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                  return `${label}: ${value} (${percentage})`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico receita vs custo
+    function atualizarGraficoReceitaCusto() {
+      const ctx = document.getElementById('graficoReceitaCusto')?.getContext('2d');
+        notification.classList.remove("show");
+      }, 3000);
+    }
+
+    // Formatação automática de campos
+    document.addEventListener("DOMContentLoaded", () => {
+      // Formatação da placa
+      const placaInput = document.getElementById("placa");
+      if (placaInput) {
+        placaInput.addEventListener("input", (e) => {
+          let value = e.target.value.replace(/[^A-Za-z0-9]/g, '');
+          if (value.length > 3) {
+            value = value.slice(0, 3) + '-' + value.slice(3, 7);
+          }
+          e.target.value = value.toUpperCase();
+        });
+      }
+
+      // Formatação do telefone
+      const telefoneInput = document.getElementById("telefoneEmpresa");
+      if (telefoneInput) {
+        telefoneInput.addEventListener("input", (e) => {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 0) {
+            value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+          }
+          e.target.value = value;
+        });
+      }
+    });
+
+    // Validações de formulário
+    function validarFormulario() {
+      const cliente = document.getElementById("cliente").value;
+      const km = parseFloat(document.getElementById("km").value);
+      const receita = parseFloat(document.getElementById("receita").value);
+      const custoVariavel = parseFloat(document.getElementById("custoVariavel").value);
+      const custoFixo = parseFloat(document.getElementById("custoFixo").value);
+
+      if (!cliente.trim()) {
+        showNotification("Nome do cliente é obrigatório!", "error");
+        return false;
+      }
+
+      if (km <= 0) {
+        showNotification("Quilometragem deve ser maior que zero!", "error");
+        return false;
+      }
+
+      if (receita <= 0) {
+        showNotification("Receita deve ser maior que zero!", "error");
+        return false;
+      }
+
+      if (custoVariavel < 0) {
+        showNotification("Custo variável não pode ser negativo!", "error");
+        return false;
+      }
+
+      if (custoFixo < 0) {
+        showNotification("Custo fixo não pode ser negativo!", "error");
+        return false;
+      }
+
+      const custoTotal = custoVariavel + custoFixo;
+      if (custoTotal >= receita) {
+        const confirmar = confirm("⚠️ ATENÇÃO: Os custos são iguais ou maiores que a receita, resultando em prejuízo.\n\nDeseja continuar mesmo assim?");
+        if (!confirmar) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Atalhos de teclado
+    document.addEventListener("keydown", (e) => {
+      // Ctrl+S para salvar viagem
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        if (document.getElementById("cadastro").classList.contains("active")) {
+          document.getElementById("formViagem").dispatchEvent(new Event('submit'));
+        }
+      }
+
+      // Ctrl+E para exportar
+      if (e.ctrlKey && e.key === 'e') {
+        e.preventDefault();
+        exportarCSV();
+      }
+
+      // Ctrl+B para backup
+      if (e.ctrlKey && e.key === 'b') {
+        e.preventDefault();
+        exportarBackup();
+      }
+
+      // Esc para limpar filtros
+      if (e.key === 'Escape') {
+        if (document.getElementById("relatorios").classList.contains("active")) {
+          limparFiltros();
+        }
+      }
+    });
+
+    // Auto-save (salvar automaticamente a cada 5 minutos)
+    setInterval(async () => {
+      if (viagens.length > 0) {
+        try {
+          await salvarDados();
+          console.log("Auto-save executado com sucesso");
+        } catch (error) {
+          console.error("Erro no auto-save:", error);
+        }
+      }
+    }, 5 * 60 * 1000); // 5 minutos
+
+    // Detectar se está offline/online
+    window.addEventListener('online', () => {
+      if (firebaseInitialized) {
+        updateSyncStatus(true);
+        showNotification("Conexão restaurada! Sincronizando dados...", "success");
+        salvarDados();
+      }
+    });
+
+    window.addEventListener('offline', () => {
+      updateSyncStatus(false);
+      showNotification("Sem conexão. Trabalhando offline.", "info");
+    });
+
+    // Analytics e métricas avançadas
+    function calcularMetricasAvancadas() {
+      if (viagens.length === 0) return {};
+
+      const agora = new Date();
+      const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+      const fimMes = new Date(agora.getFullYear(), agora.getMonth() + 1, 0);
+      
+      const viagensMesAtual = viagens.filter(v => {
+        const dataViagem = new Date(v.data);
+        return dataViagem >= inicioMes && dataViagem <= fimMes;
+      });
+
+      const ultimosTresMeses = viagens.filter(v => {
+        const dataViagem = new Date(v.data);
+        const tresMesesAtras = new Date();
+        tresMesesAtras.setMonth(tresMesesAtras.getMonth() - 3);
+        return dataViagem >= tresMesesAtras;
+      });
+
+      // Calcular métricas
+      const metrics = {
+        viagensMesAtual: viagensMesAtual.length,
+        receita30dias: viagensMesAtual.reduce((acc, v) => acc + v.receita, 0),
+        lucro30dias: viagensMesAtual.reduce((acc, v) => acc + calcular(v).lucro, 0),
+        km30dias: viagensMesAtual.reduce((acc, v) => acc + v.km, 0),
+        
+        // Médias dos últimos 3 meses
+        viagensMediaMensal: ultimosTresMeses.length / 3,
+        receitaMediaMensal: ultimosTresMeses.reduce((acc, v) => acc + v.receita, 0) / 3,
+        lucroMedioMensal: ultimosTresMeses.reduce((acc, v) => acc + calcular(v).lucro, 0) / 3,
+        
+        // Performance
+        margemLucroMedia: 0,
+        eficienciaOperacional: 0,
+        crescimentoTendencia: 0
+      };
+
+      // Calcular margem média
+      const receitaTotal = ultimosTresMeses.reduce((acc, v) => acc + v.receita, 0);
+      const lucroTotal = ultimosTresMeses.reduce((acc, v) => acc + calcular(v).lucro, 0);
+      metrics.margemLucroMedia = receitaTotal > 0 ? (lucroTotal / receitaTotal) * 100 : 0;
+
+      // Eficiência operacional (receita por km)
+      const kmTotal = ultimosTresMeses.reduce((acc, v) => acc + v.km, 0);
+      metrics.eficienciaOperacional = kmTotal > 0 ? receitaTotal / kmTotal : 0;
+
+      return metrics;
+    }
+
+    // Previsões e projeções
+    function calcularProjecoes() {
+      if (viagens.length < 2) return null;
+
+      const dadosMensais = {};
+      viagens.forEach(v => {
+        const mes = v.data.slice(0, 7);
+        if (!dadosMensais[mes]) {
+          dadosMensais[mes] = { receita: 0, lucro: 0, viagens: 0 };
+        }
+        const calc = calcular(v);
+        dadosMensais[mes].receita += v.receita;
+        dadosMensais[mes].lucro += calc.lucro;
+        dadosMensais[mes].viagens += 1;
+      });
+
+      const meses = Object.keys(dadosMensais).sort();
+      if (meses.length < 2) return null;
+
+      // Calcular tendência dos últimos 3 meses
+      const ultimosMeses = meses.slice(-3);
+      const receitas = ultimosMeses.map(mes => dadosMensais[mes].receita);
+      const lucros = ultimosMeses.map(mes => dadosMensais[mes].lucro);
+
+      // Regressão linear simples para projeção
+      const mediaReceita = receitas.reduce((a, b) => a + b, 0) / receitas.length;
+      const mediaLucro = lucros.reduce((a, b) => a + b, 0) / lucros.length;
+
+      return {
+        projecaoReceitaProximoMes: mediaReceita,
+        projecaoLucroProximoMes: mediaLucro,
+        tendencia: receitas[receitas.length - 1] > receitas[0] ? 'crescimento' : 'declínio'
+      };
+    }
+
+    // Relatórios personalizados
+    function gerarRelatorioPersonalizado(periodo = 'mensal') {
+      const agora = new Date();
+      let dataInicio;
+
+      switch (periodo) {
+        case 'semanal':
+          dataInicio = new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000);
+          break;
+        case 'mensal':
+          dataInicio = new Date(agora.getFullYear(), agora.getMonth(), 1);
+          break;
+        case 'trimestral':
+          dataInicio = new Date(agora.getFullYear(), agora.getMonth() - 3, 1);
+          break;
+        case 'anual':
+          dataInicio = new Date(agora.getFullYear(), 0, 1);
+          break;
+        default:
+          dataInicio = new Date(agora.getFullYear(), agora.getMonth(), 1);
+      }
+
+      const viagensPeriodo = viagens.filter(v => new Date(v.data) >= dataInicio);
+      
+      const relatorio = {
+        periodo: periodo,
+        dataInicio: dataInicio.toISOString().split('T')[0],
+        dataFim: agora.toISOString().split('T')[0],
+        totalViagens: viagensPeriodo.length,
+        receita: viagensPeriodo.reduce((acc, v) => acc + v.receita, 0),
+        custos: viagensPeriodo.reduce((acc, v) => acc + calcular(v).custoTotal, 0),
+        lucro: viagensPeriodo.reduce((acc, v) => acc + calcular(v).lucro, 0),
+        km: viagensPeriodo.reduce((acc, v) => acc + v.km, 0),
+        clientes: [...new Set(viagensPeriodo.map(v => v.cliente))].length,
+        tiposCarga: [...new Set(viagensPeriodo.map(v => v.tipoCarga).filter(Boolean))].length
+      };
+
+      relatorio.margem = relatorio.receita > 0 ? (relatorio.lucro / relatorio.receita) * 100 : 0;
+      relatorio.receitaPorKm = relatorio.km > 0 ? relatorio.receita / relatorio.km : 0;
+      relatorio.lucroMedioViagem = relatorio.totalViagens > 0 ? relatorio.lucro / relatorio.totalViagens : 0;
+
+      return relatorio;
+    }
+
+    // Função para exportar relatório PDF (mock)
+    function exportarPDF() {
+      showNotification("Exportação para PDF será implementada em breve!", "info");
+      // Aqui seria implementada a geração de PDF usando bibliotecas como jsPDF
+    }
+
+    // Sistema de alertas inteligentes
+    function verificarAlertas() {
+      const alertas = [];
+      
+      if (viagens.length === 0) return alertas;
+
+      const agora = new Date();
+      const ultimaSemana = new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const viagensRecentes = viagens.filter(v => new Date(v.data) >= ultimaSemana);
+
+      // Alerta de baixa atividade
+      if (viagensRecentes.length < 3) {
+        alertas.push({
+          tipo: 'warning',
+          mensagem: 'Baixa atividade detectada: apenas ' + viagensRecentes.length + ' viagens na última semana'
+        });
+      }
+
+      // Alerta de margem baixa
+      const margemMedia = viagensRecentes.reduce((acc, v) => {
+        const calc = calcular(v);
+        return acc + (calc.receita > 0 ? (calc.lucro / v.receita) * 100 : 0);
+      }, 0) / viagensRecentes.length;
+
+      if (margemMedia < 10) {
+        alertas.push({
+          tipo: 'danger',
+          mensagem: `Margem de lucro baixa: ${margemMedia.toFixed(1)}% (recomendado > 15%)`
+        });
+      }
+
+      // Alerta de custos altos
+      const viagensComPrejuizo = viagensRecentes.filter(v => calcular(v).lucro < 0);
+      if (viagensComPrejuizo.length > 0) {
+        alertas.push({
+          tipo: 'danger',
+          mensagem: `${viagensComPrejuizo.length} viagem(ns) com prejuízo na última semana`
+        });
+      }
+
+      return alertas;
+    }
+
+    // Configuração de notificações push (mock)
+    function configurarNotificacoes() {
+      if ('Notification' in window && 'serviceWorker' in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            console.log('Notificações habilitadas');
+            // Aqui seria implementado o sistema de notificações push
+          }
+        });
+      }
+    }
+
+    // Inicializar configurações avançadas
+    document.addEventListener("DOMContentLoaded", () => {
+      configurarNotificacoes();
+      
+      // Verificar alertas a cada 30 minutos
+      setInterval(() => {
+        const alertas = verificarAlertas();
+        alertas.forEach(alerta => {
+          showNotification(alerta.mensagem, alerta.tipo);
+        });
+      }, 30 * 60 * 1000);
+    });
+
+    // Função para mostrar dicas de uso
+    function mostrarDicas() {
+      const dicas = [
+        "💡 Use Ctrl+S para salvar rapidamente uma viagem",
+        "📊 Mantenha suas metas atualizadas para acompanhar o progresso",
+        "🔄 Configure o Firebase para sincronização automática",
+        "📱 O sistema funciona perfeitamente no celular",
+        "📈 Analise seus relatórios regularmente para otimizar resultados",
+        "🎯 Foque em clientes com maior margem de lucro",
+        "⚡ Use os filtros para análises específicas",
+        "💾 Faça backup dos seus dados regularmente"
+      ];
+      
+      const dicaAleatoria = dicas[Math.floor(Math.random() * dicas.length)];
+      showNotification(dicaAleatoria, "info");
+    }
+
+    // Mostrar dica aleatória ao carregar
+    setTimeout(mostrarDicas, 3000);
+
+    console.log("🚛 TransCS Pro carregado com sucesso!");
+    console.log("💡 Dica: Use Ctrl+S para salvar, Ctrl+E para exportar, Ctrl+B para backup");
+  </script>
+</body>
+</html>
+
+      const dadosMensais = {};
+      viagens.forEach(v => {
+        const mes = v.data.slice(0, 7);
+        if (!dadosMensais[mes]) {
+          dadosMensais[mes] = { receita: 0, custo: 0 };
+        }
+        const calc = calcular(v);
+        dadosMensais[mes].receita += v.receita;
+        dadosMensais[mes].custo += calc.custoTotal;
+      });
+
+      const meses = Object.keys(dadosMensais).sort();
+      const receitas = meses.map(mes => dadosMensais[mes].receita);
+      const custos = meses.map(mes => dadosMensais[mes].custo);
+
+      if (graficoReceitaCusto) {
+        graficoReceitaCusto.destroy();
+      }
+
+      graficoReceitaCusto = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: meses.map(mes => {
+            const [ano, mesNum] = mes.split('-');
+            const data = new Date(ano, mesNum - 1);
+            return data.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+          }),
+          datasets: [
+            {
+              label: 'Receita',
+              data: receitas,
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderColor: 'rgb(16, 185, 129)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: 'Custos',
+              data: custos,
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              borderColor: 'rgb(239, 68, 68)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R$ ' + value.toLocaleString('pt-BR');
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico lucro por cliente
+    function atualizarGraficoLucroCliente() {
+      const ctx = document.getElementById('graficoLucroCliente')?.getContext('2d');
+      if (!ctx) return;
+
+      const lucrosPorCliente = {};
+      viagens.forEach(v => {
+        const calc = calcular(v);
+        lucrosPorCliente[v.cliente] = (lucrosPorCliente[v.cliente] || 0) + calc.lucro;
+      });
+
+      const clientesOrdenados = Object.entries(lucrosPorCliente)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      if (graficoLucroCliente) {
+        graficoLucroCliente.destroy();
+      }
+
+      graficoLucroCliente = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: clientesOrdenados.map(([cliente]) => cliente),
+          datasets: [{
+            label: 'Lucro por Cliente',
+            data: clientesOrdenados.map(([, lucro]) => lucro),
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 2,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R$ ' + value.toLocaleString('pt-BR');
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico por tipo de carga
+    function atualizarGraficoTipoCarga() {
+      const ctx = document.getElementById('graficoTipoCarga')?.getContext('2d');
+      if (!ctx) return;
+
+      const dadosPorTipo = {};
+      viagens.forEach(v => {
+        const tipo = v.tipoCarga || 'Não informado';
+        if (!dadosPorTipo[tipo]) {
+          dadosPorTipo[tipo] = { receita: 0, lucro: 0, count: 0 };
+        }
+        const calc = calcular(v);
+        dadosPorTipo[tipo].receita += v.receita;
+        dadosPorTipo[tipo].lucro += calc.lucro;
+        dadosPorTipo[tipo].count += 1;
+      });
+
+      const tipos = Object.keys(dadosPorTipo);
+      const receitas = tipos.map(tipo => dadosPorTipo[tipo].receita);
+
+      if (graficoTipoCarga) {
+        graficoTipoCarga.destroy();
+      }
+
+      graficoTipoCarga = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: tipos,
+          datasets: [{
+            data: receitas,
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(16, 185, 129, 0.8)',
+              'rgba(139, 92, 246, 0.8)',
+              'rgba(245, 158, 11, 0.8)',
+              'rgba(239, 68, 68, 0.8)',
+              'rgba(107, 114, 128, 0.8)',
+              'rgba(236, 72, 153, 0.8)'
+            ],
+            borderWidth: 3,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = 'R$ ' + context.parsed.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
+                  return `${label}: ${value} (${percentage})`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico de tendência
+    function atualizarGraficoTendencia() {
+      const ctx = document.getElementById('graficoTendencia')?.getContext('2d');
+      if (!ctx) return;
+
+      const dadosMensais = {};
+      viagens.forEach(v => {
+        const mes = v.data.slice(0, 7);
+        if (!dadosMensais[mes]) {
+          dadosMensais[mes] = { lucro: 0, receita: 0 };
+        }
+        const calc = calcular(v);
+        dadosMensais[mes].lucro += calc.lucro;
+        dadosMensais[mes].receita += v.receita;
+      });
+
+      const meses = Object.keys(dadosMensais).sort();
+      const margens = meses.map(mes => {
+        const data = dadosMensais[mes];
+        return data.receita > 0 ? (data.lucro / data.receita) * 100 : 0;
+      });
+
+      if (graficoTendencia) {
+        graficoTendencia.destroy();
+      }
+
+      graficoTendencia = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: meses.map(mes => {
+            const [ano, mesNum] = mes.split('-');
+            const data = new Date(ano, mesNum - 1);
+            return data.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+          }),
+          datasets: [{
+            label: 'Margem de Lucro (%)',
+            data: margens,
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            borderColor: 'rgb(139, 92, 246)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toFixed(1) + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Funções auxiliares
+    function obterFiltros() {
+      return {
+        cliente: document.getElementById("filtroCliente")?.value?.toLowerCase() || "",
+        dataInicio: document.getElementById("filtroDataInicio")?.value || "",
+        dataFim: document.getElementById("filtroDataFim")?.value || "",
+        tipoCarga: document.getElementById("filtroTipoCarga")?.value || ""
+      };
+    }
+
+    function aplicarFiltros(viagens, filtros) {
+      return viagens.filter(v => {
+        const passaCliente = !filtros.cliente || v.cliente.toLowerCase().includes(filtros.cliente);
+        const passaDataInicio = !filtros.dataInicio || v.data >= filtros.dataInicio;
+        const passaDataFim = !filtros.dataFim || v.data <= filtros.dataFim;
+        const passaTipoCarga = !filtros.tipoCarga || v.tipoCarga === filtros.tipoCarga;
+        
+        return passaCliente && passaDataInicio && passaDataFim && passaTipoCarga;
+      });
+    }
+
+    // Verificar meta
+    function verificarMeta() {
+      const alerta = document.getElementById("alertaMeta");
+      if (!alerta || !configuracoes.metaMensal || configuracoes.metaMensal <= 0) {
+        if (alerta) alerta.style.display = "none";
+        return;
+      }
+
+      const hoje = new Date();
+      const mesAtual = hoje.getMonth();
+      const anoAtual = hoje.getFullYear();
+      
+      const lucroMesAtual = viagens
+        .filter(v => {
+          const dataViagem = new Date(v.data);
+          return dataViagem.getMonth() === mesAtual && dataViagem.getFullYear() === anoAtual;
+        })
+        .reduce((acc, v) => acc + calcular(v).lucro, 0);
+
+      const percentual = (lucroMesAtual / configuracoes.metaMensal) * 100;
+      
+      if (percentual >= 100) {
+        alerta.className = "alert alert-success";
+        alerta.innerHTML = `🎉 Parabéns! Meta mensal atingida! ${percentual.toFixed(1)}% da meta alcançada.`;
+        alerta.style.display = "block";
+      } else if (percentual >= 80) {
+        alerta.className = "alert alert-warning";
+        alerta.innerHTML = `⚠️ Quase lá! Você está com ${percentual.toFixed(1)}% da meta mensal.`;
+        alerta.style.display = "block";
+      } else if (percentual >= 50) {
+        alerta.className = "alert alert-info";
+        alerta.innerHTML = `📊 Você está com ${percentual.toFixed(1)}% da meta mensal. Continue assim!`;
+        alerta.style.display = "block";
+      } else {
+        alerta.style.display = "none";
+      }
+    }
+
+    // Atualizar progresso da meta
+    function atualizarProgressoMeta() {
+      if (!configuracoes.metaMensal || configuracoes.metaMensal <= 0) return;
+      
+      const hoje = new Date();
+      const mesAtual = hoje.getMonth();
+      const anoAtual = hoje.getFullYear();
+      
+      const lucroMesAtual = viagens
+        .filter(v => {
+          const dataViagem = new Date(v.data);
+          return dataViagem.getMonth() === mesAtual && dataViagem.getFullYear() === anoAtual;
+        })
+        .reduce((acc, v) => acc + calcular(v).lucro, 0);
+
+      const percentual = Math.min((lucroMesAtual / configuracoes.metaMensal) * 100, 100);
+      
+      // Atualizar barra principal
+      const progressFill = document.getElementById("progressFill");
+      const progressText = document.getElementById("progressText");
+      
+      if (progressFill) progressFill.style.width = `${percentual}%`;
+      if (progressText) {
+        progressText.textContent = `${percentual.toFixed(1)}% da meta atingida (R$ ${lucroMesAtual.toFixed(2)} de R$ ${configuracoes.metaMensal.toFixed(2)})`;
+      }
+
+      // Atualizar barra analytics
+      const progressFillAnalytics = document.getElementById("progressFillAnalytics");
+      const progressTextAnalytics = document.getElementById("progressTextAnalytics");
+      
+      if (progressFillAnalytics) progressFillAnalytics.style.width = `${percentual}%`;
+      if (progressTextAnalytics) {
+        progressTextAnalytics.textContent = `${percentual.toFixed(1)}% da meta atingida`;
+      }
+    }
+
+    // Gerenciamento de abas
+    function abrirAba(evt, nomeAba) {
+      const tabcontent = document.getElementsByClassName("tabcontent");
+      const tablinks = document.getElementsByClassName("tablink");
+      
+      for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+      }
+      
+      for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      
+      document.getElementById(nomeAba).classList.add("active");
+      evt.currentTarget.classList.add("active");
+      
+      // Redimensionar gráficos ao abrir aba
+      setTimeout(() => {
+        if (graficoLucro) graficoLucro.resize();
+        if (graficoCustos) graficoCustos.resize();
+        if (graficoReceitaCusto) graficoReceitaCusto.resize();
+        if (graficoLucroCliente) graficoLucroCliente.resize();
+        if (graficoTipoCarga) graficoTipoCarga.resize();
+        if (graficoTendencia) graficoTendencia.resize();
+      }, 100);
+    }
+
+    // Salvar metas
+    async function salvarMetas() {
+      try {
+        configuracoes.metaMensal = parseFloat(document.getElementById("metaMensal").value) || 0;
+        configuracoes.metaAnual = parseFloat(document.getElementById("metaAnual").value) || 0;
+        configuracoes.metaViagens = parseFloat(document.getElementById("metaViagens").value) || 0;
+        
+        await salvarDados();
+        render();
+        atualizarTodosGraficos();
+        showNotification("Metas salvas com sucesso!", "success");
+      } catch (error) {
+        console.error("Erro ao salvar metas:", error);
+        showNotification("Erro ao salvar metas!", "error");
+      }
+    }
+
+    // Salvar configurações gerais
+    async function salvarConfigGerais() {
+      try {
+        configuracoes.nomeEmpresa = document.getElementById("nomeEmpresa").value || "";
+        configuracoes.emailEmpresa = document.getElementById("emailEmpresa").value || "";
+        configuracoes.telefoneEmpresa = document.getElementById("telefoneEmpresa").value || "";
+        
+        await salvarDados();
+        showNotification("Configurações salvas com sucesso!", "success");
+      } catch (error) {
+        console.error("Erro ao salvar configurações:", error);
+        showNotification("Erro ao salvar configurações!", "error");
+      }
+    }
+
+    // Configurar Firebase
+    async function configurarFirebase() {
+      const apiKey = document.getElementById("firebaseApiKey").value;
+      const projectId = document.getElementById("firebaseProjectId").value;
+      
+      if (!apiKey || !projectId) {
+        showNotification("Preencha todos os campos do Firebase!", "error");
+        return;
+      }
+
+      try {
+        const newConfig = {
+          apiKey: apiKey,
+          authDomain: `${projectId}.firebaseapp.com`,
+          projectId: projectId,
+          storageBucket: `${projectId}.appspot.com`,
+          messagingSenderId: "123456789",
+          appId: "1:123456789:web:abcdef123456"
+        };
+
+        firebase.initializeApp(newConfig);
+        db = firebase.firestore();
+        firebaseInitialized = true;
+        
+        updateSyncStatus(true);
+        hideFirebaseAlert();
+        
+        // Sincronizar dados existentes
+        await salvarDados();
+        
+        showNotification("Firebase conectado com sucesso!", "success");
+      } catch (error) {
+        console.error("Erro ao configurar Firebase:", error);
+        showNotification("Erro ao conectar Firebase! Verifique as credenciais.", "error");
+      }
+    }
+
+    // Desconectar Firebase
+    function desconectarFirebase() {
+      firebaseInitialized = false;
+      db = null;
+      updateSyncStatus(false);
+      showNotification("Firebase desconectado. Usando modo offline.", "info");
+    }
+
+    // Exportar funcionalidades
+    function exportarCSV() {
+      if (viagens.length === 0) {
+        showNotification("Não há dados para exportar!", "error");
+        return;
+      }
+
+      const cabecalho = ["Cliente", "Data", "Origem", "Destino", "KM", "Receita", "Custo Variável", "Custo Fixo", "Custo Total", "Lucro", "Margem %", "Lucro/KM", "Tipo Carga", "Motorista", "Placa", "Observações"];
+      const linhas = [cabecalho.join(",")];
+      
+      viagens.forEach(v => {
+        const calc = calcular(v);
+        const linha = [
+          `"${v.cliente}"`,
+          v.data,
+          `"${v.origem || ''}"`,
+          `"${v.destino || ''}"`,
+          v.km,
+          v.receita.toFixed(2),
+          v.custoVariavel.toFixed(2),
+          v.custoFixo.toFixed(2),
+          calc.custoTotal.toFixed(2),
+          calc.lucro.toFixed(2),
+          calc.margem.toFixed(2),
+          calc.lucroKm.toFixed(2),
+          `"${v.tipoCarga || ''}"`,
+          `"${v.motorista || ''}"`,
+          `"${v.placa || ''}"`,
+          `"${v.observacoes || ''}"`
+        ];
+        linhas.push(linha.join(","));
+      });
+
+      const csvContent = linhas.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `transcs-relatorio-${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification("Relatório CSV exportado com sucesso!", "success");
+    }
+
+    function exportarExcel() {
+      showNotification("Funcionalidade de Excel será implementada em breve!", "info");
+    }
+
+    function exportarBackup() {
+      const backup = {
+        viagens: viagens,
+        configuracoes: configuracoes,
+        dataBackup: new Date().toISOString(),
+        versao: "TransCS Pro 1.0"
+      };
+
+      const dataStr = JSON.stringify(backup, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `transcs-backup-${new Date().toISOString().split('T')[0]}.json`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification("Backup criado com sucesso!", "success");
+    }
+
+    function importarBackup() {
+      document.getElementById("fileBackup").click();
+    }
+
+    function processarBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const backup = JSON.parse(e.target.result);
+          
+          if (backup.viagens && backup.configuracoes) {
+            const confirmacao = confirm("Tem certeza que deseja restaurar o backup? Isso substituirá todos os dados atuais.");
+            
+            if (confirmacao) {
+              viagens = backup.viagens;
+              configuracoes = backup.configuracoes;
+              
+              await salvarDados();
+              carregarConfiguracoesNoCampos();
+              render();
+              atualizarTodosGraficos();
+              
+              showNotification("Backup restaurado com sucesso!", "success");
+            }
+          } else {
+            showNotification("Arquivo de backup inválido!", "error");
+          }
+        } catch (error) {
+          console.error("Erro ao processar backup:", error);
+          showNotification("Erro ao processar arquivo de backup!", "error");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function zerar() {
+      const confirmacao = confirm("⚠️ ATENÇÃO: Esta ação irá apagar TODOS os dados permanentemente!\n\nTem certeza que deseja continuar?");
+      
+      if (confirmacao) {
+        const segundaConfirmacao = confirm("Esta é sua última chance!\n\nClique OK para apagar TUDO ou Cancelar para manter os dados.");
+        
+        if (segundaConfirmacao) {
+          viagens = [];
+          configuracoes = {
+            metaMensal: 0,
+            metaAnual: 0,
+            metaViagens: 0,
+            nomeEmpresa: "",
+            emailEmpresa: "",
+            telefoneEmpresa: ""
+          };
+          
+          localStorage.removeItem("viagensPro");
+          localStorage.removeItem("configPro");
+          
+          if (firebaseInitialized) {
+            // Limpar Firebase também
+            db.collection('viagens').get().then(snapshot => {
+              snapshot.docs.forEach(doc => doc.ref.delete());
+            });
+            db.collection('configuracoes').doc('geral').delete();
+          }
+          
+          carregarConfiguracoesNoCampos();
+          render();
+          atualizarTodosGraficos();
+          
+          showNotification("Todos os dados foram apagados com sucesso!", "success");
+        }
+      }
+    }
+
+    function limparFiltros() {
+      document.getElementById("filtroCliente").value = "";
+      document.getElementById("filtroDataInicio").value = "";
+      document.getElementById("filtroDataFim").value = "";
+      document.getElementById("filtroTipoCarga").value = "";
+      render();
+      showNotification("Filtros limpos!", "info");
+    }
+
+    // Funções auxiliares
+    function carregarConfiguracoesNoCampos() {
+      document.getElementById("metaMensal").value = configuracoes.metaMensal || "";
+      document.getElementById("metaAnual").value = configuracoes.metaAnual || "";
+      document.getElementById("metaViagens").value = configuracoes.metaViagens || "";
+      document.getElementById("nomeEmpresa").value = configuracoes.nomeEmpresa || "";
+      document.getElementById("emailEmpresa").value = configuracoes.emailEmpresa || "";
+      document.getElementById("telefoneEmpresa").value = configuracoes.telefoneEmpresa || "";
+    }
+
+    function atualizarDataAtual() {
+      const hoje = new Date();
+      document.getElementById("currentDate").textContent = hoje.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function updateSyncStatus(online) {
+      const indicator = document.getElementById("syncIndicator");
+      const status = document.getElementById("syncStatus");
+      
+      if (online) {
+        indicator.classList.remove("offline");
+        status.textContent = "Sincronizado";
+      } else {
+        indicator.classList.add("offline");
+        status.textContent = "Modo Offline";
+      }
+    }
+
+    function hideFirebaseAlert() {
+      const alert = document.getElementById("firebaseAlert");
+      if (alert) {
+        alert.style.display = "none";
+      }
+    }
+
+    function showLoading() {
+      document.getElementById("loadingScreen").classList.remove("hidden");
+    }
+
+    function hideLoading() {
+      document.getElementById("loadingScreen").classList.add("hidden");
+    }
+
+    function showNotification(message, type = "info") {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TransCS Pro - Sistema Profissional de Fretes</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-size: 18px;
+    }
+
+    .loading.hidden {
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-right: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+      box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header-left p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .user-info {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .sync-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    .sync-indicator.offline {
+      background: #ef4444;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .tabs {
+      display: flex;
+      background: #1e293b;
+      border-bottom: 3px solid #3b82f6;
+      overflow-x: auto;
+    }
+
+    .tablink {
+      flex: 1;
+      min-width: 150px;
+      background: #1e293b;
+      color: white;
+      padding: 16px 20px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .tablink:hover {
+      background: #334155;
+      transform: translateY(-2px);
+    }
+
+    .tablink.active {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .tablink.active::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #60a5fa;
+    }
+
+    .tabcontent {
+      display: none;
+      padding: 30px;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .tabcontent.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: #1e293b;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+      padding: 25px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .form-group input, .form-group select {
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .chart-container {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .chart-container h3 {
+      margin-bottom: 20px;
+      color: #1e293b;
+      font-size: 18px;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      padding: 15px 12px;
+      font-weight: 600;
+      text-align: left;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+    }
+
+    tr:hover {
+      background: #f8fafc;
+    }
+
+    .ranking-list {
+      list-style: none;
+      background: white;
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .ranking-list li {
+      padding: 18px 25px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .ranking-list li:hover {
+      background: #f8fafc;
+      transform: translateX(5px);
+    }
+
+    .ranking-list li:last-child {
+      border-bottom: none;
+    }
+
+    .ranking-position {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .filters input, .filters select {
+      padding: 10px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .filters input:focus, .filters select:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .alert {
+      padding: 18px 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .alert-warning {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .alert-info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 24px;
+      background: #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 15px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, transparent 50%, transparent 75%, rgba(255,255,255,0.2) 75%);
+      background-size: 20px 20px;
+      animation: progress-animation 1s linear infinite;
+    }
+
+    @keyframes progress-animation {
+      0% { transform: translateX(-20px); }
+      100% { transform: translateX(20px); }
+    }
+
+    .config-section {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .config-section h3 {
+      color: #1e293b;
+      margin-bottom: 20px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+
+      .tabs {
+        flex-direction: column;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tabcontent {
+        padding: 20px;
+      }
+
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    .firebase-config {
+      background: #f0f9ff;
+      border: 2px dashed #3b82f6;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .firebase-config h3 {
+      color: #1e40af;
+      margin-bottom: 15px;
+    }
+
+    .firebase-config p {
+      color: #1e40af;
+      margin-bottom: 15px;
+    }
+
+    .firebase-config code {
+      background: #1e293b;
+      color: #60a5fa;
+      padding: 15px;
+      border-radius: 8px;
+      display: block;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading">
+    <div class="spinner"></div>
+    <div>Carregando TransCS Pro...</div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <h1>🚛 TransCS Pro</h1>
+        <p>Sistema Profissional de Gerenciamento de Fretes</p>
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <div id="userInfo">👤 Usuário: Sistema Local</div>
+          <div>📅 <span id="currentDate"></span></div>
+        </div>
+        <div class="sync-status">
+          <div id="syncIndicator" class="sync-indicator offline"></div>
+          <span id="syncStatus">Modo Offline</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tablink active" onclick="abrirAba(event, 'dashboard')" id="defaultOpen">
+        📊 Dashboard
+      </button>
+      <button class="tablink" onclick="abrirAba(event, 'cadastro')">
+        ➕ Nova Viagem
+      </button>
+      <button class="tablink" onclick="abrirAba(event, 'relatorios')">
+        📋 Relatórios
+      </button>
+      <button class="tablink" onclick="abrirAba(event, 'financeiro')">
+        💰 Financeiro
+      </button>
+      <button class="tablink" onclick="abrirAba(event, 'analytics')">
+        📈 Analytics
+      </button>
+      <button class="tablink" onclick="abrirAba(event, 'config')">
+        ⚙️ Configurações
+      </button>
+    </div>
+
+    <!-- Firebase Configuration Alert -->
+    <div id="firebaseAlert" class="firebase-config">
+      <h3>🔥 Configure o Firebase para funcionalidade completa</h3>
+      <p>Para ativar sincronização em nuvem, backup automático e acesso multi-dispositivo, configure suas credenciais Firebase:</p>
+      <code>
+// Cole suas credenciais Firebase no arquivo de configuração:<br>
+const firebaseConfig = {<br>
+&nbsp;&nbsp;apiKey: "sua-api-key",<br>
+&nbsp;&nbsp;authDomain: "seu-projeto.firebaseapp.com",<br>
+&nbsp;&nbsp;projectId: "seu-projeto-id",<br>
+&nbsp;&nbsp;storageBucket: "seu-projeto.appspot.com",<br>
+&nbsp;&nbsp;messagingSenderId: "123456789",<br>
+&nbsp;&nbsp;appId: "1:123456789:web:abcdef123456"<br>
+};
+      </code>
+      <button onclick="hideFirebaseAlert()" class="btn btn-secondary">Entendi, usar modo offline</button>
+    </div>
+
+    <div id="dashboard" class="tabcontent active">
+      <h2 class="section-title">📊 Dashboard Executivo</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalReceita">R$ 0,00</div>
+          <div class="stat-label">Receita Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalCusto">R$ 0,00</div>
+          <div class="stat-label">Custo Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalLucro">R$ 0,00</div>
+          <div class="stat-label">Lucro Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="margemMedia">0%</div>
+          <div class="stat-label">Margem Média</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalViagensCard">0</div>
+          <div class="stat-label">Total de Viagens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="kmTotal">0 km</div>
+          <div class="stat-label">KM Rodados</div>
+        </div>
+      </div>
+
+      <div id="alertaMeta" class="alert" style="display: none;"></div>
+
+      <div class="chart-container">
+        <h3>📈 Evolução do Lucro Mensal vs Meta</h3>
+        <canvas id="graficoLucro" width="400" height="200"></canvas>
+      </div>
+
+      <h3 style="margin-bottom: 15px;">🏆 Ranking de Clientes por Lucro</h3>
+      <ul class="ranking-list" id="rankingClientes">
+        <li style="text-align: center; color: #6b7280;">Nenhum dado disponível</li>
+      </ul>
+    </div>
+
+    <div id="cadastro" class="tabcontent">
+      <h2 class="section-title">➕ Cadastro de Nova Viagem</h2>
+      
+      <form id="formViagem">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cliente">Cliente *</label>
+            <input type="text" id="cliente" required placeholder="Nome do cliente" />
+          </div>
+          <div class="form-group">
+            <label for="data">Data da Viagem *</label>
+            <input type="date" id="data" required />
+          </div>
+          <div class="form-group">
+            <label for="origem">Origem</label>
+            <input type="text" id="origem" placeholder="Cidade de origem" />
+          </div>
+          <div class="form-group">
+            <label for="destino">Destino</label>
+            <input type="text" id="destino" placeholder="Cidade de destino" />
+          </div>
+          <div class="form-group">
+            <label for="km">Quilometragem (KM) *</label>
+            <input type="number" id="km" step="0.1" required placeholder="0.0" />
+          </div>
+          <div class="form-group">
+            <label for="receita">Receita (R$) *</label>
+            <input type="number" id="receita" step="0.01" required placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="custoVariavel">Custo Variável (R$) *</label>
+            <input type="number" id="custoVariavel" step="0.01" required placeholder="Combustível, pedágio, etc." />
+          </div>
+          <div class="form-group">
+            <label for="custoFixo">Custo Fixo (R$) *</label>
+            <input type="number" id="custoFixo" step="0.01" required placeholder="Manutenção, seguro, etc." />
+          </div>
+          <div class="form-group">
+            <label for="tipoCarga">Tipo de Carga</label>
+            <select id="tipoCarga">
+              <option value="">Selecione...</option>
+              <option value="Geral">Carga Geral</option>
+              <option value="Frigorífica">Carga Frigorífica</option>
+              <option value="Granel">Granel Sólido</option>
+              <option value="Líquida">Carga Líquida</option>
+              <option value="Perigosa">Carga Perigosa</option>
+              <option value="Containers">Containers</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="motorista">Motorista</label>
+            <input type="text" id="motorista" placeholder="Nome do motorista" />
+          </div>
+          <div class="form-group">
+            <label for="placa">Placa do Veículo</label>
+            <input type="text" id="placa" placeholder="ABC-1234" maxlength="8" />
+          </div>
+          <div class="form-group">
+            <label for="observacoes">Observações</label>
+            <input type="text" id="observacoes" placeholder="Observações adicionais" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSalvar">
+          💾 Salvar Viagem
+        </button>
+      </form>
+    </div>
+
+    <div id="relatorios" class="tabcontent">
+      <h2 class="section-title">📋 Relatórios de Viagens</h2>
+      
+      <div class="filters">
+        <input type="text" id="filtroCliente" placeholder="🔍 Filtrar por cliente" />
+        <input type="date" id="filtroDataInicio" placeholder="Data início" />
+        <input type="date" id="filtroDataFim" placeholder="Data fim" />
+        <select id="filtroTipoCarga">
+          <option value="">Todos os tipos de carga</option>
+          <option value="Geral">Carga Geral</option>
+          <option value="Frigorífica">Carga Frigorífica</option>
+          <option value="Granel">Granel Sólido</option>
+          <option value="Líquida">Carga Líquida</option>
+          <option value="Perigosa">Carga Perigosa</option>
+          <option value="Containers">Containers</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <button onclick="limparFiltros()" class="btn btn-secondary">🗑️ Limpar</button>
+        <button onclick="exportarCSV()" class="btn btn-success">📥 Exportar CSV</button>
+        <button onclick="exportarExcel()" class="btn btn-success">📊 Exportar Excel</button>
+      </div>
+
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>KM</th>
+                <th>Receita</th>
+                <th>Custos</th>
+                <th>Lucro</th>
+                <th>Margem %</th>
+                <th>R$/KM</th>
+                <th>Tipo Carga</th>
+                <th>Motorista</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaViagens">
+              <tr>
+                <td colspan="12" style="text-align: center; padding: 40px; color: #6b7280;">
+                  📋 Nenhuma viagem cadastrada ainda
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="financeiro" class="tabcontent">
+      <h2 class="section-title">💰 Análise Financeira Detalhada</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="receitaMedia">R$ 0,00</div>
+          <div class="stat-label">Receita Média por Viagem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="custoMedio">R$ 0,00</div>
+          <div class="stat-label">Custo Médio por Viagem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="lucroMedio">R$ 0,00</div>
+          <div class="stat-label">Lucro Médio por Viagem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="kmMedio">0 km</div>
+          <div class="stat-label">KM Médio por Viagem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="receitaPorKm">R$ 0,00</div>
+          <div class="stat-label">Receita Média por KM</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="custoPorKm">R$ 0,00</div>
+          <div class="stat-label">Custo Médio por KM</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+        <div class="chart-container">
+          <h3>💰 Distribuição de Custos</h3>
+          <canvas id="graficoCustos" width="400" height="300"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>📊 Receita vs Custos por Mês</h3>
+          <canvas id="graficoReceitaCusto" width="400" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3>📈 Análise de Lucratividade por Cliente</h3>
+        <canvas id="graficoLucroCliente" width="400" height="300"></canvas>
+      </div>
+    </div>
+
+    <div id="analytics" class="tabcontent">
+      <h2 class="section-title">📈 Analytics Avançado</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="melhorCliente">-</div>
+          <div class="stat-label">Cliente Mais Lucrativo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="melhorMes">-</div>
+          <div class="stat-label">Melhor Mês</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="melhorRota">-</div>
+          <div class="stat-label">Rota Mais Lucrativa</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="crescimentoMensal">0%</div>
+          <div class="stat-label">Crescimento Mensal</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+        <div class="chart-container">
+          <h3>🎯 Performance por Tipo de Carga</h3>
+          <canvas id="graficoTipoCarga" width="400" height="300"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>📅 Tendência de Margem de Lucro</h3>
+          <canvas id="graficoTendencia" width="400" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <h3>🎯 Metas e Objetivos</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <div>
+            <h4>Meta Atual vs Realizado</h4>
+            <div id="progressoMetaDetalhado">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFillAnalytics" style="width: 0%"></div>
+              </div>
+              <p id="progressTextAnalytics" style="margin-top: 10px; text-align: center; font-weight: 600;">0% da meta atingida</p>
+            </div>
+          </div>
+          <div>
+            <h4>Projeção para o Mês</h4>
+            <div id="projecaoMes" style="text-align: center; padding: 20px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b;">R$ 0,00</div>
+              <div style="color: #6b7280;">Projeção baseada na média</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="config" class="tabcontent">
+      <h2 class="section-title">⚙️ Configurações do Sistema</h2>
+      
+      <div class="config-section">
+        <h3>🎯 Configurações de Metas</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="metaMensal">Meta Mensal de Lucro (R$)</label>
+            <input type="number" id="metaMensal" step="0.01" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="metaAnual">Meta Anual de Lucro (R$)</label>
+            <input type="number" id="metaAnual" step="0.01" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="metaViagens">Meta de Viagens por Mês</label>
+            <input type="number" id="metaViagens" placeholder="0" />
+          </div>
+        </div>
+        <button onclick="salvarMetas()" class="btn btn-primary">💾 Salvar Metas</button>
+      </div>
+
+      <div class="config-section">
+        <h3>🔧 Configurações Gerais</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nomeEmpresa">Nome da Empresa</label>
+            <input type="text" id="nomeEmpresa" placeholder="Sua Transportadora Ltda" />
+          </div>
+          <div class="form-group">
+            <label for="emailEmpresa">E-mail da Empresa</label>
+            <input type="email" id="emailEmpresa" placeholder="contato@empresa.com" />
+          </div>
+          <div class="form-group">
+            <label for="telefoneEmpresa">Telefone da Empresa</label>
+            <input type="tel" id="telefoneEmpresa" placeholder="(11) 99999-9999" />
+          </div>
+        </div>
+        <button onclick="salvarConfigGerais()" class="btn btn-primary">💾 Salvar Configurações</button>
+      </div>
+
+      <div class="config-section">
+        <h3>📊 Progresso da Meta Atual</h3>
+        <div id="progressoMeta">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+          <p id="progressText" style="margin-top: 15px; text-align: center; font-weight: 600;">0% da meta atingida</p>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <h3>🔥 Configuração do Firebase</h3>
+        <p style="margin-bottom: 15px; color: #6b7280;">
+          Configure suas credenciais Firebase para ativar sincronização em nuvem, backup automático e acesso multi-dispositivo.
+        </p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="firebaseApiKey">API Key</label>
+            <input type="text" id="firebaseApiKey" placeholder="Sua Firebase API Key" />
+          </div>
+          <div class="form-group">
+            <label for="firebaseProjectId">Project ID</label>
+            <input type="text" id="firebaseProjectId" placeholder="seu-projeto-id" />
+          </div>
+        </div>
+        <button onclick="configurarFirebase()" class="btn btn-primary">🔥 Conectar Firebase</button>
+        <button onclick="desconectarFirebase()" class="btn btn-secondary">❌ Desconectar</button>
+      </div>
+
+      <div class="config-section">
+        <h3>💾 Backup e Restauração</h3>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+          <button onclick="exportarBackup()" class="btn btn-success">📥 Fazer Backup</button>
+          <button onclick="importarBackup()" class="btn btn-secondary">📤 Restaurar Backup</button>
+          <button onclick="zerar()" class="btn btn-danger">🗑️ Zerar Todos os Dados</button>
+        </div>
+        <input type="file" id="fileBackup" accept=".json" style="display: none;" onchange="processarBackup(event)" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuração Firebase (substitua pelas suas credenciais)
+    const firebaseConfig = {
+      // Credenciais serão configuradas pelo usuário
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+
+    // Variáveis globais
+    let viagens = [];
+    let configuracoes = {
+      metaMensal: 0,
+      metaAnual: 0,
+      metaViagens: 0,
+      nomeEmpresa: "",
+      emailEmpresa: "",
+      telefoneEmpresa: ""
+    };
+    let firebaseInitialized = false;
+    let db = null;
+    let graficoLucro = null;
+    let graficoCustos = null;
+    let graficoReceitaCusto = null;
+    let graficoLucroCliente = null;
+    let graficoTipoCarga = null;
+    let graficoTendencia = null;
+
+    // Elementos DOM
+    const form = document.getElementById("formViagem");
+    const tabela = document.getElementById("tabelaViagens");
+    const loadingScreen = document.getElementById("loadingScreen");
+
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", async () => {
+      showLoading();
+      await initializeApp();
+      await carregarDados();
+      setupEventListeners();
+      atualizarDataAtual();
+      render();
+      atualizarTodosGraficos();
+      hideLoading();
+      showNotification("Sistema carregado com sucesso!", "success");
+    });
+
+    // Inicializar aplicação
+    async function initializeApp() {
+      try {
+        // Tentar inicializar Firebase se configurado
+        if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+          firebase.initializeApp(firebaseConfig);
+          db = firebase.firestore();
+          firebaseInitialized = true;
+          updateSyncStatus(true);
+          hideFirebaseAlert();
+        } else {
+          updateSyncStatus(false);
+        }
+      } catch (error) {
+        console.error("Erro ao inicializar Firebase:", error);
+        updateSyncStatus(false);
+      }
+    }
+
+    // Carregar dados
+    async function carregarDados() {
+      try {
+        if (firebaseInitialized) {
+          await carregarDadosFirebase();
+        } else {
+          carregarDadosLocal();
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+        carregarDadosLocal();
+      }
+    }
+
+    // Carregar dados do Firebase
+    async function carregarDadosFirebase() {
+      try {
+        const viagensSnapshot = await db.collection('viagens').get();
+        viagens = viagensSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        const configSnapshot = await db.collection('configuracoes').doc('geral').get();
+        if (configSnapshot.exists) {
+          configuracoes = { ...configuracoes, ...configSnapshot.data() };
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados do Firebase:", error);
+        carregarDadosLocal();
+      }
+    }
+
+    // Carregar dados locais
+    function carregarDadosLocal() {
+      viagens = JSON.parse(localStorage.getItem("viagensPro")) || [];
+      configuracoes = { ...configuracoes, ...JSON.parse(localStorage.getItem("configPro")) || {} };
+    }
+
+    // Salvar dados
+    async function salvarDados() {
+      try {
+        if (firebaseInitialized) {
+          await salvarDadosFirebase();
+        } else {
+          salvarDadosLocal();
+        }
+      } catch (error) {
+        console.error("Erro ao salvar dados:", error);
+        salvarDadosLocal();
+      }
+    }
+
+    // Salvar no Firebase
+    async function salvarDadosFirebase() {
+      // Salvar configurações
+      await db.collection('configuracoes').doc('geral').set(configuracoes);
+      showNotification("Dados sincronizados com sucesso!", "success");
+    }
+
+    // Salvar localmente
+    function salvarDadosLocal() {
+      localStorage.setItem("viagensPro", JSON.stringify(viagens));
+      localStorage.setItem("configPro", JSON.stringify(configuracoes));
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Formulário de viagem
+      form?.addEventListener("submit", handleSubmitViagem);
+      
+      // Filtros
+      document.getElementById("filtroCliente")?.addEventListener("input", render);
+      document.getElementById("filtroDataInicio")?.addEventListener("change", render);
+      document.getElementById("filtroDataFim")?.addEventListener("change", render);
+      document.getElementById("filtroTipoCarga")?.addEventListener("change", render);
+      
+      // Auto-definir data atual
+      const campoData = document.getElementById("data");
+      if (campoData && !campoData.value) {
+        campoData.value = new Date().toISOString().split('T')[0];
+      }
+
+      // Carregar configurações nos campos
+      carregarConfiguracoesNoCampos();
+    }
+
+    // Manipular submit do formulário
+    async function handleSubmitViagem(e) {
+      e.preventDefault();
+      
+      const btnSalvar = document.getElementById("btnSalvar");
+      btnSalvar.disabled = true;
+      btnSalvar.innerHTML = "💾 Salvando...";
+
+      try {
+        const novaViagem = {
+          id: Date.now(),
+          cliente: form.cliente.value,
+          data: form.data.value,
+          origem: form.origem.value || "",
+          destino: form.destino.value || "",
+          km: parseFloat(form.km.value),
+          receita: parseFloat(form.receita.value),
+          custoVariavel: parseFloat(form.custoVariavel.value),
+          custoFixo: parseFloat(form.custoFixo.value),
+          tipoCarga: form.tipoCarga.value || "",
+          motorista: form.motorista.value || "",
+          placa: form.placa.value || "",
+          observacoes: form.observacoes.value || "",
+          dataCreation: new Date().toISOString()
+        };
+
+        // Salvar no Firebase se disponível
+        if (firebaseInitialized) {
+          await db.collection('viagens').add(novaViagem);
+        }
+
+        viagens.push(novaViagem);
+        await salvarDados();
+        
+        form.reset();
+        
+        // Reset data para hoje
+        const campoData = document.getElementById("data");
+        if (campoData) {
+          campoData.value = new Date().toISOString().split('T')[0];
+        }
+        
+        render();
+        atualizarTodosGraficos();
+        
+        showNotification("Viagem cadastrada com sucesso!", "success");
+        
+      } catch (error) {
+        console.error("Erro ao salvar viagem:", error);
+        showNotification("Erro ao salvar viagem!", "error");
+      } finally {
+        btnSalvar.disabled = false;
+        btnSalvar.innerHTML = "💾 Salvar Viagem";
+      }
+    }
+
+    // Cálculos da viagem
+    function calcular(v) {
+      const custoTotal = v.custoVariavel + v.custoFixo;
+      const lucro = v.receita - custoTotal;
+      const margem = v.receita > 0 ? (lucro / v.receita) * 100 : 0;
+      const lucroKm = v.km > 0 ? lucro / v.km : 0;
+      return { custoTotal, lucro, margem, lucroKm };
+    }
+
+    // Remover viagem
+    async function removerViagem(id) {
+      if (confirm("Tem certeza que deseja remover esta viagem?")) {
+        try {
+          if (firebaseInitialized) {
+            const viagemDoc = await db.collection('viagens').where('id', '==', id).get();
+            if (!viagemDoc.empty) {
+              await viagemDoc.docs[0].ref.delete();
+            }
+          }
+          
+          viagens = viagens.filter(v => v.id !== id);
+          await salvarDados();
+          render();
+          atualizarTodosGraficos();
+          showNotification("Viagem removida com sucesso!", "success");
+        } catch (error) {
+          console.error("Erro ao remover viagem:", error);
+          showNotification("Erro ao remover viagem!", "error");
+        }
+      }
+    }
+
+    // Função principal de renderização
+    function render() {
+      renderTabela();
+      renderEstatisticas();
+      renderRanking();
+      verificarMeta();
+      atualizarProgressoMeta();
+      renderAnalytics();
+    }
+
+    // Renderizar tabela
+    function renderTabela() {
+      if (!tabela) return;
+      
+      const filtros = obterFiltros();
+      const viagensFiltradas = aplicarFiltros(viagens, filtros);
+      
+      tabela.innerHTML = "";
+      
+      if (viagensFiltradas.length === 0) {
+        tabela.innerHTML = `
+          <tr>
+            <td colspan="12" style="text-align: center; padding: 40px; color: #6b7280;">
+              📋 Nenhuma viagem encontrada com os filtros aplicados
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      viagensFiltradas.forEach(v => {
+        const calc = calcular(v);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${v.cliente}</strong></td>
+          <td>${new Date(v.data).toLocaleDateString('pt-BR')}</td>
+          <td>${v.origem || '-'}</td>
+          <td>${v.destino || '-'}</td>
+          <td>${v.km.toFixed(0)} km</td>
+          <td>R$ ${v.receita.toFixed(2)}</td>
+          <td>R$ ${calc.custoTotal.toFixed(2)}</td>
+          <td style="color: ${calc.lucro >= 0 ? '#10b981' : '#ef4444'}; font-weight: bold;">
+            R$ ${calc.lucro.toFixed(2)}
+          </td>
+          <td style="color: ${calc.margem >= 0 ? '#10b981' : '#ef4444'}; font-weight: bold;">
+            ${calc.margem.toFixed(1)}%
+          </td>
+          <td>R$ ${calc.lucroKm.toFixed(2)}</td>
+          <td>${v.tipoCarga || '-'}</td>
+          <td>${v.motorista || '-'}</td>
+          <td>
+            <button onclick="removerViagem(${v.id})" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+              🗑️
+            </button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    // Renderizar estatísticas
+    function renderEstatisticas() {
+      let totalReceita = 0, totalCusto = 0, totalLucro = 0, totalKm = 0;
+      
+      viagens.forEach(v => {
+        const calc = calcular(v);
+        totalReceita += v.receita;
+        totalCusto += calc.custoTotal;
+        totalLucro += calc.lucro;
+        totalKm += v.km;
+      });
+
+      const margemMedia = totalReceita > 0 ? (totalLucro / totalReceita) * 100 : 0;
+      const numViagens = viagens.length;
+
+      // Estatísticas principais
+      document.getElementById("totalReceita").textContent = `R$ ${totalReceita.toFixed(2)}`;
+      document.getElementById("totalCusto").textContent = `R$ ${totalCusto.toFixed(2)}`;
+      document.getElementById("totalLucro").textContent = `R$ ${totalLucro.toFixed(2)}`;
+      document.getElementById("margemMedia").textContent = `${margemMedia.toFixed(1)}%`;
+      document.getElementById("totalViagensCard").textContent = numViagens;
+      document.getElementById("kmTotal").textContent = `${totalKm.toFixed(0)} km`;
+
+      // Estatísticas financeiras
+      if (numViagens > 0) {
+        document.getElementById("receitaMedia").textContent = `R$ ${(totalReceita / numViagens).toFixed(2)}`;
+        document.getElementById("custoMedio").textContent = `R$ ${(totalCusto / numViagens).toFixed(2)}`;
+        document.getElementById("lucroMedio").textContent = `R$ ${(totalLucro / numViagens).toFixed(2)}`;
+        document.getElementById("kmMedio").textContent = `${(totalKm / numViagens).toFixed(0)} km`;
+        document.getElementById("receitaPorKm").textContent = `R$ ${(totalReceita / totalKm).toFixed(2)}`;
+        document.getElementById("custoPorKm").textContent = `R$ ${(totalCusto / totalKm).toFixed(2)}`;
+      } else {
+        document.getElementById("receitaMedia").textContent = "R$ 0,00";
+        document.getElementById("custoMedio").textContent = "R$ 0,00";
+        document.getElementById("lucroMedio").textContent = "R$ 0,00";
+        document.getElementById("kmMedio").textContent = "0 km";
+        document.getElementById("receitaPorKm").textContent = "R$ 0,00";
+        document.getElementById("custoPorKm").textContent = "R$ 0,00";
+      }
+    }
+
+    // Renderizar ranking
+    function renderRanking() {
+      const rankingEl = document.getElementById("rankingClientes");
+      if (!rankingEl) return;
+
+      const ranking = {};
+      viagens.forEach(v => {
+        const calc = calcular(v);
+        ranking[v.cliente] = (ranking[v.cliente] || 0) + calc.lucro;
+      });
+
+      const rankingOrdenado = Object.entries(ranking)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      rankingEl.innerHTML = "";
+
+      if (rankingOrdenado.length === 0) {
+        rankingEl.innerHTML = '<li style="text-align: center; color: #6b7280; padding: 20px;">Nenhum dado disponível</li>';
+        return;
+      }
+
+      rankingOrdenado.forEach(([cliente, lucro], index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div style="display: flex; align-items: center;">
+            <div class="ranking-position">${index + 1}</div>
+            <strong>${cliente}</strong>
+          </div>
+          <div style="color: ${lucro >= 0 ? '#10b981' : '#ef4444'}; font-weight: bold;">
+            R$ ${lucro.toFixed(2)}
+          </div>
+        `;
+        rankingEl.appendChild(li);
+      });
+    }
+
+    // Renderizar analytics
+    function renderAnalytics() {
+      if (viagens.length === 0) {
+        document.getElementById("melhorCliente").textContent = "-";
+        document.getElementById("melhorMes").textContent = "-";
+        document.getElementById("melhorRota").textContent = "-";
+        document.getElementById("crescimentoMensal").textContent = "0%";
+        return;
+      }
+
+      // Melhor cliente
+      const lucrosPorCliente = {};
+      viagens.forEach(v => {
+        const calc = calcular(v);
+        lucrosPorCliente[v.cliente] = (lucrosPorCliente[v.cliente] || 0) + calc.lucro;
+      });
+      const melhorCliente = Object.entries(lucrosPorCliente)
+        .sort((a, b) => b[1] - a[1])[0];
+      document.getElementById("melhorCliente").textContent = melhorCliente ? melhorCliente[0] : "-";
+
+      // Melhor mês
+      const lucrosPorMes = {};
+      viagens.forEach(v => {
+        const mes = v.data.slice(0, 7);
+        const calc = calcular(v);
+        lucrosPorMes[mes] = (lucrosPorMes[mes] || 0) + calc.lucro;
+      });
+      const melhorMes = Object.entries(lucrosPorMes)
+        .sort((a, b) => b[1] - a[1])[0];
+      if (melhorMes) {
+        const [ano, mesNum] = melhorMes[0].split('-');
+        const data = new Date(ano, mesNum - 1);
+        document.getElementById("melhorMes").textContent = 
+          data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      }
+
+      // Melhor rota
+      const lucrosPorRota = {};
+      viagens.forEach(v => {
+        if (v.origem && v.destino) {
+          const rota = `${v.origem} → ${v.destino}`;
+          const calc = calcular(v);
+          lucrosPorRota[rota] = (lucrosPorRota[rota] || 0) + calc.lucro;
+        }
+      });
+      const melhorRota = Object.entries(lucrosPorRota)
+        .sort((a, b) => b[1] - a[1])[0];
+      document.getElementById("melhorRota").textContent = melhorRota ? melhorRota[0] : "-";
+
+      // Crescimento mensal
+      const mesesOrdenados = Object.keys(lucrosPorMes).sort();
+      if (mesesOrdenados.length >= 2) {
+        const mesAtual = lucrosPorMes[mesesOrdenados[mesesOrdenados.length - 1]];
+        const mesAnterior = lucrosPorMes[mesesOrdenados[mesesOrdenados.length - 2]];
+        const crescimento = mesAnterior > 0 ? ((mesAtual - mesAnterior) / mesAnterior) * 100 : 0;
+        document.getElementById("crescimentoMensal").textContent = `${crescimento.toFixed(1)}%`;
+      }
+
+      // Projeção do mês
+      const hoje = new Date();
+      const mesAtual = hoje.toISOString().slice(0, 7);
+      const viagensMesAtual = viagens.filter(v => v.data.startsWith(mesAtual));
+      if (viagensMesAtual.length > 0) {
+        const lucroMesAtual = viagensMesAtual.reduce((acc, v) => acc + calcular(v).lucro, 0);
+        const diasPassados = hoje.getDate();
+        const diasNoMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate();
+        const projecao = (lucroMesAtual / diasPassados) * diasNoMes;
+        
+        const projecaoEl = document.querySelector("#projecaoMes div");
+        if (projecaoEl) {
+          projecaoEl.textContent = `R$ ${projecao.toFixed(2)}`;
+        }
+      }
+    }
+
+    // Atualizar todos os gráficos
+    function atualizarTodosGraficos() {
+      atualizarGraficoLucro();
+      atualizarGraficoCustos();
+      atualizarGraficoReceitaCusto();
+      atualizarGraficoLucroCliente();
+      atualizarGraficoTipoCarga();
+      atualizarGraficoTendencia();
+    }
+
+    // Gráfico de lucro mensal
+    function atualizarGraficoLucro() {
+      const ctx = document.getElementById('graficoLucro')?.getContext('2d');
+      if (!ctx) return;
