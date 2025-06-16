@@ -3,39 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TransCS Pro Ultimate v4.0 - Sistema Completo de Fretes</title>
-    <meta name="description" content="Sistema profissional para gerenciamento de fretes com autenticação e controle total.">
+    <title>TransCS Pro Ultimate v4.0 - Sistema Simples</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --primary: #1e40af;
-            --primary-dark: #1e3a8a;
-            --primary-light: #3b82f6;
-            --secondary: #059669;
-            --secondary-dark: #047857;
-            --accent: #7c3aed;
-            --danger: #dc2626;
-            --warning: #d97706;
-            --success: #059669;
-            --info: #0284c7;
-            --dark: #111827;
-            --gray: #6b7280;
-            --gray-light: #f9fafb;
-            --gray-dark: #374151;
-            --white: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --border-radius: 8px;
-            --border-radius-lg: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -43,939 +15,388 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
             min-height: 100vh;
-            color: var(--dark);
-            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
 
         /* Login Screen */
         .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-            z-index: 10001;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
             padding: 2rem;
-            overflow-y: auto;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
         }
 
-        .login-container {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
             padding: 3rem;
-            max-width: 480px;
+            border-radius: 20px;
             width: 100%;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 45deg, rgba(30, 64, 175, 0.1), transparent, rgba(124, 58, 237, 0.1));
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .login-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Logo */
-        .brand-logo {
+        .logo {
             text-align: center;
             margin-bottom: 2rem;
         }
 
-        .logo-container {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--gradient-primary);
-            padding: 1.5rem;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .brand-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .brand-subtitle {
-            color: var(--gray);
-            font-weight: 600;
-            font-size: 1.1rem;
+        .logo h1 {
+            font-size: 2rem;
+            color: #1e40af;
             margin-bottom: 0.5rem;
         }
 
-        .brand-version {
-            background: var(--gradient-secondary);
-            color: white;
-            padding: 0.25rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
+        .logo p {
+            color: #666;
+            font-size: 0.9rem;
         }
 
-        /* Forms */
         .form-group {
             margin-bottom: 1.5rem;
         }
 
         .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #333;
         }
 
-        .form-input, .form-select, .form-textarea {
+        .form-input, .form-select {
             width: 100%;
-            padding: 1rem 1.25rem;
+            padding: 1rem;
             border: 2px solid #e5e7eb;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             font-size: 1rem;
-            transition: var(--transition);
-            background: var(--white);
-            font-family: inherit;
+            transition: border-color 0.3s;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-            transform: translateY(-1px);
+            border-color: #1e40af;
         }
 
-        .password-input-group {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .password-toggle:hover {
-            background: var(--gray-light);
-            color: var(--dark);
-        }
-
-        /* Buttons */
         .btn {
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            white-space: nowrap;
-            font-family: inherit;
-            position: relative;
-            overflow: hidden;
             width: 100%;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .btn-primary {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+            background: #1e40af;
+            color: white;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.5);
-        }
-
-        .btn-secondary {
-            background: var(--gradient-secondary);
-            color: var(--white);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.5);
+        .btn-primary:hover {
+            background: #1e3a8a;
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            box-shadow: none;
+            color: #1e40af;
+            border: 2px solid #1e40af;
         }
 
-        .btn-outline:hover:not(:disabled) {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-2px);
+        .btn-outline:hover {
+            background: #1e40af;
+            color: white;
         }
 
         .btn-sm {
             padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-
-        .btn-lg {
-            padding: 1.25rem 2rem;
-            font-size: 1.125rem;
-        }
-
-        /* App Container */
-        .app-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: var(--white);
-            min-height: 100vh;
-            box-shadow: var(--shadow-xl);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .header {
-            background: var(--gradient-primary);
-            color: var(--white);
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: rotate 30s linear infinite;
-        }
-
-        .header-content {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 2rem;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .header-logo {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 1rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-info h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .version-badge {
-            font-size: 0.75rem;
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--white);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-info p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .user-panel {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 1.5rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 700;
-            font-size: 1.25rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .user-info h3 {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .user-info p {
-            opacity: 0.8;
+            width: auto;
             font-size: 0.9rem;
         }
 
-        .logout-btn {
-            background: rgba(220, 38, 38, 0.2);
-            color: var(--white);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logout-btn:hover {
-            background: rgba(220, 38, 38, 0.4);
-        }
-
-        /* Navigation */
-        .nav-container {
-            background: var(--dark);
-            border-bottom: 3px solid var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            box-shadow: var(--shadow);
-        }
-
-        .nav-tabs {
-            display: flex;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .nav-tabs::-webkit-scrollbar {
+        /* App */
+        .app-container {
             display: none;
         }
 
-        .nav-tab {
-            flex: 0 0 auto;
-            min-width: 140px;
-            padding: 1.25rem 1.5rem;
-            background: transparent;
-            border: none;
-            color: var(--white);
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
+        .app-container.active {
+            display: block;
+        }
+
+        .header {
+            background: #1e40af;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .user-info {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav {
+            background: #374151;
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
             white-space: nowrap;
+            transition: background 0.3s;
         }
 
         .nav-tab:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.1);
         }
 
         .nav-tab.active {
-            background: var(--primary);
-            color: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .nav-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--secondary);
-        }
-
-        /* Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--gray-light);
+            background: #1e40af;
         }
 
         .content {
             display: none;
             padding: 2rem;
-            flex: 1;
         }
 
         .content.active {
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
 
-        .section-header {
+        .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 3px solid var(--primary);
+            border-bottom: 2px solid #e5e7eb;
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
         }
 
-        .section-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        /* Cards */
         .card {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: var(--transition);
-            margin-bottom: 2rem;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .card-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid #e5e7eb;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
         }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .stat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            color: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .stat-icon.primary { background: var(--gradient-primary); }
-        .stat-icon.secondary { background: var(--gradient-secondary); }
-        .stat-icon.accent { background: linear-gradient(135deg, var(--accent), #6d28d9); }
-        .stat-icon.warning { background: linear-gradient(135deg, var(--warning), #b45309); }
-        .stat-icon.danger { background: linear-gradient(135deg, var(--danger), #b91c1c); }
-        .stat-icon.info { background: linear-gradient(135deg, var(--info), #0369a1); }
 
         .stat-value {
-            font-size: 2.75rem;
-            font-weight: 900;
-            color: var(--dark);
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
             margin-bottom: 0.5rem;
-            line-height: 1;
         }
 
         .stat-label {
-            color: var(--gray);
-            font-weight: 600;
-            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
             margin-bottom: 1rem;
         }
 
-        .stat-change {
+        .item-list {
+            margin-top: 1rem;
+        }
+
+        .item {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            padding: 0.5rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
-            background: rgba(0, 0, 0, 0.02);
+            margin-bottom: 0.5rem;
+            background: #f9fafb;
         }
 
-        .stat-change.positive { 
-            color: var(--success); 
-            background: rgba(5, 150, 105, 0.1);
-        }
-        .stat-change.negative { 
-            color: var(--danger); 
-            background: rgba(220, 38, 38, 0.1);
-        }
-        .stat-change.neutral { 
-            color: var(--gray); 
-            background: rgba(107, 114, 128, 0.1);
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            border-left: 4px solid;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .alert-success {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            color: #065f46;
-            border-left-color: var(--success);
-        }
-
-        .alert-warning {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #92400e;
-            border-left-color: var(--warning);
-        }
-
-        .alert-info {
-            background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
-            color: #1e40af;
-            border-left-color: var(--info);
-        }
-
-        .alert-danger {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            color: #991b1b;
-            border-left-color: var(--danger);
-        }
-
-        .alert-icon {
-            font-size: 1.5rem;
-            margin-top: 0.125rem;
-        }
-
-        .alert-content {
+        .item-info {
             flex: 1;
         }
 
-        .alert-title {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
-        /* Notifications */
+        .item-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-left-color: #10b981;
+            color: #065f46;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-left-color: #3b82f6;
+            color: #1e40af;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         .notification {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            max-width: 400px;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            color: var(--white);
-            font-weight: 600;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s;
             z-index: 1000;
-            transform: translateX(450px);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-xl);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            backdrop-filter: blur(10px);
         }
 
         .notification.show {
             transform: translateX(0);
         }
 
-        .notification.success { 
-            background: linear-gradient(135deg, var(--success), var(--secondary-dark));
-        }
-        .notification.error { 
-            background: linear-gradient(135deg, var(--danger), #b91c1c);
-        }
-        .notification.info { 
-            background: linear-gradient(135deg, var(--info), #0369a1);
-        }
-        .notification.warning { 
-            background: linear-gradient(135deg, var(--warning), #b45309);
+        .notification.error {
+            background: #ef4444;
         }
 
-        .notification-icon {
-            font-size: 1.5rem;
-        }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .notification-message {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        /* Form Grids */
-        .form-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-grid-2 { grid-template-columns: 1fr 1fr; }
-        .form-grid-3 { grid-template-columns: repeat(3, 1fr); }
-        .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
-
-        /* User Role Select */
-        .user-role-select {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .role-option {
-            padding: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--border-radius);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            background: var(--white);
-        }
-
-        .role-option:hover {
-            border-color: var(--primary);
-            background: rgba(30, 64, 175, 0.05);
-        }
-
-        .role-option.selected {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .role-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .role-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .role-desc {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        /* Invite System */
-        .invite-form {
-            background: var(--gray-light);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-        }
-
-        .invite-link {
-            background: var(--white);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--gray-light);
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin: 1rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .copy-btn {
-            padding: 0.5rem 1rem;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Utility Classes */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
-        .text-info { color: var(--info); }
-        .text-primary { color: var(--primary); }
-        .text-gray { color: var(--gray); }
-        .text-dark { color: var(--dark); }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .text-sm { font-size: 0.875rem; }
-        .text-lg { font-size: 1.125rem; }
-        .text-xl { font-size: 1.25rem; }
-        .text-2xl { font-size: 1.5rem; }
-        .text-6xl { font-size: 3.75rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .p-8 { padding: 2rem; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 0.5rem; }
-        .gap-4 { gap: 1rem; }
-        .w-full { width: 100%; }
-
-        /* Debug Panel */
-        .debug-panel {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #f1f5f9;
-            border-radius: 8px;
-            border-left: 4px solid var(--info);
-        }
-
-        .debug-panel p {
-            font-size: 0.85rem;
-            color: var(--info);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .debug-messages {
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        .debug-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
+        .notification.warning {
+            background: #f59e0b;
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .header-content {
-                grid-template-columns: 1fr;
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
                 gap: 1rem;
                 text-align: center;
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .login-container {
-                margin: 1rem;
-                padding: 2rem;
-                max-width: calc(100% - 2rem);
-            }
-
-            .header {
-                padding: 1.5rem;
-            }
-
-            .header-left {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .header-info h1 {
-                font-size: 2rem;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .content {
-                padding: 1rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-header {
+            .page-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
             }
 
-            .section-actions {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .item-actions {
                 width: 100%;
                 justify-content: center;
-            }
-
-            .form-grid-2, .form-grid-3, .form-grid-4 {
-                grid-template-columns: 1fr;
-            }
-
-            .user-role-select {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-tab {
-                min-width: 100px;
-                font-size: 0.85rem;
-                padding: 1rem 1rem;
-            }
-
-            .card-body {
-                padding: 1.5rem;
-            }
-
-            .btn {
-                padding: 0.875rem 1.25rem;
-                font-size: 0.95rem;
             }
         }
     </style>
@@ -983,986 +404,456 @@
 <body>
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen">
-        <div class="login-container">
-            <div class="login-content">
-                <div class="brand-logo">
-                    <div class="logo-container">
-                        <svg width="100" height="50" viewBox="0 0 200 100">
-                            <defs>
-                                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M20 70 L50 20 L80 70 Z" fill="url(#logoGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
-                            <path d="M30 55 L70 55" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
-                            <path d="M35 45 L65 45" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M40 35 L60 35" stroke="rgba(255,255,255,0.5)" stroke-width="1" stroke-linecap="round"/>
-                            <text x="100" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="white">TransCS</text>
-                            <text x="100" y="55" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="rgba(255,255,255,0.8)" letter-spacing="2px">SOLUÇÕES</text>
-                            <text x="100" y="70" font-family="Arial, sans-serif" font-size="8" font-weight="300" fill="rgba(255,255,255,0.6)">LOGÍSTICA & FRETES</text>
-                        </svg>
-                    </div>
-                    <h1 class="brand-title">TransCS Pro Ultimate</h1>
-                    <p class="brand-subtitle">Sistema Completo de Gestão de Fretes</p>
-                    <span class="brand-version">v4.0 • Sistema Seguro</span>
-                </div>
-
-                <!-- Login Form -->
-                <form id="loginForm" class="hidden">
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user"></i> Usuário
-                        </label>
-                        <input type="text" class="form-input" name="username" required placeholder="Digite seu usuário" value="admin">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-lock"></i> Senha
-                        </label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input" name="password" required placeholder="Digite sua senha" value="admin123">
-                            <button type="button" class="password-toggle" onclick="togglePassword('login')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0; font-size: 0.9rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--gray);">
-                            <input type="checkbox" name="remember" style="accent-color: var(--primary);">
-                            Lembrar de mim
-                        </label>
-                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="showForgotPassword()">Esqueci a senha</a>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
-                    </button>
-                    
-                    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--gray);">
-                        Não tem acesso? 
-                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="showRegisterInfo()">Solicitar convite</a>
-                    </div>
-                </form>
-
-                <!-- Register Form -->
-                <form id="registerForm" class="hidden">
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user"></i> Nome Completo
-                        </label>
-                        <input type="text" class="form-input" name="fullName" required placeholder="Seu nome completo">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-envelope"></i> Email
-                        </label>
-                        <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user-circle"></i> Nome de Usuário
-                        </label>
-                        <input type="text" class="form-input" name="newUsername" required placeholder="Escolha um nome de usuário">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-lock"></i> Senha
-                        </label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input" name="newPassword" required placeholder="Escolha uma senha forte" minlength="6">
-                            <button type="button" class="password-toggle" onclick="togglePassword('register')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-lock"></i> Confirmar Senha
-                        </label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input" name="confirmPassword" required placeholder="Confirme sua senha">
-                            <button type="button" class="password-toggle" onclick="togglePassword('confirm')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-id-badge"></i> Tipo de Usuário
-                        </label>
-                        <div class="user-role-select">
-                            <div class="role-option" onclick="selectRole('user')" data-role="user">
-                                <i class="fas fa-user role-icon"></i>
-                                <div class="role-title">Usuário</div>
-                                <div class="role-desc">Acesso padrão</div>
-                            </div>
-                            <div class="role-option selected" onclick="selectRole('admin')" data-role="admin">
-                                <i class="fas fa-crown role-icon"></i>
-                                <div class="role-title">Administrador</div>
-                                <div class="role-desc">Acesso total</div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="role" value="admin" id="selectedRole">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-key"></i> Código de Convite *
-                        </label>
-                        <input type="text" class="form-input" name="inviteCode" required placeholder="Cole o código de convite aqui" id="inviteCodeInput">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Criar Conta
-                    </button>
-                </form>
-
-                <!-- Register Info -->
-                <div id="registerInfo" class="hidden">
-                    <div class="alert alert-info">
-                        <i class="alert-icon fas fa-shield-alt"></i>
-                        <div class="alert-content">
-                            <div class="alert-title">🔒 Sistema Fechado</div>
-                            <div>Este é um sistema privado. Para ter acesso, você precisa de um convite de um administrador. Entre em contato conosco para solicitar seu convite:</div>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center; margin: 2rem 0;">
-                        <p style="margin-bottom: 1rem; color: var(--gray);">📧 <strong>Email para contato:</strong></p>
-                        <p style="font-size: 1.2rem; font-weight: 600; color: var(--primary);">contato@transcs.com</p>
-                        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--gray);">Responderemos em até 24 horas com seu link de convite</p>
-                    </div>
-
-                    <button type="button" class="btn btn-outline" onclick="backToLogin()">
-                        <i class="fas fa-arrow-left"></i> Voltar ao Login
-                    </button>
-                </div>
-
-                <!-- Form Navigation -->
-                <div class="login-footer" id="loginFooter">
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="backToLogin()">
-                            ← Voltar ao Login
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Admin Panel Access -->
-                <div class="debug-panel">
-                    <p><i class="fas fa-info-circle"></i> Acesso de Demonstração</p>
-                    <div class="debug-messages">
-                        <div>👑 Admin: admin / admin123</div>
-                        <div>🔒 Sistema com convites ativo</div>
-                    </div>
-                    <div class="debug-buttons">
-                        <button type="button" class="btn btn-outline btn-sm" onclick="showLoginForm()" style="width: auto;">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="clearStorage()" style="width: auto;">
-                            <i class="fas fa-trash"></i> Limpar
-                        </button>
-                    </div>
-                </div>
+        <div class="login-box">
+            <div class="logo">
+                <h1><i class="fas fa-truck"></i> TransCS Pro</h1>
+                <p>Sistema de Gestão de Fretes v4.0</p>
             </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" class="form-input" name="username" placeholder="Digite seu usuário" value="admin" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" name="password" placeholder="Digite sua senha" value="admin123" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+                
+                <div style="margin-top: 1rem; text-align: center;">
+                    <small style="color: #666;">Credenciais: admin / admin123</small>
+                </div>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form id="registerForm" class="hidden">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" name="fullName" placeholder="Seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" name="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" class="form-input" name="newUsername" placeholder="Nome de usuário" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" name="newPassword" placeholder="Senha" minlength="6" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Código de Convite</label>
+                    <input type="text" class="form-input" name="inviteCode" placeholder="Cole o código aqui" id="inviteCodeInput">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Criar Conta
+                </button>
+
+                <button type="button" class="btn btn-outline" onclick="showLogin()" style="margin-top: 0.5rem;">
+                    Voltar ao Login
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- Notification Toast -->
+    <!-- Notification -->
     <div id="notification" class="notification">
-        <i class="notification-icon fas fa-check-circle"></i>
-        <div class="notification-content">
-            <div class="notification-title" id="notificationTitle">Sucesso</div>
-            <div class="notification-message" id="notificationMessage">Operação realizada com sucesso!</div>
-        </div>
+        <span id="notificationText">Mensagem</span>
     </div>
 
     <!-- Main App -->
-    <div id="appContainer" class="app-container hidden">
+    <div id="appContainer" class="container app-container">
         <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="header-left">
-                    <div class="header-logo">
-                        <svg width="60" height="30" viewBox="0 0 120 60">
-                            <defs>
-                                <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M10 42 L30 12 L50 42 Z" fill="url(#headerGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
-                            <path d="M18 33 L42 33" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M21 27 L39 27" stroke="rgba(255,255,255,0.7)" stroke-width="1" stroke-linecap="round"/>
-                            <text x="60" y="25" font-family="Arial, sans-serif" font-size="12" font-weight="900" fill="white">TransCS</text>
-                            <text x="60" y="35" font-family="Arial, sans-serif" font-size="6" font-weight="400" fill="rgba(255,255,255,0.8)" letter-spacing="1px">SOLUÇÕES</text>
-                            <text x="60" y="42" font-family="Arial, sans-serif" font-size="5" font-weight="300" fill="rgba(255,255,255,0.6)">LOGÍSTICA</text>
-                        </svg>
-                    </div>
-                    <div class="header-info">
-                        <h1>
-                            TransCS Pro Ultimate
-                            <span class="version-badge">v4.0</span>
-                        </h1>
-                        <p>Sistema Completo de Gestão de Fretes</p>
-                    </div>
-                </div>
-                <div class="user-panel">
-                    <div class="user-avatar" id="userAvatar">A</div>
-                    <div class="user-info">
-                        <h3 id="userName">Administrador</h3>
-                        <p id="userRole">Administrador do Sistema</p>
-                        <p id="currentDate"></p>
-                        <button class="logout-btn" onclick="logout()">
-                            <i class="fas fa-sign-out-alt"></i> Sair
-                        </button>
-                    </div>
-                </div>
+        <div class="header">
+            <h1><i class="fas fa-truck"></i> TransCS Pro Ultimate v4.0</h1>
+            <div class="user-info">
+                <span>Bem-vindo, <strong id="userName">Admin</strong>!</span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
             </div>
-        </header>
+        </div>
 
         <!-- Navigation -->
-        <nav class="nav-container">
-            <div class="nav-tabs">
-                <button class="nav-tab active" onclick="showTab('dashboard')">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </button>
-                <button class="nav-tab" onclick="showTab('clients')">
-                    <i class="fas fa-users"></i> Clientes
-                </button>
-                <button class="nav-tab" onclick="showTab('suppliers')">
-                    <i class="fas fa-truck-loading"></i> Fornecedores
-                </button>
-                <button class="nav-tab" onclick="showTab('trips')">
-                    <i class="fas fa-truck"></i> Viagens
-                </button>
-                <button class="nav-tab" onclick="showTab('reports')">
-                    <i class="fas fa-chart-bar"></i> Relatórios
-                </button>
-                <button class="nav-tab" onclick="showTab('settings')">
-                    <i class="fas fa-cog"></i> Configurações
+        <div class="nav">
+            <button class="nav-tab active" onclick="showTab('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </button>
+            <button class="nav-tab" onclick="showTab('clients')">
+                <i class="fas fa-users"></i> Clientes
+            </button>
+            <button class="nav-tab" onclick="showTab('suppliers')">
+                <i class="fas fa-truck-loading"></i> Fornecedores
+            </button>
+            <button class="nav-tab" onclick="showTab('trips')">
+                <i class="fas fa-truck"></i> Viagens
+            </button>
+            <button class="nav-tab" onclick="showTab('settings')">
+                <i class="fas fa-cog"></i> Configurações
+            </button>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="content active">
+            <div class="page-header">
+                <h2 class="page-title">Dashboard</h2>
+                <button class="btn btn-primary btn-sm" onclick="showTab('trips')">
+                    <i class="fas fa-plus"></i> Nova Viagem
                 </button>
             </div>
-        </nav>
 
-        <!-- Content -->
-        <main class="main-content">
-            <!-- Dashboard -->
-            <section id="dashboard" class="content active">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-line"></i>
-                        Dashboard Executivo
-                    </h2>
-                    <div class="section-actions">
-                        <button class="btn btn-outline" onclick="refreshDashboard()">
-                            <i class="fas fa-sync-alt"></i> Atualizar
-                        </button>
-                        <button class="btn btn-primary" onclick="showTab('trips')">
-                            <i class="fas fa-plus"></i> Nova Viagem
-                        </button>
-                    </div>
+            <div class="alert alert-success">
+                <strong>🎉 Sistema Funcionando!</strong> TransCS Pro Ultimate v4.0 está 100% operacional. Comece cadastrando clientes e fornecedores.
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalClientes">0</div>
+                    <div class="stat-label">Clientes</div>
                 </div>
-
-                <!-- Welcome Alert -->
-                <div class="alert alert-success">
-                    <i class="alert-icon fas fa-shield-check"></i>
-                    <div class="alert-content">
-                        <div class="alert-title">🎉 Bem-vindo ao TransCS Pro Ultimate v4.0!</div>
-                        <div>Sistema totalmente funcional com controle de acesso seguro. <strong>Primeiro:</strong> cadastre clientes e fornecedores, depois adicione viagens. <strong>Administradores</strong> podem gerenciar usuários em Configurações.</div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalFornecedores">0</div>
+                    <div class="stat-label">Fornecedores</div>
                 </div>
-
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon primary">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardReceita">R$ 0,00</div>
-                        <div class="stat-label">Receita Total</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>Crescimento constante</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon secondary">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardLucro">R$ 0,00</div>
-                        <div class="stat-label">Lucro Líquido</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>Margem saudável</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon accent">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardViagens">0</div>
-                        <div class="stat-label">Viagens Realizadas</div>
-                        <div class="stat-change neutral">
-                            <i class="fas fa-plus"></i>
-                            <span>Comece cadastrando</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon info">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardClientes">0</div>
-                        <div class="stat-label">Clientes Ativos</div>
-                        <div class="stat-change neutral">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Cadastre clientes</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon warning">
-                                <i class="fas fa-truck-loading"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardFornecedores">0</div>
-                        <div class="stat-label">Fornecedores</div>
-                        <div class="stat-change neutral">
-                            <i class="fas fa-building"></i>
-                            <span>Cadastre fornecedores</span>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalViagens">0</div>
+                    <div class="stat-label">Viagens</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalReceita">R$ 0</div>
+                    <div class="stat-label">Receita Total</div>
+                </div>
+            </div>
 
-                <!-- Quick Actions -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-bolt"></i>
-                            Ações Rápidas
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
-                            <button class="btn btn-secondary" onclick="showTab('clients')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
-                                <i class="fas fa-user-plus text-2xl"></i>
-                                <span class="font-bold">1. Clientes</span>
-                                <span class="text-sm opacity-80">Cadastre seus clientes</span>
-                            </button>
-                            
-                            <button class="btn btn-outline" onclick="showTab('suppliers')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem; color: var(--warning); border-color: var(--warning);">
-                                <i class="fas fa-truck-loading text-2xl"></i>
-                                <span class="font-bold">2. Fornecedores</span>
-                                <span class="text-sm opacity-80">Gerencie fornecedores</span>
-                            </button>
-                            
-                            <button class="btn btn-primary" onclick="showTab('trips')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
-                                <i class="fas fa-plus-circle text-2xl"></i>
-                                <span class="font-bold">3. Viagens</span>
-                                <span class="text-sm opacity-80">Cadastre suas viagens</span>
-                            </button>
+            <div class="card">
+                <div class="card-header">Ações Rápidas</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-outline" onclick="showTab('clients')">
+                        <i class="fas fa-user-plus"></i> Cadastrar Cliente
+                    </button>
+                    <button class="btn btn-outline" onclick="showTab('suppliers')">
+                        <i class="fas fa-truck-loading"></i> Cadastrar Fornecedor
+                    </button>
+                    <button class="btn btn-primary" onclick="showTab('trips')">
+                        <i class="fas fa-plus"></i> Nova Viagem
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div id="clients" class="content">
+            <div class="page-header">
+                <h2 class="page-title">Clientes</h2>
+                <button class="btn btn-primary btn-sm" onclick="showClientForm()">
+                    <i class="fas fa-plus"></i> Novo Cliente
+                </button>
+            </div>
+
+            <div class="card" id="clientFormCard">
+                <div class="card-header">Cadastrar Cliente</div>
+                <form id="clientForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nome da Empresa *</label>
+                            <input type="text" class="form-input" name="nome" placeholder="Nome da empresa" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contato</label>
+                            <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-input" name="telefone" placeholder="(11) 99999-9999">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
                         </div>
                     </div>
-                </div>
-            </section>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Salvar Cliente
+                    </button>
+                </form>
+            </div>
 
-            <!-- Clientes -->
-            <section id="clients" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
+            <div class="card">
+                <div class="card-header">Clientes Cadastrados (<span id="clientsCount">0</span>)</div>
+                <div id="clientsList">
+                    <div class="empty-state">
                         <i class="fas fa-users"></i>
-                        Gestão de Clientes
-                    </h2>
-                    <div class="section-actions">
-                        <button class="btn btn-primary" onclick="showClientForm()">
-                            <i class="fas fa-plus"></i> Novo Cliente
-                        </button>
+                        <h3>Nenhum cliente cadastrado</h3>
+                        <p>Cadastre seu primeiro cliente usando o formulário acima</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Client Form -->
-                <div id="clientFormCard" class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user-plus"></i>
-                            <span id="clientFormTitle">Novo Cliente</span>
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="clientForm">
-                            <input type="hidden" id="editClientId" value="">
-                            
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-building"></i> Nome da Empresa *
-                                    </label>
-                                    <input type="text" class="form-input" name="nome" required placeholder="Nome da empresa">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-user"></i> Pessoa de Contato
-                                    </label>
-                                    <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
-                                </div>
-                            </div>
+        <!-- Fornecedores -->
+        <div id="suppliers" class="content">
+            <div class="page-header">
+                <h2 class="page-title">Fornecedores</h2>
+                <button class="btn btn-primary btn-sm" onclick="showSupplierForm()">
+                    <i class="fas fa-plus"></i> Novo Fornecedor
+                </button>
+            </div>
 
-                            <div class="form-grid form-grid-3">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-phone"></i> Telefone
-                                    </label>
-                                    <input type="tel" class="form-input" name="telefone" placeholder="(00) 00000-0000">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-envelope"></i> Email
-                                    </label>
-                                    <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-city"></i> Cidade
-                                    </label>
-                                    <input type="text" class="form-input" name="cidade" placeholder="Nome da cidade">
-                                </div>
-                            </div>
-
-                            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> <span id="clientSubmitText">Salvar Cliente</span>
-                                </button>
-                                <button type="button" class="btn btn-outline" onclick="clearClientForm()">
-                                    <i class="fas fa-times"></i> Cancelar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Clients List -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-list"></i>
-                            Clientes Cadastrados (<span id="clientsCount">0</span>)
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="clientsList">
-                            <div class="text-center p-8 text-gray">
-                                <i class="fas fa-users text-6xl mb-4" style="opacity: 0.3;"></i>
-                                <h3 class="text-2xl font-bold mb-2">Nenhum cliente cadastrado</h3>
-                                <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
-                                <button class="btn btn-primary" onclick="showClientForm()">
-                                    <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
-                                </button>
-                            </div>
+            <div class="card" id="supplierFormCard">
+                <div class="card-header">Cadastrar Fornecedor</div>
+                <form id="supplierForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nome da Empresa *</label>
+                            <input type="text" class="form-input" name="nome" placeholder="Nome da empresa" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Serviço</label>
+                            <select class="form-select" name="tipo">
+                                <option value="">Selecione...</option>
+                                <option value="Combustível">Combustível</option>
+                                <option value="Manutenção">Manutenção</option>
+                                <option value="Pneus">Pneus</option>
+                                <option value="Peças">Peças</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contato</label>
+                            <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-input" name="telefone" placeholder="(11) 99999-9999">
                         </div>
                     </div>
-                </div>
-            </section>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Salvar Fornecedor
+                    </button>
+                </form>
+            </div>
 
-            <!-- Fornecedores -->
-            <section id="suppliers" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
+            <div class="card">
+                <div class="card-header">Fornecedores Cadastrados (<span id="suppliersCount">0</span>)</div>
+                <div id="suppliersList">
+                    <div class="empty-state">
                         <i class="fas fa-truck-loading"></i>
-                        Gestão de Fornecedores
-                    </h2>
-                    <div class="section-actions">
-                        <button class="btn btn-primary" onclick="showSupplierForm()">
-                            <i class="fas fa-plus"></i> Novo Fornecedor
+                        <h3>Nenhum fornecedor cadastrado</h3>
+                        <p>Cadastre seus fornecedores usando o formulário acima</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Viagens -->
+        <div id="trips" class="content">
+            <div class="page-header">
+                <h2 class="page-title">Viagens</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Nova Viagem</div>
+                <form id="tripForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Cliente *</label>
+                            <select class="form-select" name="clienteId" required>
+                                <option value="">Selecione um cliente...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Data *</label>
+                            <input type="date" class="form-input" name="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">KM *</label>
+                            <input type="number" class="form-input" name="km" placeholder="0" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Receita (R$) *</label>
+                            <input type="number" class="form-input" name="receita" placeholder="0,00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Combustível (R$) *</label>
+                            <input type="number" class="form-input" name="combustivel" placeholder="0,00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Outros Custos (R$)</label>
+                            <input type="number" class="form-input" name="custos" placeholder="0,00" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Salvar Viagem
+                    </button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Viagens Cadastradas (<span id="tripsCount">0</span>)</div>
+                <div id="tripsList">
+                    <div class="empty-state">
+                        <i class="fas fa-truck"></i>
+                        <h3>Nenhuma viagem cadastrada</h3>
+                        <p>Cadastre clientes primeiro, depois adicione viagens</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configurações -->
+        <div id="settings" class="content">
+            <div class="page-header">
+                <h2 class="page-title">Configurações</h2>
+            </div>
+
+            <!-- Sistema de Convites (Admin only) -->
+            <div class="card" id="inviteSystemCard">
+                <div class="card-header">Sistema de Convites</div>
+                <div class="alert alert-info">
+                    <strong>🔒 Sistema Fechado:</strong> Apenas usuários convidados podem se cadastrar. Gere links únicos abaixo.
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Tipo de Usuário</label>
+                        <select class="form-select" id="inviteRole">
+                            <option value="user">Usuário</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="generateInvite()">
+                        <i class="fas fa-link"></i> Gerar Convite
+                    </button>
+                </div>
+
+                <div id="inviteResult" class="hidden" style="background: #f9fafb; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <label class="form-label">Link de Convite:</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="inviteLink" class="form-input" readonly style="font-family: monospace; font-size: 0.9rem;">
+                        <button class="btn btn-outline btn-sm" onclick="copyInvite()">
+                            <i class="fas fa-copy"></i>
                         </button>
                     </div>
+                    <small style="color: #666; margin-top: 0.5rem; display: block;">
+                        ⚠️ Compartilhe apenas com pessoas autorizadas
+                    </small>
                 </div>
+            </div>
 
-                <!-- Supplier Form -->
-                <div id="supplierFormCard" class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-building-warehouse"></i>
-                            <span id="supplierFormTitle">Novo Fornecedor</span>
-                        </h3>
+            <div class="card">
+                <div class="card-header">Informações do Sistema</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="settingsClients">0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Clientes</div>
                     </div>
-                    <div class="card-body">
-                        <form id="supplierForm">
-                            <input type="hidden" id="editSupplierId" value="">
-                            
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-industry"></i> Nome da Empresa *
-                                    </label>
-                                    <input type="text" class="form-input" name="nome" required placeholder="Nome da empresa">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-tags"></i> Tipo de Serviço
-                                    </label>
-                                    <select class="form-select" name="tipoServico">
-                                        <option value="">Selecione o tipo...</option>
-                                        <option value="Combustível">Posto de Combustível</option>
-                                        <option value="Manutenção">Oficina/Manutenção</option>
-                                        <option value="Pneus">Borracharia/Pneus</option>
-                                        <option value="Peças">Autopeças</option>
-                                        <option value="Seguro">Seguradora</option>
-                                        <option value="Financeiro">Serviços Financeiros</option>
-                                        <option value="Outros">Outros</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-3">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-user-tie"></i> Pessoa de Contato
-                                    </label>
-                                    <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-phone"></i> Telefone
-                                    </label>
-                                    <input type="tel" class="form-input" name="telefone" placeholder="(00) 00000-0000">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-envelope"></i> Email
-                                    </label>
-                                    <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-city"></i> Cidade
-                                    </label>
-                                    <input type="text" class="form-input" name="cidade" placeholder="Nome da cidade">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-star"></i> Avaliação
-                                    </label>
-                                    <select class="form-select" name="avaliacao">
-                                        <option value="">Selecione...</option>
-                                        <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-                                        <option value="4">⭐⭐⭐⭐ Muito Bom</option>
-                                        <option value="3">⭐⭐⭐ Bom</option>
-                                        <option value="2">⭐⭐ Regular</option>
-                                        <option value="1">⭐ Ruim</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-sticky-note"></i> Observações
-                                </label>
-                                <textarea class="form-textarea" name="observacoes" placeholder="Observações sobre o fornecedor, preços, condições de pagamento..." rows="3"></textarea>
-                            </div>
-
-                            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> <span id="supplierSubmitText">Salvar Fornecedor</span>
-                                </button>
-                                <button type="button" class="btn btn-outline" onclick="clearSupplierForm()">
-                                    <i class="fas fa-times"></i> Cancelar
-                                </button>
-                            </div>
-                        </form>
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #059669;" id="settingsSuppliers">0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Fornecedores</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #7c3aed;" id="settingsTrips">0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Viagens</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #f59e0b;">✅</div>
+                        <div style="font-size: 0.9rem; color: #666;">Sistema OK</div>
                     </div>
                 </div>
-
-                <!-- Suppliers List -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-list"></i>
-                            Fornecedores Cadastrados (<span id="suppliersCount">0</span>)
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="suppliersList">
-                            <div class="text-center p-8 text-gray">
-                                <i class="fas fa-truck-loading text-6xl mb-4" style="opacity: 0.3;"></i>
-                                <h3 class="text-2xl font-bold mb-2">Nenhum fornecedor cadastrado</h3>
-                                <p class="text-lg mb-4">Comece cadastrando seus fornecedores!</p>
-                                <button class="btn btn-primary" onclick="showSupplierForm()">
-                                    <i class="fas fa-plus"></i> Cadastrar Primeiro Fornecedor
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Viagens -->
-            <section id="trips" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-truck"></i>
-                        Gestão de Viagens
-                    </h2>
-                </div>
-
-                <!-- Trip Form -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-plus-circle"></i>
-                            Nova Viagem
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="tripForm">
-                            <div class="alert alert-info mb-6">
-                                <i class="alert-icon fas fa-info-circle"></i>
-                                <div class="alert-content">
-                                    <div class="alert-title">💡 Dica</div>
-                                    <div>Primeiro cadastre clientes na aba "Clientes" para poder selecionar aqui!</div>
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-building"></i> Cliente *
-                                    </label>
-                                    <select class="form-select" name="clienteId" required>
-                                        <option value="">Primeiro cadastre clientes...</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-calendar"></i> Data da Viagem *
-                                    </label>
-                                    <input type="date" class="form-input" name="data" required>
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-road"></i> KM *
-                                    </label>
-                                    <input type="number" class="form-input" name="km" step="0.1" required placeholder="0" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-dollar-sign"></i> Receita (R$) *
-                                    </label>
-                                    <input type="number" class="form-input" name="receita" step="0.01" required placeholder="0,00" min="0">
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-gas-pump"></i> Combustível (R$) *
-                                    </label>
-                                    <input type="number" class="form-input" name="combustivel" step="0.01" required placeholder="0,00" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-road"></i> Pedágio (R$)
-                                    </label>
-                                    <input type="number" class="form-input" name="pedagio" step="0.01" placeholder="0,00" min="0" value="0">
-                                </div>
-                            </div>
-
-                            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Salvar Viagem
-                                </button>
-                                <button type="button" class="btn btn-outline" onclick="clearTripForm()">
-                                    <i class="fas fa-eraser"></i> Limpar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Trips List -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-list"></i>
-                            Viagens Cadastradas (<span id="tripsCount">0</span>)
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="tripsList">
-                            <div class="text-center p-8 text-gray">
-                                <i class="fas fa-truck text-6xl mb-4" style="opacity: 0.3;"></i>
-                                <h3 class="text-2xl font-bold mb-2">Nenhuma viagem cadastrada</h3>
-                                <p class="text-lg mb-4">Cadastre clientes primeiro, depois adicione viagens!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Relatórios -->
-            <section id="reports" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-bar"></i>
-                        Relatórios
-                    </h2>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center p-8">
-                            <i class="fas fa-chart-line text-6xl text-secondary mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-4">Relatórios em Desenvolvimento</h3>
-                            <p class="text-lg text-gray">Próxima fase: Gráficos avançados e análises detalhadas.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Configurações -->
-            <section id="settings" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-cog"></i>
-                        Configurações
-                    </h2>
-                </div>
-
-                <!-- User Management (Admin Only) -->
-                <div id="userManagementCard" class="card hidden">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-users-cog"></i>
-                            Gerenciamento de Usuários
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- Invite System -->
-                        <div class="alert alert-info">
-                            <i class="alert-icon fas fa-shield-alt"></i>
-                            <div class="alert-content">
-                                <div class="alert-title">🔒 Sistema Fechado</div>
-                                Apenas usuários convidados podem se cadastrar. Gere links de convite únicos abaixo.
-                            </div>
-                        </div>
-
-                        <div class="invite-form">
-                            <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fas fa-user-plus"></i> Convidar Novo Usuário
-                            </h4>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end; margin-bottom: 1rem;">
-                                <div>
-                                    <label class="form-label">Tipo de Usuário</label>
-                                    <select id="inviteRole" class="form-select">
-                                        <option value="user">👤 Usuário Padrão</option>
-                                        <option value="admin">👑 Administrador</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="form-label">Validade</label>
-                                    <select id="inviteExpiry" class="form-select">
-                                        <option value="1">1 dia</option>
-                                        <option value="7" selected>7 dias</option>
-                                        <option value="30">30 dias</option>
-                                    </select>
-                                </div>
-                                <button class="btn btn-primary" onclick="generateInvite()">
-                                    <i class="fas fa-link"></i> Gerar Convite
-                                </button>
-                            </div>
-
-                            <div id="inviteResult" class="hidden" style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-                                <p style="margin-bottom: 0.5rem; font-weight: 600;">🔗 Link de Convite Gerado:</p>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <input type="text" id="inviteLink" class="form-input" readonly style="font-family: monospace; font-size: 0.85rem;">
-                                    <button class="btn btn-outline btn-sm" onclick="copyInviteLink()">
-                                        <i class="fas fa-copy"></i> Copiar
-                                    </button>
-                                </div>
-                                <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
-                                    ⚠️ Compartilhe apenas com pessoas autorizadas. O link expira automaticamente.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Users List -->
-                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-list"></i> Usuários Cadastrados
-                        </h4>
-                        <div id="usersList"></div>
-
-                        <!-- Active Invites -->
-                        <h4 style="margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-clock"></i> Convites Ativos
-                        </h4>
-                        <div id="activeInvites"></div>
-                    </div>
-                </div>
-
-                <!-- System Info -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-info-circle"></i>
-                            Informações do Sistema
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert alert-success">
-                            <i class="alert-icon fas fa-shield-check"></i>
-                            <div class="alert-content">
-                                <div class="alert-title">🔒 TransCS Pro Ultimate v4.0</div>
-                                <div>Sistema completo com gestão de clientes, fornecedores, viagens e controle de acesso seguro.</div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
-                                <div style="font-size: 2rem; font-weight: bold; color: var(--primary);" id="settingsClients">0</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Clientes Cadastrados</div>
-                            </div>
-                            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
-                                <div style="font-size: 2rem; font-weight: bold; color: var(--warning);" id="settingsSuppliersCount">0</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Fornecedores</div>
-                            </div>
-                            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
-                                <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);" id="settingsTrips">0</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Viagens Realizadas</div>
-                            </div>
-                            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
-                                <div style="font-size: 2rem; font-weight: bold; color: var(--success);">✅</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Seguro</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+            </div>
+        </div>
     </div>
 
     <script>
         // Global variables
         let currentUser = null;
-        let clients = [];
-        let suppliers = [];
-        let trips = [];
-        let users = [];
-        let invites = {};
+        let data = {
+            clients: [],
+            suppliers: [],
+            trips: [],
+            users: [],
+            invites: {}
+        };
 
-        // System initialization
-        function initSystem() {
-            debugLog('Inicializando TransCS Pro Ultimate v4.0...');
+        // Initialize
+        function init() {
+            console.log('🚀 Iniciando TransCS Pro Ultimate v4.0...');
             
+            loadData();
+            ensureAdmin();
+            setupEvents();
+            setDefaultDate();
+            checkInviteCode();
+            
+            console.log('✅ Sistema inicializado!');
+        }
+
+        function loadData() {
             try {
-                loadAllData();
-                setupEventListeners();
-                checkInviteCode();
-                showLoginForm(); // Show login by default
-                
-                const dateInput = document.querySelector('input[name="data"]');
-                if (dateInput) {
-                    dateInput.value = new Date().toISOString().split('T')[0];
+                const saved = localStorage.getItem('transcs_data');
+                if (saved) {
+                    data = { ...data, ...JSON.parse(saved) };
                 }
-                
-                debugLog('Sistema inicializado com sucesso!');
-                
+                console.log('📊 Dados carregados:', data);
             } catch (error) {
-                debugLog('Erro na inicialização: ' + error.message);
-                console.error('Erro:', error);
+                console.error('Erro ao carregar dados:', error);
             }
         }
 
-        function setupEventListeners() {
-            debugLog('Configurando event listeners...');
-            
-            // Login form
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', handleLogin);
-            }
-
-            // Register form
-            const registerForm = document.getElementById('registerForm');
-            if (registerForm) {
-                registerForm.addEventListener('submit', handleRegister);
-            }
-
-            // Client form
-            const clientForm = document.getElementById('clientForm');
-            if (clientForm) {
-                clientForm.addEventListener('submit', handleClientSubmit);
-            }
-
-            // Supplier form
-            const supplierForm = document.getElementById('supplierForm');
-            if (supplierForm) {
-                supplierForm.addEventListener('submit', handleSupplierSubmit);
-            }
-
-            // Trip form
-            const tripForm = document.getElementById('tripForm');
-            if (tripForm) {
-                tripForm.addEventListener('submit', handleTripSubmit);
+        function saveData() {
+            try {
+                localStorage.setItem('transcs_data', JSON.stringify(data));
+                console.log('💾 Dados salvos');
+            } catch (error) {
+                console.error('Erro ao salvar dados:', error);
             }
         }
 
-        function loadAllData() {
-            debugLog('Carregando dados...');
-            
-            users = loadData('transcs_users', []);
-            clients = loadData('transcs_clients', []);
-            suppliers = loadData('transcs_suppliers', []);
-            trips = loadData('transcs_trips', []);
-            invites = loadData('transcs_invites', {});
-            
-            // Ensure admin exists
-            ensureAdminExists();
-            
-            debugLog(`Dados carregados: ${users.length} usuários, ${clients.length} clientes, ${suppliers.length} fornecedores, ${trips.length} viagens`);
-        }
-
-        function ensureAdminExists() {
-            const adminExists = users.find(u => u.username === 'admin');
-            
+        function ensureAdmin() {
+            const adminExists = data.users.find(u => u.username === 'admin');
             if (!adminExists) {
-                const adminUser = {
+                data.users.push({
                     id: Date.now(),
                     username: 'admin',
-                    password: hashPassword('admin123'),
+                    password: 'admin123', // Senha simples para demonstração
                     fullName: 'Administrador',
                     role: 'admin',
-                    email: 'admin@transcs.com',
-                    status: 'active',
                     createdAt: new Date().toISOString()
-                };
-                
-                users.push(adminUser);
-                saveData('transcs_users', users);
-                debugLog('Usuário admin criado');
+                });
+                saveData();
+                console.log('👑 Admin criado: admin/admin123');
+            }
+        }
+
+        function setupEvents() {
+            // Login
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Register
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            
+            // Forms
+            document.getElementById('clientForm').addEventListener('submit', handleClientSubmit);
+            document.getElementById('supplierForm').addEventListener('submit', handleSupplierSubmit);
+            document.getElementById('tripForm').addEventListener('submit', handleTripSubmit);
+        }
+
+        function setDefaultDate() {
+            const dateInput = document.querySelector('input[name="data"]');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
             }
         }
 
@@ -1971,68 +862,44 @@
             const inviteCode = urlParams.get('invite');
             
             if (inviteCode) {
-                debugLog('Código de convite detectado: ' + inviteCode);
-                
-                const invite = invites[inviteCode];
+                const invite = data.invites[inviteCode];
                 if (invite && new Date(invite.expiresAt) > new Date()) {
-                    showRegisterForm(inviteCode, invite.role);
-                    showNotification('🎉 Convite válido! Complete seu cadastro abaixo.', 'success');
+                    showRegister();
+                    document.getElementById('inviteCodeInput').value = inviteCode;
+                    showNotification('🎉 Convite válido! Complete seu cadastro.', 'success');
                 } else {
-                    showNotification('❌ Código de convite inválido ou expirado.', 'error');
-                    showLoginForm();
+                    showNotification('❌ Convite inválido ou expirado.', 'error');
                 }
             }
         }
 
-        // Authentication functions
+        // Authentication
         async function handleLogin(e) {
             e.preventDefault();
-            debugLog('Processando login...');
             
             const formData = new FormData(e.target);
             const username = formData.get('username');
             const password = formData.get('password');
             
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
+            console.log('🔐 Tentando login:', username);
             
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-                
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                const user = users.find(u => u.username === username);
-                
-                if (!user || !verifyPassword(password, user.password)) {
-                    throw new Error('Usuário ou senha incorretos');
-                }
-
-                if (user.status !== 'active') {
-                    throw new Error('Usuário inativo');
-                }
-
+            const user = data.users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
                 currentUser = user;
+                document.getElementById('userName').textContent = user.fullName;
                 
-                debugLog(`Login bem-sucedido: ${user.fullName}`);
+                showApp();
                 showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
-                
-                setTimeout(() => {
-                    showApp();
-                }, 1000);
-                
-            } catch (error) {
-                debugLog('Erro no login: ' + error.message);
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
+                console.log('✅ Login bem-sucedido:', user.fullName);
+            } else {
+                showNotification('❌ Usuário ou senha incorretos', 'error');
+                console.log('❌ Login falhou');
             }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
-            debugLog('Processando registro...');
             
             const formData = new FormData(e.target);
             const userData = {
@@ -2040,803 +907,342 @@
                 email: formData.get('email'),
                 username: formData.get('newUsername'),
                 password: formData.get('newPassword'),
-                confirmPassword: formData.get('confirmPassword'),
-                role: formData.get('role'),
                 inviteCode: formData.get('inviteCode')
             };
             
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
-                
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                // Validation
-                if (userData.password !== userData.confirmPassword) {
-                    throw new Error('As senhas não coincidem');
-                }
-
-                if (userData.password.length < 6) {
-                    throw new Error('A senha deve ter pelo menos 6 caracteres');
-                }
-
-                if (users.find(u => u.username === userData.username)) {
-                    throw new Error('Nome de usuário já existe');
-                }
-
-                if (users.find(u => u.email === userData.email)) {
-                    throw new Error('Email já cadastrado');
-                }
-
-                // Validate invite code
-                const invite = invites[userData.inviteCode];
-                if (!invite || new Date(invite.expiresAt) < new Date()) {
-                    throw new Error('Código de convite inválido ou expirado');
-                }
-
-                // Create user
-                const newUser = {
-                    id: Date.now(),
-                    username: userData.username,
-                    password: hashPassword(userData.password),
-                    fullName: userData.fullName,
-                    email: userData.email,
-                    role: invite.role,
-                    status: 'active',
-                    createdAt: new Date().toISOString(),
-                    invitedBy: invite.createdBy
-                };
-
-                users.push(newUser);
-                saveData('transcs_users', users);
-
-                // Mark invite as used
-                delete invites[userData.inviteCode];
-                saveData('transcs_invites', invites);
-
-                debugLog(`Usuário registrado: ${newUser.fullName}`);
-                showNotification('✅ Conta criada com sucesso! Redirecionando para login...', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = window.location.pathname;
-                }, 2000);
-
-            } catch (error) {
-                debugLog('Erro no registro: ' + error.message);
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
+            // Validate invite
+            const invite = data.invites[userData.inviteCode];
+            if (!invite || new Date(invite.expiresAt) < new Date()) {
+                showNotification('❌ Código de convite inválido', 'error');
+                return;
             }
+            
+            // Check if username exists
+            if (data.users.find(u => u.username === userData.username)) {
+                showNotification('❌ Nome de usuário já existe', 'error');
+                return;
+            }
+            
+            // Create user
+            const newUser = {
+                id: Date.now(),
+                username: userData.username,
+                password: userData.password,
+                fullName: userData.fullName,
+                email: userData.email,
+                role: invite.role,
+                createdAt: new Date().toISOString()
+            };
+            
+            data.users.push(newUser);
+            delete data.invites[userData.inviteCode]; // Use invite
+            saveData();
+            
+            showNotification('✅ Conta criada! Redirecionando...', 'success');
+            setTimeout(() => {
+                window.location.href = window.location.pathname;
+            }, 2000);
         }
 
         function showApp() {
-            debugLog('Exibindo aplicação...');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').classList.add('active');
             
-            try {
-                const loginScreen = document.getElementById('loginScreen');
-                const appContainer = document.getElementById('appContainer');
-                
-                if (loginScreen && appContainer) {
-                    loginScreen.style.display = 'none';
-                    appContainer.classList.remove('hidden');
-                    
-                    // Update user info
-                    document.getElementById('userName').textContent = currentUser.fullName;
-                    document.getElementById('userRole').textContent = currentUser.role === 'admin' ? 'Administrador do Sistema' : 'Usuário do Sistema';
-                    document.getElementById('userAvatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
-                    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
-                    
-                    // Show admin features if admin
-                    if (currentUser.role === 'admin') {
-                        document.getElementById('userManagementCard').classList.remove('hidden');
-                        updateUsersDisplay();
-                        updateInvitesDisplay();
-                    }
-                    
-                    // Load data and update interface
-                    loadAllData();
-                    updateClientsList();
-                    updateSuppliersList();
-                    updateTripsList();
-                    updateDashboard();
-                    populateClientSelect();
-                    
-                    debugLog('Aplicação exibida com sucesso!');
-                } else {
-                    throw new Error('Elementos da interface não encontrados');
-                }
-                
-            } catch (error) {
-                debugLog('Erro ao exibir app: ' + error.message);
-                showNotification('Erro ao carregar aplicação', 'error');
+            updateDashboard();
+            updateAllLists();
+            updateClientSelect();
+            
+            // Show admin features if admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('inviteSystemCard').style.display = 'block';
             }
         }
 
         // Client Management
         async function handleClientSubmit(e) {
             e.preventDefault();
-            debugLog('Salvando cliente...');
             
             const formData = new FormData(e.target);
-            const clientData = {
+            const client = {
+                id: Date.now(),
                 nome: formData.get('nome'),
                 contato: formData.get('contato'),
                 telefone: formData.get('telefone'),
                 email: formData.get('email'),
-                cidade: formData.get('cidade')
+                userId: currentUser.id,
+                createdAt: new Date().toISOString()
             };
             
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
+            data.clients.push(client);
+            saveData();
             
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                if (!clientData.nome) {
-                    throw new Error('Nome da empresa é obrigatório');
-                }
-                
-                const newClient = {
-                    id: Date.now(),
-                    ...clientData,
-                    userId: currentUser.id,
-                    createdAt: new Date().toISOString()
-                };
-                
-                clients.push(newClient);
-                saveData('transcs_clients', clients);
-                
-                debugLog(`Cliente salvo: ${clientData.nome}`);
-                showNotification('Cliente cadastrado com sucesso!', 'success');
-                
-                clearClientForm();
-                updateClientsList();
-                populateClientSelect();
-                updateDashboard();
-                
-            } catch (error) {
-                debugLog('Erro ao salvar cliente: ' + error.message);
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-            }
+            e.target.reset();
+            updateClientsList();
+            updateClientSelect();
+            updateDashboard();
+            
+            showNotification('✅ Cliente cadastrado!', 'success');
         }
 
         // Supplier Management
         async function handleSupplierSubmit(e) {
             e.preventDefault();
-            debugLog('Salvando fornecedor...');
             
             const formData = new FormData(e.target);
-            const supplierData = {
+            const supplier = {
+                id: Date.now(),
                 nome: formData.get('nome'),
-                tipoServico: formData.get('tipoServico'),
+                tipo: formData.get('tipo'),
                 contato: formData.get('contato'),
                 telefone: formData.get('telefone'),
-                email: formData.get('email'),
-                cidade: formData.get('cidade'),
-                avaliacao: formData.get('avaliacao'),
-                observacoes: formData.get('observacoes')
+                userId: currentUser.id,
+                createdAt: new Date().toISOString()
             };
             
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
+            data.suppliers.push(supplier);
+            saveData();
             
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                if (!supplierData.nome) {
-                    throw new Error('Nome da empresa é obrigatório');
-                }
-                
-                const newSupplier = {
-                    id: Date.now(),
-                    ...supplierData,
-                    userId: currentUser.id,
-                    createdAt: new Date().toISOString()
-                };
-                
-                suppliers.push(newSupplier);
-                saveData('transcs_suppliers', suppliers);
-                
-                debugLog(`Fornecedor salvo: ${supplierData.nome}`);
-                showNotification('Fornecedor cadastrado com sucesso!', 'success');
-                
-                clearSupplierForm();
-                updateSuppliersList();
-                updateDashboard();
-                
-            } catch (error) {
-                debugLog('Erro ao salvar fornecedor: ' + error.message);
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-            }
+            e.target.reset();
+            updateSuppliersList();
+            updateDashboard();
+            
+            showNotification('✅ Fornecedor cadastrado!', 'success');
         }
 
         // Trip Management
         async function handleTripSubmit(e) {
             e.preventDefault();
-            debugLog('Salvando viagem...');
             
             const formData = new FormData(e.target);
             const tripData = {
                 clienteId: parseInt(formData.get('clienteId')),
                 data: formData.get('data'),
-                km: parseFloat(formData.get('km')) || 0,
-                receita: parseFloat(formData.get('receita')) || 0,
-                combustivel: parseFloat(formData.get('combustivel')) || 0,
-                pedagio: parseFloat(formData.get('pedagio')) || 0
+                km: parseFloat(formData.get('km')),
+                receita: parseFloat(formData.get('receita')),
+                combustivel: parseFloat(formData.get('combustivel')),
+                custos: parseFloat(formData.get('custos')) || 0
             };
             
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                if (!tripData.clienteId || !tripData.data || !tripData.receita || !tripData.km) {
-                    throw new Error('Preencha todos os campos obrigatórios');
-                }
-                
-                // Calculate metrics
-                const custoTotal = tripData.combustivel + tripData.pedagio;
-                const lucro = tripData.receita - custoTotal;
-                const margem = tripData.receita > 0 ? (lucro / tripData.receita) * 100 : 0;
-                
-                const newTrip = {
-                    id: Date.now(),
-                    ...tripData,
-                    custoTotal,
-                    lucro,
-                    margem,
-                    userId: currentUser.id,
-                    createdAt: new Date().toISOString()
-                };
-                
-                trips.push(newTrip);
-                saveData('transcs_trips', trips);
-                
-                debugLog(`Viagem salva: Cliente ${tripData.clienteId}`);
-                showNotification('Viagem cadastrada com sucesso!', 'success');
-                
-                clearTripForm();
-                updateTripsList();
-                updateDashboard();
-                
-            } catch (error) {
-                debugLog('Erro ao salvar viagem: ' + error.message);
-                showNotification(error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
+            if (!tripData.clienteId) {
+                showNotification('❌ Selecione um cliente', 'error');
+                return;
             }
+            
+            const custoTotal = tripData.combustivel + tripData.custos;
+            const lucro = tripData.receita - custoTotal;
+            
+            const trip = {
+                id: Date.now(),
+                ...tripData,
+                custoTotal,
+                lucro,
+                userId: currentUser.id,
+                createdAt: new Date().toISOString()
+            };
+            
+            data.trips.push(trip);
+            saveData();
+            
+            e.target.reset();
+            setDefaultDate();
+            updateTripsList();
+            updateDashboard();
+            
+            showNotification('✅ Viagem cadastrada!', 'success');
         }
 
-        // Interface Updates
+        // Update Functions
+        function updateDashboard() {
+            const userClients = data.clients.filter(c => c.userId === currentUser.id);
+            const userSuppliers = data.suppliers.filter(s => s.userId === currentUser.id);
+            const userTrips = data.trips.filter(t => t.userId === currentUser.id);
+            
+            const totalReceita = userTrips.reduce((sum, trip) => sum + trip.receita, 0);
+            
+            document.getElementById('totalClientes').textContent = userClients.length;
+            document.getElementById('totalFornecedores').textContent = userSuppliers.length;
+            document.getElementById('totalViagens').textContent = userTrips.length;
+            document.getElementById('totalReceita').textContent = `R$ ${totalReceita.toFixed(2)}`;
+            
+            // Settings
+            document.getElementById('settingsClients').textContent = userClients.length;
+            document.getElementById('settingsSuppliers').textContent = userSuppliers.length;
+            document.getElementById('settingsTrips').textContent = userTrips.length;
+        }
+
         function updateClientsList() {
             const container = document.getElementById('clientsList');
-            const userClients = clients.filter(client => client.userId === currentUser.id);
+            const userClients = data.clients.filter(c => c.userId === currentUser.id);
             
             document.getElementById('clientsCount').textContent = userClients.length;
             
             if (userClients.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center p-8 text-gray">
-                        <i class="fas fa-users text-6xl mb-4" style="opacity: 0.3;"></i>
-                        <h3 class="text-2xl font-bold mb-2">Nenhum cliente cadastrado</h3>
-                        <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
-                        <button class="btn btn-primary" onclick="showClientForm()">
-                            <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
-                        </button>
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>Nenhum cliente cadastrado</h3>
+                        <p>Cadastre seu primeiro cliente usando o formulário acima</p>
                     </div>
                 `;
                 return;
             }
             
-            const clientsHTML = userClients.map(client => {
-                const avatar = client.nome.charAt(0).toUpperCase();
-                const createdDate = new Date(client.createdAt).toLocaleDateString('pt-BR');
-                
-                return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;">
-                        <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem;">
-                                ${avatar}
-                            </div>
-                            <div>
-                                <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.2rem;">${client.nome}</h4>
-                                <p style="color: var(--gray); font-size: 0.95rem; margin-bottom: 0.25rem;">
-                                    <i class="fas fa-user"></i> ${client.contato || 'N/A'} | 
-                                    <i class="fas fa-phone"></i> ${client.telefone || 'N/A'}
-                                </p>
-                                <p style="color: var(--gray); font-size: 0.85rem;">
-                                    <i class="fas fa-envelope"></i> ${client.email || 'N/A'} | 
-                                    <i class="fas fa-city"></i> ${client.cidade || 'N/A'}
-                                </p>
-                                <p style="color: var(--gray); font-size: 0.8rem;">
-                                    <i class="fas fa-calendar-plus"></i> Cadastrado em ${createdDate}
-                                </p>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="btn btn-outline btn-sm" onclick="deleteClient(${client.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
-                                <i class="fas fa-trash"></i>
-                            </button>
+            container.innerHTML = userClients.map(client => `
+                <div class="item">
+                    <div class="item-info">
+                        <div class="item-name">${client.nome}</div>
+                        <div class="item-details">
+                            ${client.contato || 'Sem contato'} | ${client.telefone || 'Sem telefone'}
                         </div>
                     </div>
-                `;
-            }).join('');
-            
-            container.innerHTML = clientsHTML;
-            debugLog(`Lista de clientes atualizada: ${userClients.length} clientes`);
+                    <div class="item-actions">
+                        <button class="btn btn-outline btn-sm" onclick="deleteItem('clients', ${client.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function updateSuppliersList() {
             const container = document.getElementById('suppliersList');
-            const userSuppliers = suppliers.filter(supplier => supplier.userId === currentUser.id);
+            const userSuppliers = data.suppliers.filter(s => s.userId === currentUser.id);
             
             document.getElementById('suppliersCount').textContent = userSuppliers.length;
             
             if (userSuppliers.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center p-8 text-gray">
-                        <i class="fas fa-truck-loading text-6xl mb-4" style="opacity: 0.3;"></i>
-                        <h3 class="text-2xl font-bold mb-2">Nenhum fornecedor cadastrado</h3>
-                        <p class="text-lg mb-4">Comece cadastrando seus fornecedores!</p>
-                        <button class="btn btn-primary" onclick="showSupplierForm()">
-                            <i class="fas fa-plus"></i> Cadastrar Primeiro Fornecedor
-                        </button>
+                    <div class="empty-state">
+                        <i class="fas fa-truck-loading"></i>
+                        <h3>Nenhum fornecedor cadastrado</h3>
+                        <p>Cadastre seus fornecedores usando o formulário acima</p>
                     </div>
                 `;
                 return;
             }
             
-            const suppliersHTML = userSuppliers.map(supplier => {
-                const avatar = supplier.nome.charAt(0).toUpperCase();
-                const createdDate = new Date(supplier.createdAt).toLocaleDateString('pt-BR');
-                const serviceIcon = getServiceIcon(supplier.tipoServico);
-                const stars = supplier.avaliacao ? '⭐'.repeat(parseInt(supplier.avaliacao)) : '';
-                
-                return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;">
-                        <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem;">
-                                ${avatar}
-                            </div>
-                            <div>
-                                <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.2rem;">${supplier.nome}</h4>
-                                <p style="color: var(--gray); font-size: 0.95rem; margin-bottom: 0.25rem;">
-                                    ${serviceIcon} ${supplier.tipoServico || 'Serviço não especificado'} ${stars ? `| ${stars}` : ''}
-                                </p>
-                                <p style="color: var(--gray); font-size: 0.85rem;">
-                                    <i class="fas fa-user-tie"></i> ${supplier.contato || 'N/A'} | 
-                                    <i class="fas fa-phone"></i> ${supplier.telefone || 'N/A'}
-                                </p>
-                                <p style="color: var(--gray); font-size: 0.8rem;">
-                                    <i class="fas fa-city"></i> ${supplier.cidade || 'N/A'} | 
-                                    <i class="fas fa-calendar-plus"></i> Cadastrado em ${createdDate}
-                                </p>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="btn btn-outline btn-sm" onclick="deleteSupplier(${supplier.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
-                                <i class="fas fa-trash"></i>
-                            </button>
+            container.innerHTML = userSuppliers.map(supplier => `
+                <div class="item">
+                    <div class="item-info">
+                        <div class="item-name">${supplier.nome}</div>
+                        <div class="item-details">
+                            ${supplier.tipo || 'Tipo não especificado'} | ${supplier.contato || 'Sem contato'}
                         </div>
                     </div>
-                `;
-            }).join('');
-            
-            container.innerHTML = suppliersHTML;
-            debugLog(`Lista de fornecedores atualizada: ${userSuppliers.length} fornecedores`);
+                    <div class="item-actions">
+                        <button class="btn btn-outline btn-sm" onclick="deleteItem('suppliers', ${supplier.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function updateTripsList() {
             const container = document.getElementById('tripsList');
-            const userTrips = trips
-                .filter(trip => trip.userId === currentUser.id)
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const userTrips = data.trips.filter(t => t.userId === currentUser.id);
             
             document.getElementById('tripsCount').textContent = userTrips.length;
             
             if (userTrips.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center p-8 text-gray">
-                        <i class="fas fa-truck text-6xl mb-4" style="opacity: 0.3;"></i>
-                        <h3 class="text-2xl font-bold mb-2">Nenhuma viagem cadastrada</h3>
-                        <p class="text-lg mb-4">Cadastre clientes primeiro, depois adicione viagens!</p>
+                    <div class="empty-state">
+                        <i class="fas fa-truck"></i>
+                        <h3>Nenhuma viagem cadastrada</h3>
+                        <p>Cadastre clientes primeiro, depois adicione viagens</p>
                     </div>
                 `;
                 return;
             }
             
-            const tripsHTML = userTrips.map(trip => {
-                const client = clients.find(c => c.id === trip.clienteId);
+            container.innerHTML = userTrips.map(trip => {
+                const client = data.clients.find(c => c.id === trip.clienteId);
                 const clientName = client ? client.nome : 'Cliente não encontrado';
                 const date = new Date(trip.data).toLocaleDateString('pt-BR');
-                const lucroClass = trip.lucro >= 0 ? 'text-success' : 'text-danger';
                 
                 return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
-                        <div style="flex: 1;">
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
-                                    ${clientName.charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                    <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.1rem;">${clientName}</h4>
-                                    <p style="color: var(--gray); font-size: 0.9rem;">${date} • ${trip.km} km</p>
-                                </div>
+                    <div class="item">
+                        <div class="item-info">
+                            <div class="item-name">${clientName} - ${date}</div>
+                            <div class="item-details">
+                                ${trip.km} km | Receita: R$ ${trip.receita.toFixed(2)} | Lucro: R$ ${trip.lucro.toFixed(2)}
                             </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; margin: 0 2rem;">
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Receita</div>
-                                <div style="font-size: 1rem; font-weight: bold; color: var(--primary);">R$ ${formatCurrency(trip.receita)}</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Custo</div>
-                                <div style="font-size: 1rem; font-weight: bold; color: var(--danger);">R$ ${formatCurrency(trip.custoTotal)}</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Lucro</div>
-                                <div style="font-size: 1rem; font-weight: bold;" class="${lucroClass}">R$ ${formatCurrency(trip.lucro)}</div>
-                            </div>
-                        </div>
-                        <div>
-                            <button class="btn btn-outline btn-sm" onclick="deleteTrip(${trip.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
+                        <div class="item-actions">
+                            <button class="btn btn-outline btn-sm" onclick="deleteItem('trips', ${trip.id})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 `;
             }).join('');
-            
-            container.innerHTML = tripsHTML;
-            debugLog(`Lista de viagens atualizada: ${userTrips.length} viagens`);
         }
 
-        function populateClientSelect() {
+        function updateClientSelect() {
             const select = document.querySelector('select[name="clienteId"]');
-            if (!select) return;
+            const userClients = data.clients.filter(c => c.userId === currentUser.id);
             
-            const userClients = clients.filter(client => client.userId === currentUser.id);
-            
-            if (userClients.length === 0) {
-                select.innerHTML = '<option value="">Primeiro cadastre clientes...</option>';
-            } else {
-                select.innerHTML = '<option value="">Selecione um cliente...</option>' +
-                    userClients.map(client => `<option value="${client.id}">${client.nome}</option>`).join('');
-            }
-            
-            debugLog(`Select de clientes atualizado: ${userClients.length} opções`);
+            select.innerHTML = '<option value="">Selecione um cliente...</option>' +
+                userClients.map(client => `<option value="${client.id}">${client.nome}</option>`).join('');
         }
 
-        function updateDashboard() {
-            const userTrips = trips.filter(trip => trip.userId === currentUser.id);
-            const userClients = clients.filter(client => client.userId === currentUser.id);
-            const userSuppliers = suppliers.filter(supplier => supplier.userId === currentUser.id);
-            
-            if (userTrips.length === 0) {
-                document.getElementById('dashboardReceita').textContent = 'R$ 0,00';
-                document.getElementById('dashboardLucro').textContent = 'R$ 0,00';
-                document.getElementById('dashboardViagens').textContent = '0';
-                document.getElementById('dashboardClientes').textContent = userClients.length;
-                document.getElementById('dashboardFornecedores').textContent = userSuppliers.length;
-                
-                document.getElementById('settingsClients').textContent = userClients.length;
-                document.getElementById('settingsSuppliersCount').textContent = userSuppliers.length;
-                document.getElementById('settingsTrips').textContent = '0';
-                return;
-            }
-            
-            const totalReceita = userTrips.reduce((sum, trip) => sum + trip.receita, 0);
-            const totalLucro = userTrips.reduce((sum, trip) => sum + trip.lucro, 0);
-            
-            document.getElementById('dashboardReceita').textContent = `R$ ${formatCurrency(totalReceita)}`;
-            document.getElementById('dashboardLucro').textContent = `R$ ${formatCurrency(totalLucro)}`;
-            document.getElementById('dashboardViagens').textContent = userTrips.length;
-            document.getElementById('dashboardClientes').textContent = userClients.length;
-            document.getElementById('dashboardFornecedores').textContent = userSuppliers.length;
-            
-            document.getElementById('settingsClients').textContent = userClients.length;
-            document.getElementById('settingsSuppliersCount').textContent = userSuppliers.length;
-            document.getElementById('settingsTrips').textContent = userTrips.length;
-            
-            debugLog('Dashboard atualizado');
+        function updateAllLists() {
+            updateClientsList();
+            updateSuppliersList();
+            updateTripsList();
         }
 
-        // User Management (Admin only)
+        // Invite System
         function generateInvite() {
             if (currentUser.role !== 'admin') {
-                showNotification('Apenas administradores podem gerar convites', 'error');
+                showNotification('❌ Apenas administradores podem gerar convites', 'error');
                 return;
             }
 
             const role = document.getElementById('inviteRole').value;
-            const expiryDays = parseInt(document.getElementById('inviteExpiry').value);
+            const code = 'INV-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias
             
-            const inviteCode = 'INV-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-            const expiresAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
-            
-            invites[inviteCode] = {
-                code: inviteCode,
-                role: role,
+            data.invites[code] = {
+                code,
+                role,
                 createdBy: currentUser.id,
                 createdAt: new Date().toISOString(),
                 expiresAt: expiresAt.toISOString()
             };
             
-            saveData('transcs_invites', invites);
-            updateInvitesDisplay();
+            saveData();
             
-            const baseUrl = window.location.origin + window.location.pathname;
-            const inviteLink = `${baseUrl}?invite=${inviteCode}`;
-            
-            document.getElementById('inviteLink').value = inviteLink;
+            const link = `${window.location.origin}${window.location.pathname}?invite=${code}`;
+            document.getElementById('inviteLink').value = link;
             document.getElementById('inviteResult').classList.remove('hidden');
             
-            showNotification(`🔗 Convite ${role === 'admin' ? 'de administrador' : 'de usuário'} gerado!`, 'success');
-            debugLog(`Convite gerado: ${inviteCode} (${role})`);
+            showNotification('🔗 Convite gerado com sucesso!', 'success');
         }
 
-        function copyInviteLink() {
-            const linkInput = document.getElementById('inviteLink');
-            linkInput.select();
-            navigator.clipboard.writeText(linkInput.value).then(() => {
-                showNotification('📋 Link copiado para a área de transferência!', 'success');
+        function copyInvite() {
+            const input = document.getElementById('inviteLink');
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                showNotification('📋 Link copiado!', 'success');
             });
-        }
-
-        function updateUsersDisplay() {
-            const container = document.getElementById('usersList');
-            if (!container) return;
-
-            const usersHTML = users.map(user => {
-                const avatar = user.fullName.charAt(0).toUpperCase();
-                const isCurrentUser = user.id === currentUser.id;
-                const lastLogin = user.lastLogin ? 
-                    new Date(user.lastLogin).toLocaleDateString('pt-BR') : 'Nunca';
-                
-                return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                ${avatar}
-                            </div>
-                            <div>
-                                <div style="font-weight: 600;">${user.fullName}</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">@${user.username} • ${user.email}</div>
-                                <div style="font-size: 0.8rem; color: var(--gray);">Último acesso: ${lastLogin}</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="padding: 0.25rem 0.75rem; background: ${user.role === 'admin' ? '#fef3c7' : '#dbeafe'}; color: ${user.role === 'admin' ? '#92400e' : '#1e40af'}; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
-                                ${user.role === 'admin' ? '👑 Admin' : '👤 Usuário'}
-                            </span>
-                            ${isCurrentUser ? 
-                                '<span style="font-size: 0.8rem; color: var(--gray);">Você</span>' : 
-                                `<button class="btn btn-sm btn-outline" onclick="deleteUser(${user.id})" style="padding: 0.25rem 0.5rem;">
-                                    <i class="fas fa-trash"></i>
-                                </button>`
-                            }
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = usersHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum usuário encontrado</p>';
-        }
-
-        function updateInvitesDisplay() {
-            const container = document.getElementById('activeInvites');
-            if (!container) return;
-
-            const activeInvites = Object.values(invites).filter(invite => 
-                new Date(invite.expiresAt) > new Date()
-            );
-
-            const invitesHTML = activeInvites.map(invite => {
-                const expiresAt = new Date(invite.expiresAt).toLocaleString('pt-BR');
-                const createdAt = new Date(invite.createdAt).toLocaleString('pt-BR');
-                
-                return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
-                        <div>
-                            <div style="font-weight: 600; font-family: monospace;">${invite.code}</div>
-                            <div style="font-size: 0.9rem; color: var(--gray);">
-                                ${invite.role === 'admin' ? '👑 Admin' : '👤 Usuário'} • 
-                                Criado em: ${createdAt}
-                            </div>
-                            <div style="font-size: 0.8rem; color: var(--danger);">
-                                ⏰ Expira em: ${expiresAt}
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="btn btn-sm btn-outline" onclick="copyInviteCode('${invite.code}')" style="padding: 0.25rem 0.5rem;">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline" onclick="revokeInvite('${invite.code}')" style="padding: 0.25rem 0.5rem;">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = invitesHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum convite ativo</p>';
-        }
-
-        function copyInviteCode(code) {
-            const baseUrl = window.location.origin + window.location.pathname;
-            const inviteLink = `${baseUrl}?invite=${code}`;
-            
-            navigator.clipboard.writeText(inviteLink).then(() => {
-                showNotification('🔗 Link de convite copiado!', 'success');
-            });
-        }
-
-        function revokeInvite(code) {
-            delete invites[code];
-            saveData('transcs_invites', invites);
-            updateInvitesDisplay();
-            showNotification('❌ Convite revogado!', 'info');
-        }
-
-        function deleteUser(userId) {
-            if (userId === currentUser.id) {
-                showNotification('Você não pode excluir sua própria conta', 'error');
-                return;
-            }
-
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
-
-            if (confirm(`Tem certeza que deseja excluir o usuário "${user.fullName}"?`)) {
-                users = users.filter(u => u.id !== userId);
-                saveData('transcs_users', users);
-                updateUsersDisplay();
-                showNotification(`Usuário "${user.fullName}" excluído!`, 'success');
-            }
         }
 
         // Utility Functions
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(value);
-        }
-
-        function getServiceIcon(tipoServico) {
-            const icons = {
-                'Combustível': '<i class="fas fa-gas-pump"></i>',
-                'Manutenção': '<i class="fas fa-tools"></i>',
-                'Pneus': '<i class="fas fa-circle"></i>',
-                'Peças': '<i class="fas fa-cog"></i>',
-                'Seguro': '<i class="fas fa-shield-alt"></i>',
-                'Financeiro': '<i class="fas fa-credit-card"></i>',
-                'Outros': '<i class="fas fa-building"></i>'
-            };
-            return icons[tipoServico] || '<i class="fas fa-building"></i>';
-        }
-
-        function hashPassword(password) {
-            return btoa(password + 'transcs_salt_v4').split('').reverse().join('');
-        }
-
-        function verifyPassword(password, hash) {
-            return hashPassword(password) === hash;
-        }
-
-        function loadData(key, defaultValue = []) {
-            try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : defaultValue;
-            } catch (error) {
-                debugLog(`Erro ao carregar ${key}: ${error.message}`);
-                return defaultValue;
+        function deleteItem(type, id) {
+            const itemName = type === 'clients' ? 'cliente' : type === 'suppliers' ? 'fornecedor' : 'viagem';
+            
+            if (confirm(`Tem certeza que deseja excluir este ${itemName}?`)) {
+                data[type] = data[type].filter(item => item.id !== id);
+                saveData();
+                updateAllLists();
+                updateClientSelect();
+                updateDashboard();
+                showNotification(`✅ ${itemName.charAt(0).toUpperCase() + itemName.slice(1)} excluído!`, 'success');
             }
-        }
-
-        function saveData(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-                debugLog(`Dados salvos: ${key}`);
-                return true;
-            } catch (error) {
-                debugLog(`Erro ao salvar ${key}: ${error.message}`);
-                return false;
-            }
-        }
-
-        function debugLog(message) {
-            console.log(`[TransCS] ${message}`);
-        }
-
-        function showNotification(message, type = 'info', duration = 5000) {
-            const notification = document.getElementById('notification');
-            const titleEl = document.getElementById('notificationTitle');
-            const messageEl = document.getElementById('notificationMessage');
-            
-            const titles = {
-                success: 'Sucesso',
-                error: 'Erro',
-                warning: 'Atenção',
-                info: 'Informação'
-            };
-
-            const icons = {
-                success: 'fas fa-check-circle',
-                error: 'fas fa-exclamation-circle',
-                warning: 'fas fa-exclamation-triangle',
-                info: 'fas fa-info-circle'
-            };
-            
-            notification.className = `notification ${type}`;
-            notification.querySelector('.notification-icon').className = `notification-icon ${icons[type]}`;
-            titleEl.textContent = titles[type];
-            messageEl.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
-        }
-
-        // UI Functions
-        function togglePassword(type) {
-            let input, button;
-            
-            if (type === 'login') {
-                input = document.querySelector('input[name="password"]');
-                button = document.querySelector('#loginForm .password-toggle i');
-            } else if (type === 'register') {
-                input = document.querySelector('input[name="newPassword"]');
-                button = document.querySelector('#registerForm .password-toggle i');
-            } else if (type === 'confirm') {
-                input = document.querySelector('input[name="confirmPassword"]');
-                button = document.querySelectorAll('#registerForm .password-toggle i')[1];
-            }
-            
-            if (input && button) {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    button.className = 'fas fa-eye-slash';
-                } else {
-                    input.type = 'password';
-                    button.className = 'fas fa-eye';
-                }
-            }
-        }
-
-        function selectRole(role) {
-            document.querySelectorAll('.role-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector(`[data-role="${role}"]`).classList.add('selected');
-            document.getElementById('selectedRole').value = role;
         }
 
         function showTab(tabName) {
-            debugLog(`Mudando para aba: ${tabName}`);
-            
             // Hide all content
             document.querySelectorAll('.content').forEach(content => {
                 content.classList.remove('active');
@@ -2848,172 +1254,52 @@
             });
             
             // Show selected content
-            const content = document.getElementById(tabName);
-            if (content) {
-                content.classList.add('active');
-            }
+            document.getElementById(tabName).classList.add('active');
             
             // Add active class to clicked tab
-            const activeTab = [...document.querySelectorAll('.nav-tab')].find(tab => 
-                tab.getAttribute('onclick').includes(tabName));
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-        }
-
-        function showLoginForm() {
-            document.getElementById('loginForm').classList.remove('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('registerInfo').classList.add('hidden');
-            document.getElementById('loginFooter').classList.add('hidden');
-        }
-
-        function showRegisterForm(inviteCode = '', role = 'user') {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-            document.getElementById('registerInfo').classList.add('hidden');
-            document.getElementById('loginFooter').classList.remove('hidden');
-            
-            if (inviteCode) {
-                document.getElementById('inviteCodeInput').value = inviteCode;
-            }
-            
-            selectRole(role);
-        }
-
-        function showRegisterInfo() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('registerInfo').classList.remove('hidden');
-            document.getElementById('loginFooter').classList.remove('hidden');
-        }
-
-        function showForgotPassword() {
-            showNotification('🔒 Entre em contato com o administrador para redefinir sua senha: contato@transcs.com', 'info', 8000);
-        }
-
-        function backToLogin() {
-            showLoginForm();
+            event.target.classList.add('active');
         }
 
         function showClientForm() {
-            const card = document.getElementById('clientFormCard');
-            if (card) {
-                card.scrollIntoView({ behavior: 'smooth' });
-            }
+            document.getElementById('clientFormCard').scrollIntoView({ behavior: 'smooth' });
         }
 
         function showSupplierForm() {
-            const card = document.getElementById('supplierFormCard');
-            if (card) {
-                card.scrollIntoView({ behavior: 'smooth' });
-            }
+            document.getElementById('supplierFormCard').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function clearClientForm() {
-            const form = document.getElementById('clientForm');
-            if (form) {
-                form.reset();
-                document.getElementById('editClientId').value = '';
-                document.getElementById('clientFormTitle').textContent = 'Novo Cliente';
-                document.getElementById('clientSubmitText').textContent = 'Salvar Cliente';
-            }
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
         }
 
-        function clearSupplierForm() {
-            const form = document.getElementById('supplierForm');
-            if (form) {
-                form.reset();
-                document.getElementById('editSupplierId').value = '';
-                document.getElementById('supplierFormTitle').textContent = 'Novo Fornecedor';
-                document.getElementById('supplierSubmitText').textContent = 'Salvar Fornecedor';
-            }
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
         }
 
-        function clearTripForm() {
-            const form = document.getElementById('tripForm');
-            if (form) {
-                form.reset();
-                form.querySelector('input[name="data"]').value = new Date().toISOString().split('T')[0];
-            }
-        }
-
-        function deleteClient(id) {
-            const client = clients.find(c => c.id === id);
-            if (!client) return;
+        function showNotification(message, type = 'success', duration = 4000) {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notificationText');
             
-            if (confirm(`Tem certeza que deseja excluir o cliente "${client.nome}"?`)) {
-                clients = clients.filter(c => c.id !== id);
-                saveData('transcs_clients', clients);
-                updateClientsList();
-                populateClientSelect();
-                updateDashboard();
-                showNotification('Cliente excluído!', 'info');
-                debugLog(`Cliente excluído: ${client.nome}`);
-            }
-        }
-
-        function deleteSupplier(id) {
-            const supplier = suppliers.find(s => s.id === id);
-            if (!supplier) return;
+            text.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
             
-            if (confirm(`Tem certeza que deseja excluir o fornecedor "${supplier.nome}"?`)) {
-                suppliers = suppliers.filter(s => s.id !== id);
-                saveData('transcs_suppliers', suppliers);
-                updateSuppliersList();
-                updateDashboard();
-                showNotification('Fornecedor excluído!', 'info');
-                debugLog(`Fornecedor excluído: ${supplier.nome}`);
-            }
-        }
-
-        function deleteTrip(id) {
-            const trip = trips.find(t => t.id === id);
-            if (!trip) return;
-            
-            const client = clients.find(c => c.id === trip.clienteId);
-            const clientName = client ? client.nome : 'Cliente';
-            
-            if (confirm(`Tem certeza que deseja excluir a viagem de "${clientName}"?`)) {
-                trips = trips.filter(t => t.id !== id);
-                saveData('transcs_trips', trips);
-                updateTripsList();
-                updateDashboard();
-                showNotification('Viagem excluída!', 'info');
-                debugLog(`Viagem excluída: ${clientName}`);
-            }
-        }
-
-        function refreshDashboard() {
-            updateDashboard();
-            showNotification('Dashboard atualizado!', 'success');
-        }
-
-        function clearStorage() {
-            localStorage.clear();
-            debugLog('Storage limpo');
-            showNotification('Cache limpo! Recarregando...', 'info');
-            setTimeout(() => location.reload(), 1000);
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
         }
 
         function logout() {
-            debugLog('Fazendo logout...');
-            showNotification('👋 Até logo!', 'info');
+            showNotification('👋 Até logo!', 'success');
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 1500);
         }
 
-        // Initialize system when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            debugLog('DOM carregado, inicializando TransCS Pro Ultimate v4.0...');
-            initSystem();
-        });
-
-        // Backup initialization
-        window.addEventListener('load', function() {
-            if (!currentUser) {
-                debugLog('Backup initialization...');
-                initSystem();
-            }
-        });
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
