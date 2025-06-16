@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TransCS Pro Ultimate v4.0 - Sistema Simples</title>
+    <title>TransCS Pro - Simples e Funcional</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,10 +15,9 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: #333;
         }
 
         .container {
@@ -26,117 +25,117 @@
             margin: 0 auto;
             background: white;
             min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
 
-        /* Login Screen */
+        /* LOGIN */
         .login-screen {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             padding: 3rem;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
+            border-radius: 15px;
+            width: 400px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .logo {
             text-align: center;
+        }
+
+        .login-box h1 {
+            color: #667eea;
             margin-bottom: 2rem;
-        }
-
-        .logo h1 {
             font-size: 2rem;
-            color: #1e40af;
-            margin-bottom: 0.5rem;
-        }
-
-        .logo p {
-            color: #666;
-            font-size: 0.9rem;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+            text-align: left;
         }
 
-        .form-label {
+        .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-weight: bold;
             color: #333;
         }
 
-        .form-input, .form-select {
+        .form-group input {
             width: 100%;
             padding: 1rem;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
         }
 
-        .form-input:focus, .form-select:focus {
+        .form-group input:focus {
             outline: none;
-            border-color: #1e40af;
+            border-color: #667eea;
         }
 
         .btn {
             width: 100%;
             padding: 1rem;
+            background: #667eea;
+            color: white;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.3s;
         }
 
-        .btn-primary {
-            background: #1e40af;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #1e3a8a;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #1e40af;
-            border: 2px solid #1e40af;
-        }
-
-        .btn-outline:hover {
-            background: #1e40af;
-            color: white;
+        .btn:hover {
+            background: #5a6fd8;
         }
 
         .btn-sm {
-            padding: 0.5rem 1rem;
             width: auto;
+            padding: 0.5rem 1rem;
             font-size: 0.9rem;
         }
 
-        /* App */
-        .app-container {
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+
+        /* APP */
+        .app {
             display: none;
         }
 
-        .app-container.active {
+        .app.active {
             display: block;
         }
 
         .header {
-            background: #1e40af;
+            background: #667eea;
             color: white;
             padding: 1.5rem;
             display: flex;
@@ -154,49 +153,36 @@
             gap: 1rem;
         }
 
-        .logout-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
         .nav {
-            background: #374151;
+            background: #34495e;
             display: flex;
             overflow-x: auto;
         }
 
-        .nav-tab {
+        .nav-btn {
             padding: 1rem 1.5rem;
             background: transparent;
-            border: none;
             color: white;
+            border: none;
             cursor: pointer;
             white-space: nowrap;
             transition: background 0.3s;
         }
 
-        .nav-tab:hover {
+        .nav-btn:hover {
             background: rgba(255,255,255,0.1);
         }
 
-        .nav-tab.active {
-            background: #1e40af;
+        .nav-btn.active {
+            background: #667eea;
         }
 
-        .content {
+        .page {
             display: none;
             padding: 2rem;
         }
 
-        .content.active {
+        .page.active {
             display: block;
         }
 
@@ -206,67 +192,59 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid #eee;
         }
 
         .page-title {
             font-size: 2rem;
-            font-weight: 700;
-            color: #333;
+            color: #2c3e50;
         }
 
         .card {
             background: white;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #ddd;
             border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .card-header {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .card h3 {
             margin-bottom: 1rem;
-            color: #333;
+            color: #2c3e50;
         }
 
-        .stats-grid {
+        .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 1.5rem;
             border-radius: 8px;
             text-align: center;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #ddd;
         }
 
         .stat-value {
             font-size: 2rem;
-            font-weight: 700;
-            color: #1e40af;
+            font-weight: bold;
+            color: #667eea;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: #666;
-            font-weight: 500;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .item-list {
-            margin-top: 1rem;
         }
 
         .item {
@@ -274,27 +252,23 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #eee;
             border-radius: 8px;
             margin-bottom: 0.5rem;
-            background: #f9fafb;
+            background: #f9f9f9;
         }
 
-        .item-info {
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 600;
+        .item-info h4 {
             margin-bottom: 0.25rem;
+            color: #2c3e50;
         }
 
-        .item-details {
+        .item-info p {
             color: #666;
             font-size: 0.9rem;
         }
 
-        .item-actions {
+        .actions {
             display: flex;
             gap: 0.5rem;
         }
@@ -303,48 +277,25 @@
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
-            border-left: 4px solid;
         }
 
         .alert-success {
-            background: #d1fae5;
-            border-left-color: #10b981;
-            color: #065f46;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
         }
 
         .alert-info {
-            background: #dbeafe;
-            border-left-color: #3b82f6;
-            color: #1e40af;
-        }
-
-        .alert-warning {
-            background: #fef3c7;
-            border-left-color: #f59e0b;
-            color: #92400e;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .hidden {
-            display: none !important;
+            background: #cce7ff;
+            border: 1px solid #99d6ff;
+            color: #004085;
         }
 
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #10b981;
+            background: #27ae60;
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 8px;
@@ -359,15 +310,20 @@
         }
 
         .notification.error {
-            background: #ef4444;
+            background: #e74c3c;
         }
 
-        .notification.warning {
-            background: #f59e0b;
+        .hidden {
+            display: none !important;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .login-box {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
             .header {
                 flex-direction: column;
                 gap: 1rem;
@@ -380,11 +336,11 @@
                 gap: 1rem;
             }
 
-            .form-grid {
+            .form-row {
                 grid-template-columns: 1fr;
             }
 
-            .stats-grid {
+            .stats {
                 grid-template-columns: 1fr;
             }
 
@@ -394,7 +350,7 @@
                 gap: 1rem;
             }
 
-            .item-actions {
+            .actions {
                 width: 100%;
                 justify-content: center;
             }
@@ -402,775 +358,494 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-screen">
         <div class="login-box">
-            <div class="logo">
-                <h1><i class="fas fa-truck"></i> TransCS Pro</h1>
-                <p>Sistema de Gestão de Fretes v4.0</p>
-            </div>
-
-            <!-- Login Form -->
+            <h1><i class="fas fa-truck"></i> TransCS Pro</h1>
+            <p style="margin-bottom: 2rem; color: #666;">Sistema Simples de Gestão de Fretes</p>
+            
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">Usuário</label>
-                    <input type="text" class="form-input" name="username" placeholder="Digite seu usuário" value="admin" required>
+                    <label>Usuário</label>
+                    <input type="text" id="username" value="admin" required>
                 </div>
-
+                
                 <div class="form-group">
-                    <label class="form-label">Senha</label>
-                    <input type="password" class="form-input" name="password" placeholder="Digite sua senha" value="admin123" required>
+                    <label>Senha</label>
+                    <input type="password" id="password" value="123" required>
                 </div>
-
-                <button type="submit" class="btn btn-primary">
+                
+                <button type="submit" class="btn">
                     <i class="fas fa-sign-in-alt"></i> Entrar
                 </button>
-                
-                <div style="margin-top: 1rem; text-align: center;">
-                    <small style="color: #666;">Credenciais: admin / admin123</small>
-                </div>
             </form>
-
-            <!-- Register Form (Hidden by default) -->
-            <form id="registerForm" class="hidden">
-                <div class="form-group">
-                    <label class="form-label">Nome Completo</label>
-                    <input type="text" class="form-input" name="fullName" placeholder="Seu nome completo" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" name="email" placeholder="seu@email.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Usuário</label>
-                    <input type="text" class="form-input" name="newUsername" placeholder="Nome de usuário" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Senha</label>
-                    <input type="password" class="form-input" name="newPassword" placeholder="Senha" minlength="6" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Código de Convite</label>
-                    <input type="text" class="form-input" name="inviteCode" placeholder="Cole o código aqui" id="inviteCodeInput">
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Criar Conta
-                </button>
-
-                <button type="button" class="btn btn-outline" onclick="showLogin()" style="margin-top: 0.5rem;">
-                    Voltar ao Login
-                </button>
-            </form>
+            
+            <div class="info-box">
+                <strong>📋 Credenciais:</strong><br>
+                Usuário: <strong>admin</strong><br>
+                Senha: <strong>123</strong>
+            </div>
         </div>
     </div>
 
-    <!-- Notification -->
+    <!-- NOTIFICATION -->
     <div id="notification" class="notification">
         <span id="notificationText">Mensagem</span>
     </div>
 
-    <!-- Main App -->
-    <div id="appContainer" class="container app-container">
-        <!-- Header -->
+    <!-- MAIN APP -->
+    <div id="app" class="container app">
+        <!-- HEADER -->
         <div class="header">
-            <h1><i class="fas fa-truck"></i> TransCS Pro Ultimate v4.0</h1>
+            <h1><i class="fas fa-truck"></i> TransCS Pro - Sistema Simples</h1>
             <div class="user-info">
-                <span>Bem-vindo, <strong id="userName">Admin</strong>!</span>
-                <button class="logout-btn" onclick="logout()">
+                <span>Bem-vindo, <strong>Admin</strong>!</span>
+                <button class="btn btn-sm btn-danger" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> Sair
                 </button>
             </div>
         </div>
 
-        <!-- Navigation -->
+        <!-- NAVIGATION -->
         <div class="nav">
-            <button class="nav-tab active" onclick="showTab('dashboard')">
+            <button class="nav-btn active" onclick="showPage('dashboard')">
                 <i class="fas fa-chart-line"></i> Dashboard
             </button>
-            <button class="nav-tab" onclick="showTab('clients')">
+            <button class="nav-btn" onclick="showPage('clients')">
                 <i class="fas fa-users"></i> Clientes
             </button>
-            <button class="nav-tab" onclick="showTab('suppliers')">
-                <i class="fas fa-truck-loading"></i> Fornecedores
-            </button>
-            <button class="nav-tab" onclick="showTab('trips')">
+            <button class="nav-btn" onclick="showPage('trips')">
                 <i class="fas fa-truck"></i> Viagens
             </button>
-            <button class="nav-tab" onclick="showTab('settings')">
-                <i class="fas fa-cog"></i> Configurações
+            <button class="nav-btn" onclick="showPage('reports')">
+                <i class="fas fa-file-alt"></i> Relatórios
             </button>
         </div>
 
-        <!-- Dashboard -->
-        <div id="dashboard" class="content active">
+        <!-- DASHBOARD PAGE -->
+        <div id="dashboard" class="page active">
             <div class="page-header">
                 <h2 class="page-title">Dashboard</h2>
-                <button class="btn btn-primary btn-sm" onclick="showTab('trips')">
+                <button class="btn btn-sm btn-success" onclick="showPage('trips')">
                     <i class="fas fa-plus"></i> Nova Viagem
                 </button>
             </div>
 
             <div class="alert alert-success">
-                <strong>🎉 Sistema Funcionando!</strong> TransCS Pro Ultimate v4.0 está 100% operacional. Comece cadastrando clientes e fornecedores.
+                <strong>🎉 Sistema 100% Funcional!</strong> TransCS Pro está rodando perfeitamente. Versão simples e confiável.
             </div>
 
-            <div class="stats-grid">
+            <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-value" id="totalClientes">0</div>
+                    <div class="stat-value" id="totalClients">0</div>
                     <div class="stat-label">Clientes</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalFornecedores">0</div>
-                    <div class="stat-label">Fornecedores</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="totalViagens">0</div>
+                    <div class="stat-value" id="totalTrips">0</div>
                     <div class="stat-label">Viagens</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalReceita">R$ 0</div>
+                    <div class="stat-value" id="totalRevenue">R$ 0</div>
                     <div class="stat-label">Receita Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalProfit">R$ 0</div>
+                    <div class="stat-label">Lucro Total</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">Ações Rápidas</div>
+                <h3>Ações Rápidas</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <button class="btn btn-outline" onclick="showTab('clients')">
-                        <i class="fas fa-user-plus"></i> Cadastrar Cliente
+                    <button class="btn btn-success" onclick="showPage('clients')">
+                        <i class="fas fa-user-plus"></i> Novo Cliente
                     </button>
-                    <button class="btn btn-outline" onclick="showTab('suppliers')">
-                        <i class="fas fa-truck-loading"></i> Cadastrar Fornecedor
-                    </button>
-                    <button class="btn btn-primary" onclick="showTab('trips')">
+                    <button class="btn btn-success" onclick="showPage('trips')">
                         <i class="fas fa-plus"></i> Nova Viagem
+                    </button>
+                    <button class="btn btn-success" onclick="showPage('reports')">
+                        <i class="fas fa-chart-bar"></i> Ver Relatórios
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Clientes -->
-        <div id="clients" class="content">
+        <!-- CLIENTS PAGE -->
+        <div id="clients" class="page">
             <div class="page-header">
                 <h2 class="page-title">Clientes</h2>
-                <button class="btn btn-primary btn-sm" onclick="showClientForm()">
-                    <i class="fas fa-plus"></i> Novo Cliente
-                </button>
             </div>
 
-            <div class="card" id="clientFormCard">
-                <div class="card-header">Cadastrar Cliente</div>
+            <div class="card">
+                <h3>Novo Cliente</h3>
                 <form id="clientForm">
-                    <div class="form-grid">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Nome da Empresa *</label>
-                            <input type="text" class="form-input" name="nome" placeholder="Nome da empresa" required>
+                            <label>Nome/Empresa *</label>
+                            <input type="text" id="clientName" placeholder="Nome do cliente" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Contato</label>
-                            <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
+                            <label>Telefone</label>
+                            <input type="tel" id="clientPhone" placeholder="(11) 99999-9999">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Telefone</label>
-                            <input type="tel" class="form-input" name="telefone" placeholder="(11) 99999-9999">
+                            <label>Email</label>
+                            <input type="email" id="clientEmail" placeholder="cliente@email.com">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
+                            <label>Cidade</label>
+                            <input type="text" id="clientCity" placeholder="Cidade">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">
+                    <button type="submit" class="btn btn-success">
                         <i class="fas fa-save"></i> Salvar Cliente
                     </button>
                 </form>
             </div>
 
             <div class="card">
-                <div class="card-header">Clientes Cadastrados (<span id="clientsCount">0</span>)</div>
+                <h3>Clientes Cadastrados (<span id="clientsCount">0</span>)</h3>
                 <div id="clientsList">
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>Nenhum cliente cadastrado</h3>
-                        <p>Cadastre seu primeiro cliente usando o formulário acima</p>
-                    </div>
+                    <p style="text-align: center; color: #666; padding: 2rem;">
+                        <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+                        Nenhum cliente cadastrado ainda
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Fornecedores -->
-        <div id="suppliers" class="content">
-            <div class="page-header">
-                <h2 class="page-title">Fornecedores</h2>
-                <button class="btn btn-primary btn-sm" onclick="showSupplierForm()">
-                    <i class="fas fa-plus"></i> Novo Fornecedor
-                </button>
-            </div>
-
-            <div class="card" id="supplierFormCard">
-                <div class="card-header">Cadastrar Fornecedor</div>
-                <form id="supplierForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Nome da Empresa *</label>
-                            <input type="text" class="form-input" name="nome" placeholder="Nome da empresa" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Tipo de Serviço</label>
-                            <select class="form-select" name="tipo">
-                                <option value="">Selecione...</option>
-                                <option value="Combustível">Combustível</option>
-                                <option value="Manutenção">Manutenção</option>
-                                <option value="Pneus">Pneus</option>
-                                <option value="Peças">Peças</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Contato</label>
-                            <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Telefone</label>
-                            <input type="tel" class="form-input" name="telefone" placeholder="(11) 99999-9999">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="fas fa-save"></i> Salvar Fornecedor
-                    </button>
-                </form>
-            </div>
-
-            <div class="card">
-                <div class="card-header">Fornecedores Cadastrados (<span id="suppliersCount">0</span>)</div>
-                <div id="suppliersList">
-                    <div class="empty-state">
-                        <i class="fas fa-truck-loading"></i>
-                        <h3>Nenhum fornecedor cadastrado</h3>
-                        <p>Cadastre seus fornecedores usando o formulário acima</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Viagens -->
-        <div id="trips" class="content">
+        <!-- TRIPS PAGE -->
+        <div id="trips" class="page">
             <div class="page-header">
                 <h2 class="page-title">Viagens</h2>
             </div>
 
             <div class="card">
-                <div class="card-header">Nova Viagem</div>
+                <h3>Nova Viagem</h3>
                 <form id="tripForm">
-                    <div class="form-grid">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Cliente *</label>
-                            <select class="form-select" name="clienteId" required>
+                            <label>Cliente *</label>
+                            <select id="tripClient" required>
                                 <option value="">Selecione um cliente...</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Data *</label>
-                            <input type="date" class="form-input" name="data" required>
+                            <label>Data *</label>
+                            <input type="date" id="tripDate" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">KM *</label>
-                            <input type="number" class="form-input" name="km" placeholder="0" step="0.1" required>
+                            <label>Origem</label>
+                            <input type="text" id="tripOrigin" placeholder="Cidade de origem">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Receita (R$) *</label>
-                            <input type="number" class="form-input" name="receita" placeholder="0,00" step="0.01" required>
+                            <label>Destino</label>
+                            <input type="text" id="tripDestination" placeholder="Cidade de destino">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Combustível (R$) *</label>
-                            <input type="number" class="form-input" name="combustivel" placeholder="0,00" step="0.01" required>
+                            <label>KM *</label>
+                            <input type="number" id="tripKm" placeholder="0" step="0.1" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Outros Custos (R$)</label>
-                            <input type="number" class="form-input" name="custos" placeholder="0,00" step="0.01" value="0">
+                            <label>Receita (R$) *</label>
+                            <input type="number" id="tripRevenue" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Combustível (R$) *</label>
+                            <input type="number" id="tripFuel" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Outros Custos (R$)</label>
+                            <input type="number" id="tripCosts" placeholder="0.00" step="0.01" value="0">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm">
+                    <button type="submit" class="btn btn-success">
                         <i class="fas fa-save"></i> Salvar Viagem
                     </button>
                 </form>
             </div>
 
             <div class="card">
-                <div class="card-header">Viagens Cadastradas (<span id="tripsCount">0</span>)</div>
+                <h3>Viagens Cadastradas (<span id="tripsCount">0</span>)</h3>
                 <div id="tripsList">
-                    <div class="empty-state">
-                        <i class="fas fa-truck"></i>
-                        <h3>Nenhuma viagem cadastrada</h3>
-                        <p>Cadastre clientes primeiro, depois adicione viagens</p>
-                    </div>
+                    <p style="text-align: center; color: #666; padding: 2rem;">
+                        <i class="fas fa-truck" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+                        Nenhuma viagem cadastrada ainda
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Configurações -->
-        <div id="settings" class="content">
+        <!-- REPORTS PAGE -->
+        <div id="reports" class="page">
             <div class="page-header">
-                <h2 class="page-title">Configurações</h2>
+                <h2 class="page-title">Relatórios</h2>
             </div>
 
-            <!-- Sistema de Convites (Admin only) -->
-            <div class="card" id="inviteSystemCard">
-                <div class="card-header">Sistema de Convites</div>
-                <div class="alert alert-info">
-                    <strong>🔒 Sistema Fechado:</strong> Apenas usuários convidados podem se cadastrar. Gere links únicos abaixo.
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; margin-bottom: 1rem;">
-                    <div class="form-group">
-                        <label class="form-label">Tipo de Usuário</label>
-                        <select class="form-select" id="inviteRole">
-                            <option value="user">Usuário</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary btn-sm" onclick="generateInvite()">
-                        <i class="fas fa-link"></i> Gerar Convite
-                    </button>
-                </div>
+            <div class="alert alert-info">
+                <strong>📊 Relatórios Automáticos:</strong> Os dados são calculados automaticamente conforme você adiciona viagens.
+            </div>
 
-                <div id="inviteResult" class="hidden" style="background: #f9fafb; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-                    <label class="form-label">Link de Convite:</label>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="inviteLink" class="form-input" readonly style="font-family: monospace; font-size: 0.9rem;">
-                        <button class="btn btn-outline btn-sm" onclick="copyInvite()">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                    <small style="color: #666; margin-top: 0.5rem; display: block;">
-                        ⚠️ Compartilhe apenas com pessoas autorizadas
-                    </small>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="reportTotalTrips">0</div>
+                    <div class="stat-label">Total de Viagens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reportTotalKm">0 km</div>
+                    <div class="stat-label">KM Rodados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reportTotalRevenue">R$ 0</div>
+                    <div class="stat-label">Receita Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reportTotalProfit">R$ 0</div>
+                    <div class="stat-label">Lucro Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reportAvgPerKm">R$ 0/km</div>
+                    <div class="stat-label">Média por KM</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reportMargin">0%</div>
+                    <div class="stat-label">Margem de Lucro</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">Informações do Sistema</div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="settingsClients">0</div>
-                        <div style="font-size: 0.9rem; color: #666;">Clientes</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #059669;" id="settingsSuppliers">0</div>
-                        <div style="font-size: 0.9rem; color: #666;">Fornecedores</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #7c3aed;" id="settingsTrips">0</div>
-                        <div style="font-size: 0.9rem; color: #666;">Viagens</div>
-                    </div>
-                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #f59e0b;">✅</div>
-                        <div style="font-size: 0.9rem; color: #666;">Sistema OK</div>
-                    </div>
+                <h3>Exportar Dados</h3>
+                <p style="margin-bottom: 1rem; color: #666;">Copie e cole os dados em uma planilha ou documento:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-success" onclick="exportClients()">
+                        <i class="fas fa-download"></i> Exportar Clientes
+                    </button>
+                    <button class="btn btn-success" onclick="exportTrips()">
+                        <i class="fas fa-download"></i> Exportar Viagens
+                    </button>
+                    <button class="btn btn-success" onclick="exportAll()">
+                        <i class="fas fa-download"></i> Exportar Tudo
+                    </button>
                 </div>
+                <textarea id="exportData" style="width: 100%; height: 200px; margin-top: 1rem; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; font-family: monospace; display: none;" readonly></textarea>
             </div>
         </div>
     </div>
 
     <script>
-        // Global variables
-        let currentUser = null;
+        // DADOS GLOBAIS
         let data = {
             clients: [],
-            suppliers: [],
-            trips: [],
-            users: [],
-            invites: {}
+            trips: []
         };
 
-        // Initialize
+        // INICIALIZAÇÃO
         function init() {
-            console.log('🚀 Iniciando TransCS Pro Ultimate v4.0...');
-            
+            console.log('🚀 Iniciando TransCS Pro...');
             loadData();
-            ensureAdmin();
             setupEvents();
-            setDefaultDate();
-            checkInviteCode();
-            
-            console.log('✅ Sistema inicializado!');
+            setTodayDate();
+            updateStats();
+            console.log('✅ Sistema iniciado!');
         }
 
         function loadData() {
-            try {
-                const saved = localStorage.getItem('transcs_data');
-                if (saved) {
-                    data = { ...data, ...JSON.parse(saved) };
-                }
+            const saved = localStorage.getItem('transcs_simple_data');
+            if (saved) {
+                data = JSON.parse(saved);
                 console.log('📊 Dados carregados:', data);
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
             }
         }
 
         function saveData() {
-            try {
-                localStorage.setItem('transcs_data', JSON.stringify(data));
-                console.log('💾 Dados salvos');
-            } catch (error) {
-                console.error('Erro ao salvar dados:', error);
-            }
-        }
-
-        function ensureAdmin() {
-            const adminExists = data.users.find(u => u.username === 'admin');
-            if (!adminExists) {
-                data.users.push({
-                    id: Date.now(),
-                    username: 'admin',
-                    password: 'admin123', // Senha simples para demonstração
-                    fullName: 'Administrador',
-                    role: 'admin',
-                    createdAt: new Date().toISOString()
-                });
-                saveData();
-                console.log('👑 Admin criado: admin/admin123');
-            }
+            localStorage.setItem('transcs_simple_data', JSON.stringify(data));
+            console.log('💾 Dados salvos');
         }
 
         function setupEvents() {
             // Login
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             
-            // Register
-            document.getElementById('registerForm').addEventListener('submit', handleRegister);
-            
             // Forms
             document.getElementById('clientForm').addEventListener('submit', handleClientSubmit);
-            document.getElementById('supplierForm').addEventListener('submit', handleSupplierSubmit);
             document.getElementById('tripForm').addEventListener('submit', handleTripSubmit);
         }
 
-        function setDefaultDate() {
-            const dateInput = document.querySelector('input[name="data"]');
-            if (dateInput) {
-                dateInput.value = new Date().toISOString().split('T')[0];
-            }
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tripDate').value = today;
         }
 
-        function checkInviteCode() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const inviteCode = urlParams.get('invite');
-            
-            if (inviteCode) {
-                const invite = data.invites[inviteCode];
-                if (invite && new Date(invite.expiresAt) > new Date()) {
-                    showRegister();
-                    document.getElementById('inviteCodeInput').value = inviteCode;
-                    showNotification('🎉 Convite válido! Complete seu cadastro.', 'success');
-                } else {
-                    showNotification('❌ Convite inválido ou expirado.', 'error');
-                }
-            }
-        }
-
-        // Authentication
-        async function handleLogin(e) {
+        // LOGIN
+        function handleLogin(e) {
             e.preventDefault();
             
-            const formData = new FormData(e.target);
-            const username = formData.get('username');
-            const password = formData.get('password');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
             
-            console.log('🔐 Tentando login:', username);
-            
-            const user = data.users.find(u => u.username === username && u.password === password);
-            
-            if (user) {
-                currentUser = user;
-                document.getElementById('userName').textContent = user.fullName;
-                
-                showApp();
-                showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
-                console.log('✅ Login bem-sucedido:', user.fullName);
+            if (username === 'admin' && password === '123') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('app').classList.add('active');
+                showNotification('🎉 Login realizado com sucesso!', 'success');
+                updateAllLists();
+                updateClientSelect();
             } else {
                 showNotification('❌ Usuário ou senha incorretos', 'error');
-                console.log('❌ Login falhou');
             }
         }
 
-        async function handleRegister(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const userData = {
-                fullName: formData.get('fullName'),
-                email: formData.get('email'),
-                username: formData.get('newUsername'),
-                password: formData.get('newPassword'),
-                inviteCode: formData.get('inviteCode')
-            };
-            
-            // Validate invite
-            const invite = data.invites[userData.inviteCode];
-            if (!invite || new Date(invite.expiresAt) < new Date()) {
-                showNotification('❌ Código de convite inválido', 'error');
-                return;
-            }
-            
-            // Check if username exists
-            if (data.users.find(u => u.username === userData.username)) {
-                showNotification('❌ Nome de usuário já existe', 'error');
-                return;
-            }
-            
-            // Create user
-            const newUser = {
-                id: Date.now(),
-                username: userData.username,
-                password: userData.password,
-                fullName: userData.fullName,
-                email: userData.email,
-                role: invite.role,
-                createdAt: new Date().toISOString()
-            };
-            
-            data.users.push(newUser);
-            delete data.invites[userData.inviteCode]; // Use invite
-            saveData();
-            
-            showNotification('✅ Conta criada! Redirecionando...', 'success');
+        function logout() {
+            showNotification('👋 Até logo!', 'success');
             setTimeout(() => {
-                window.location.href = window.location.pathname;
-            }, 2000);
+                window.location.reload();
+            }, 1000);
         }
 
-        function showApp() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appContainer').classList.add('active');
-            
-            updateDashboard();
-            updateAllLists();
-            updateClientSelect();
-            
-            // Show admin features if admin
-            if (currentUser.role === 'admin') {
-                document.getElementById('inviteSystemCard').style.display = 'block';
-            }
-        }
-
-        // Client Management
-        async function handleClientSubmit(e) {
+        // CLIENTES
+        function handleClientSubmit(e) {
             e.preventDefault();
             
-            const formData = new FormData(e.target);
             const client = {
                 id: Date.now(),
-                nome: formData.get('nome'),
-                contato: formData.get('contato'),
-                telefone: formData.get('telefone'),
-                email: formData.get('email'),
-                userId: currentUser.id,
+                name: document.getElementById('clientName').value,
+                phone: document.getElementById('clientPhone').value,
+                email: document.getElementById('clientEmail').value,
+                city: document.getElementById('clientCity').value,
                 createdAt: new Date().toISOString()
             };
             
             data.clients.push(client);
             saveData();
             
-            e.target.reset();
+            // Limpar formulário
+            document.getElementById('clientForm').reset();
+            
             updateClientsList();
             updateClientSelect();
-            updateDashboard();
+            updateStats();
             
-            showNotification('✅ Cliente cadastrado!', 'success');
+            showNotification('✅ Cliente cadastrado com sucesso!', 'success');
         }
 
-        // Supplier Management
-        async function handleSupplierSubmit(e) {
-            e.preventDefault();
+        function updateClientsList() {
+            const container = document.getElementById('clientsList');
+            const count = document.getElementById('clientsCount');
             
-            const formData = new FormData(e.target);
-            const supplier = {
-                id: Date.now(),
-                nome: formData.get('nome'),
-                tipo: formData.get('tipo'),
-                contato: formData.get('contato'),
-                telefone: formData.get('telefone'),
-                userId: currentUser.id,
-                createdAt: new Date().toISOString()
-            };
+            count.textContent = data.clients.length;
             
-            data.suppliers.push(supplier);
-            saveData();
-            
-            e.target.reset();
-            updateSuppliersList();
-            updateDashboard();
-            
-            showNotification('✅ Fornecedor cadastrado!', 'success');
-        }
-
-        // Trip Management
-        async function handleTripSubmit(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const tripData = {
-                clienteId: parseInt(formData.get('clienteId')),
-                data: formData.get('data'),
-                km: parseFloat(formData.get('km')),
-                receita: parseFloat(formData.get('receita')),
-                combustivel: parseFloat(formData.get('combustivel')),
-                custos: parseFloat(formData.get('custos')) || 0
-            };
-            
-            if (!tripData.clienteId) {
-                showNotification('❌ Selecione um cliente', 'error');
+            if (data.clients.length === 0) {
+                container.innerHTML = `
+                    <p style="text-align: center; color: #666; padding: 2rem;">
+                        <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+                        Nenhum cliente cadastrado ainda
+                    </p>
+                `;
                 return;
             }
             
-            const custoTotal = tripData.combustivel + tripData.custos;
-            const lucro = tripData.receita - custoTotal;
+            container.innerHTML = data.clients.map(client => `
+                <div class="item">
+                    <div class="item-info">
+                        <h4>${client.name}</h4>
+                        <p>${client.city || 'Cidade não informada'} | ${client.phone || 'Telefone não informado'}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-danger" onclick="deleteClient(${client.id})">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateClientSelect() {
+            const select = document.getElementById('tripClient');
+            
+            select.innerHTML = '<option value="">Selecione um cliente...</option>' +
+                data.clients.map(client => `<option value="${client.id}">${client.name}</option>`).join('');
+        }
+
+        function deleteClient(id) {
+            if (confirm('Tem certeza que deseja excluir este cliente?')) {
+                data.clients = data.clients.filter(c => c.id !== id);
+                saveData();
+                updateClientsList();
+                updateClientSelect();
+                updateStats();
+                showNotification('✅ Cliente excluído!', 'success');
+            }
+        }
+
+        // VIAGENS
+        function handleTripSubmit(e) {
+            e.preventDefault();
+            
+            const clientId = parseInt(document.getElementById('tripClient').value);
+            const revenue = parseFloat(document.getElementById('tripRevenue').value);
+            const fuel = parseFloat(document.getElementById('tripFuel').value);
+            const costs = parseFloat(document.getElementById('tripCosts').value) || 0;
+            
+            const totalCosts = fuel + costs;
+            const profit = revenue - totalCosts;
             
             const trip = {
                 id: Date.now(),
-                ...tripData,
-                custoTotal,
-                lucro,
-                userId: currentUser.id,
+                clientId: clientId,
+                date: document.getElementById('tripDate').value,
+                origin: document.getElementById('tripOrigin').value,
+                destination: document.getElementById('tripDestination').value,
+                km: parseFloat(document.getElementById('tripKm').value),
+                revenue: revenue,
+                fuel: fuel,
+                costs: costs,
+                totalCosts: totalCosts,
+                profit: profit,
                 createdAt: new Date().toISOString()
             };
             
             data.trips.push(trip);
             saveData();
             
-            e.target.reset();
-            setDefaultDate();
+            // Limpar formulário
+            document.getElementById('tripForm').reset();
+            setTodayDate();
+            
             updateTripsList();
-            updateDashboard();
+            updateStats();
             
-            showNotification('✅ Viagem cadastrada!', 'success');
-        }
-
-        // Update Functions
-        function updateDashboard() {
-            const userClients = data.clients.filter(c => c.userId === currentUser.id);
-            const userSuppliers = data.suppliers.filter(s => s.userId === currentUser.id);
-            const userTrips = data.trips.filter(t => t.userId === currentUser.id);
-            
-            const totalReceita = userTrips.reduce((sum, trip) => sum + trip.receita, 0);
-            
-            document.getElementById('totalClientes').textContent = userClients.length;
-            document.getElementById('totalFornecedores').textContent = userSuppliers.length;
-            document.getElementById('totalViagens').textContent = userTrips.length;
-            document.getElementById('totalReceita').textContent = `R$ ${totalReceita.toFixed(2)}`;
-            
-            // Settings
-            document.getElementById('settingsClients').textContent = userClients.length;
-            document.getElementById('settingsSuppliers').textContent = userSuppliers.length;
-            document.getElementById('settingsTrips').textContent = userTrips.length;
-        }
-
-        function updateClientsList() {
-            const container = document.getElementById('clientsList');
-            const userClients = data.clients.filter(c => c.userId === currentUser.id);
-            
-            document.getElementById('clientsCount').textContent = userClients.length;
-            
-            if (userClients.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>Nenhum cliente cadastrado</h3>
-                        <p>Cadastre seu primeiro cliente usando o formulário acima</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = userClients.map(client => `
-                <div class="item">
-                    <div class="item-info">
-                        <div class="item-name">${client.nome}</div>
-                        <div class="item-details">
-                            ${client.contato || 'Sem contato'} | ${client.telefone || 'Sem telefone'}
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn btn-outline btn-sm" onclick="deleteItem('clients', ${client.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateSuppliersList() {
-            const container = document.getElementById('suppliersList');
-            const userSuppliers = data.suppliers.filter(s => s.userId === currentUser.id);
-            
-            document.getElementById('suppliersCount').textContent = userSuppliers.length;
-            
-            if (userSuppliers.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-truck-loading"></i>
-                        <h3>Nenhum fornecedor cadastrado</h3>
-                        <p>Cadastre seus fornecedores usando o formulário acima</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = userSuppliers.map(supplier => `
-                <div class="item">
-                    <div class="item-info">
-                        <div class="item-name">${supplier.nome}</div>
-                        <div class="item-details">
-                            ${supplier.tipo || 'Tipo não especificado'} | ${supplier.contato || 'Sem contato'}
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="btn btn-outline btn-sm" onclick="deleteItem('suppliers', ${supplier.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+            showNotification('✅ Viagem cadastrada com sucesso!', 'success');
         }
 
         function updateTripsList() {
             const container = document.getElementById('tripsList');
-            const userTrips = data.trips.filter(t => t.userId === currentUser.id);
+            const count = document.getElementById('tripsCount');
             
-            document.getElementById('tripsCount').textContent = userTrips.length;
+            count.textContent = data.trips.length;
             
-            if (userTrips.length === 0) {
+            if (data.trips.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-truck"></i>
-                        <h3>Nenhuma viagem cadastrada</h3>
-                        <p>Cadastre clientes primeiro, depois adicione viagens</p>
-                    </div>
+                    <p style="text-align: center; color: #666; padding: 2rem;">
+                        <i class="fas fa-truck" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+                        Nenhuma viagem cadastrada ainda
+                    </p>
                 `;
                 return;
             }
             
-            container.innerHTML = userTrips.map(trip => {
-                const client = data.clients.find(c => c.id === trip.clienteId);
-                const clientName = client ? client.nome : 'Cliente não encontrado';
-                const date = new Date(trip.data).toLocaleDateString('pt-BR');
+            container.innerHTML = data.trips.map(trip => {
+                const client = data.clients.find(c => c.id === trip.clientId);
+                const clientName = client ? client.name : 'Cliente não encontrado';
+                const date = new Date(trip.date).toLocaleDateString('pt-BR');
                 
                 return `
                     <div class="item">
                         <div class="item-info">
-                            <div class="item-name">${clientName} - ${date}</div>
-                            <div class="item-details">
-                                ${trip.km} km | Receita: R$ ${trip.receita.toFixed(2)} | Lucro: R$ ${trip.lucro.toFixed(2)}
-                            </div>
+                            <h4>${clientName} - ${date}</h4>
+                            <p>${trip.km} km | Receita: R$ ${trip.revenue.toFixed(2)} | Lucro: R$ ${trip.profit.toFixed(2)}</p>
                         </div>
-                        <div class="item-actions">
-                            <button class="btn btn-outline btn-sm" onclick="deleteItem('trips', ${trip.id})">
-                                <i class="fas fa-trash"></i>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-danger" onclick="deleteTrip(${trip.id})">
+                                <i class="fas fa-trash"></i> Excluir
                             </button>
                         </div>
                     </div>
@@ -1178,107 +853,154 @@
             }).join('');
         }
 
-        function updateClientSelect() {
-            const select = document.querySelector('select[name="clienteId"]');
-            const userClients = data.clients.filter(c => c.userId === currentUser.id);
+        function deleteTrip(id) {
+            if (confirm('Tem certeza que deseja excluir esta viagem?')) {
+                data.trips = data.trips.filter(t => t.id !== id);
+                saveData();
+                updateTripsList();
+                updateStats();
+                showNotification('✅ Viagem excluída!', 'success');
+            }
+        }
+
+        // ESTATÍSTICAS
+        function updateStats() {
+            const totalRevenue = data.trips.reduce((sum, trip) => sum + trip.revenue, 0);
+            const totalProfit = data.trips.reduce((sum, trip) => sum + trip.profit, 0);
+            const totalKm = data.trips.reduce((sum, trip) => sum + trip.km, 0);
+            const avgPerKm = totalKm > 0 ? totalRevenue / totalKm : 0;
+            const margin = totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0;
             
-            select.innerHTML = '<option value="">Selecione um cliente...</option>' +
-                userClients.map(client => `<option value="${client.id}">${client.nome}</option>`).join('');
+            // Dashboard
+            document.getElementById('totalClients').textContent = data.clients.length;
+            document.getElementById('totalTrips').textContent = data.trips.length;
+            document.getElementById('totalRevenue').textContent = `R$ ${totalRevenue.toFixed(2)}`;
+            document.getElementById('totalProfit').textContent = `R$ ${totalProfit.toFixed(2)}`;
+            
+            // Reports
+            document.getElementById('reportTotalTrips').textContent = data.trips.length;
+            document.getElementById('reportTotalKm').textContent = `${totalKm.toFixed(1)} km`;
+            document.getElementById('reportTotalRevenue').textContent = `R$ ${totalRevenue.toFixed(2)}`;
+            document.getElementById('reportTotalProfit').textContent = `R$ ${totalProfit.toFixed(2)}`;
+            document.getElementById('reportAvgPerKm').textContent = `R$ ${avgPerKm.toFixed(2)}/km`;
+            document.getElementById('reportMargin').textContent = `${margin.toFixed(1)}%`;
+        }
+
+        // NAVEGAÇÃO
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remover active de todos os botões
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostrar página selecionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Adicionar active ao botão clicado
+            event.target.classList.add('active');
         }
 
         function updateAllLists() {
             updateClientsList();
-            updateSuppliersList();
             updateTripsList();
+            updateStats();
         }
 
-        // Invite System
-        function generateInvite() {
-            if (currentUser.role !== 'admin') {
-                showNotification('❌ Apenas administradores podem gerar convites', 'error');
+        // EXPORTAÇÃO
+        function exportClients() {
+            if (data.clients.length === 0) {
+                showNotification('❌ Nenhum cliente para exportar', 'error');
                 return;
             }
-
-            const role = document.getElementById('inviteRole').value;
-            const code = 'INV-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias
             
-            data.invites[code] = {
-                code,
-                role,
-                createdBy: currentUser.id,
-                createdAt: new Date().toISOString(),
-                expiresAt: expiresAt.toISOString()
-            };
-            
-            saveData();
-            
-            const link = `${window.location.origin}${window.location.pathname}?invite=${code}`;
-            document.getElementById('inviteLink').value = link;
-            document.getElementById('inviteResult').classList.remove('hidden');
-            
-            showNotification('🔗 Convite gerado com sucesso!', 'success');
-        }
-
-        function copyInvite() {
-            const input = document.getElementById('inviteLink');
-            input.select();
-            navigator.clipboard.writeText(input.value).then(() => {
-                showNotification('📋 Link copiado!', 'success');
+            let csv = 'Nome,Telefone,Email,Cidade\n';
+            data.clients.forEach(client => {
+                csv += `"${client.name}","${client.phone || ''}","${client.email || ''}","${client.city || ''}"\n`;
             });
+            
+            showExportData(csv);
         }
 
-        // Utility Functions
-        function deleteItem(type, id) {
-            const itemName = type === 'clients' ? 'cliente' : type === 'suppliers' ? 'fornecedor' : 'viagem';
+        function exportTrips() {
+            if (data.trips.length === 0) {
+                showNotification('❌ Nenhuma viagem para exportar', 'error');
+                return;
+            }
             
-            if (confirm(`Tem certeza que deseja excluir este ${itemName}?`)) {
-                data[type] = data[type].filter(item => item.id !== id);
-                saveData();
-                updateAllLists();
-                updateClientSelect();
-                updateDashboard();
-                showNotification(`✅ ${itemName.charAt(0).toUpperCase() + itemName.slice(1)} excluído!`, 'success');
+            let csv = 'Data,Cliente,Origem,Destino,KM,Receita,Combustível,Outros Custos,Lucro\n';
+            data.trips.forEach(trip => {
+                const client = data.clients.find(c => c.id === trip.clientId);
+                const clientName = client ? client.name : 'Cliente não encontrado';
+                csv += `"${trip.date}","${clientName}","${trip.origin || ''}","${trip.destination || ''}",${trip.km},${trip.revenue},${trip.fuel},${trip.costs},${trip.profit}\n`;
+            });
+            
+            showExportData(csv);
+        }
+
+        function exportAll() {
+            if (data.clients.length === 0 && data.trips.length === 0) {
+                showNotification('❌ Nenhum dado para exportar', 'error');
+                return;
+            }
+            
+            let output = '=== RELATÓRIO COMPLETO - TRANSCS PRO ===\n\n';
+            
+            // Resumo
+            const totalRevenue = data.trips.reduce((sum, trip) => sum + trip.revenue, 0);
+            const totalProfit = data.trips.reduce((sum, trip) => sum + trip.profit, 0);
+            const totalKm = data.trips.reduce((sum, trip) => sum + trip.km, 0);
+            
+            output += 'RESUMO GERAL:\n';
+            output += `Clientes: ${data.clients.length}\n`;
+            output += `Viagens: ${data.trips.length}\n`;
+            output += `Receita Total: R$ ${totalRevenue.toFixed(2)}\n`;
+            output += `Lucro Total: R$ ${totalProfit.toFixed(2)}\n`;
+            output += `KM Total: ${totalKm.toFixed(1)}\n\n`;
+            
+            // Clientes
+            if (data.clients.length > 0) {
+                output += 'CLIENTES:\n';
+                data.clients.forEach(client => {
+                    output += `- ${client.name} | ${client.city || 'N/A'} | ${client.phone || 'N/A'}\n`;
+                });
+                output += '\n';
+            }
+            
+            // Viagens
+            if (data.trips.length > 0) {
+                output += 'VIAGENS:\n';
+                data.trips.forEach(trip => {
+                    const client = data.clients.find(c => c.id === trip.clientId);
+                    const clientName = client ? client.name : 'Cliente não encontrado';
+                    output += `- ${trip.date} | ${clientName} | ${trip.km} km | R$ ${trip.revenue.toFixed(2)} | Lucro: R$ ${trip.profit.toFixed(2)}\n`;
+                });
+            }
+            
+            showExportData(output);
+        }
+
+        function showExportData(data) {
+            const textarea = document.getElementById('exportData');
+            textarea.value = data;
+            textarea.style.display = 'block';
+            textarea.select();
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(data).then(() => {
+                    showNotification('📋 Dados copiados para a área de transferência!', 'success');
+                });
+            } else {
+                showNotification('📄 Dados exibidos abaixo. Selecione e copie manualmente.', 'success');
             }
         }
 
-        function showTab(tabName) {
-            // Hide all content
-            document.querySelectorAll('.content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-
-        function showClientForm() {
-            document.getElementById('clientFormCard').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showSupplierForm() {
-            document.getElementById('supplierFormCard').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showLogin() {
-            document.getElementById('loginForm').classList.remove('hidden');
-            document.getElementById('registerForm').classList.add('hidden');
-        }
-
-        function showRegister() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-        }
-
-        function showNotification(message, type = 'success', duration = 4000) {
+        // NOTIFICAÇÕES
+        function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             const text = document.getElementById('notificationText');
             
@@ -1288,17 +1010,10 @@
             
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, duration);
+            }, 4000);
         }
 
-        function logout() {
-            showNotification('👋 Até logo!', 'success');
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-        }
-
-        // Initialize when page loads
+        // INICIALIZAR QUANDO A PÁGINA CARREGAR
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
