@@ -4,31 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TransCS Pro Ultimate v3.0 - Sistema Completo de Fretes</title>
-    <meta name="description" content="Sistema profissional para gerenciamento de fretes com dashboard executivo, relatórios avançados e calculadoras inteligentes.">
-    <meta name="keywords" content="gestão de fretes, transportadora, logística, dashboard, relatórios">
-    <meta name="author" content="TransCS Pro">
+    <meta name="description" content="Sistema profissional para gerenciamento de fretes com autenticação e controle de acesso.">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://juniorcarandina.github.io/transcs-v4/">
-    <meta property="og:title" content="TransCS Pro Ultimate v3.0">
-    <meta property="og:description" content="Sistema Completo de Gerenciamento de Fretes">
-    <meta property="og:image" content="https://juniorcarandina.github.io/transcs-v4/assets/preview.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://juniorcarandina.github.io/transcs-v4/">
-    <meta property="twitter:title" content="TransCS Pro Ultimate v3.0">
-    <meta property="twitter:description" content="Sistema Completo de Gerenciamento de Fretes">
-    <meta property="twitter:image" content="https://juniorcarandina.github.io/transcs-v4/assets/preview.png">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzI1NjNlYiIvPgo8cGF0aCBkPSJNOCA5SDE2VjEwSDhWOVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik04IDEySDI0VjEzSDhWMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOCAxNUgxNlYxNkg4VjE1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTggMThIMjRWMTlIOFYxOFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik04IDIxSDE2VjIySDhWMjFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
-    
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Apenas Font Awesome - testado e funcionando -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -56,7 +34,6 @@
             --border-radius: 12px;
             --border-radius-lg: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-fast: all 0.15s ease;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
@@ -96,7 +73,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 3rem;
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
             backdrop-filter: blur(20px);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -158,16 +135,8 @@
             font-weight: 500;
         }
 
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
         .form-group {
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
@@ -180,13 +149,8 @@
             gap: 0.5rem;
         }
 
-        .form-label.required::after {
-            content: '*';
-            color: var(--danger);
-            font-weight: 700;
-        }
-
-        .form-input, .form-select, .form-textarea {
+        .form-input {
+            width: 100%;
             padding: 1rem 1.25rem;
             border: 2px solid var(--gray-light);
             border-radius: var(--border-radius);
@@ -194,24 +158,13 @@
             transition: var(--transition);
             background: var(--white);
             font-family: inherit;
-            position: relative;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
             transform: translateY(-1px);
-        }
-
-        .form-input.error, .form-select.error, .form-textarea.error {
-            border-color: var(--danger);
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-        }
-
-        .form-input.success, .form-select.success, .form-textarea.success {
-            border-color: var(--success);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .password-input-group {
@@ -238,15 +191,6 @@
             color: var(--dark);
         }
 
-        .form-error {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .btn {
             padding: 0.875rem 1.5rem;
             border: none;
@@ -264,30 +208,12 @@
             font-family: inherit;
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
         }
 
         .btn-primary {
@@ -301,17 +227,6 @@
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            color: var(--white);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-        }
-
         .btn-outline {
             background: transparent;
             border: 2px solid var(--primary);
@@ -323,47 +238,11 @@
             background: var(--primary);
             color: var(--white);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--gray);
-            box-shadow: none;
-        }
-
-        .btn-ghost:hover:not(:disabled) {
-            background: var(--gray-light);
-            color: var(--dark);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #dc2626);
-            color: var(--white);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-danger:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
         }
 
         .btn-sm {
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
-        }
-
-        .btn-lg {
-            padding: 1.25rem 2rem;
-            font-size: 1.1rem;
-        }
-
-        .w-full {
-            width: 100%;
-        }
-
-        .text-center {
-            text-align: center;
         }
 
         .login-options {
@@ -399,220 +278,6 @@
             text-decoration: underline;
         }
 
-        .login-footer {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--gray-light);
-        }
-
-        .switch-form {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .switch-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            margin-left: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .switch-link:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        .user-role-select {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .role-option {
-            padding: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--border-radius);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            background: var(--white);
-        }
-
-        .role-option:hover {
-            border-color: var(--primary);
-            background: rgba(37, 99, 235, 0.05);
-        }
-
-        .role-option.selected {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .role-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .role-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .role-desc {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        /* User Management Styles */
-        .users-panel {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--dark);
-        }
-
-        .users-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .users-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-card {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .user-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .user-details h4 {
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .user-details p {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-right: 1rem;
-        }
-
-        .status-active {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .status-blocked {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        /* Invite System */
-        .invite-form {
-            background: var(--gray-light);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-        }
-
-        .invite-link {
-            background: var(--white);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--gray-light);
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin: 1rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .copy-btn {
-            padding: 0.5rem 1rem;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-dark);
-        }
-
         .app-container {
             max-width: 1600px;
             margin: 0 auto;
@@ -624,35 +289,17 @@
             flex-direction: column;
         }
 
-        /* Enhanced Header */
         .header {
             background: linear-gradient(135deg, var(--dark) 0%, var(--gray-dark) 100%);
             color: var(--white);
             padding: 2rem;
             position: relative;
             overflow: hidden;
-            z-index: 100;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: headerPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes headerPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
-            50% { transform: scale(1.1) rotate(180deg); opacity: 0.1; }
         }
 
         .header-content {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: 1fr auto;
             gap: 2rem;
             align-items: center;
             position: relative;
@@ -672,14 +319,13 @@
             gap: 1rem;
         }
 
-        .header-left .version-badge {
+        .version-badge {
             font-size: 0.75rem;
             background: var(--accent);
             color: var(--white);
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-weight: 600;
-            margin-left: 1rem;
             animation: pulse 2s infinite;
         }
 
@@ -687,13 +333,6 @@
             opacity: 0.9;
             font-size: 1.1rem;
             font-weight: 500;
-        }
-
-        .header-user {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.5rem;
         }
 
         .user-info-header {
@@ -732,6 +371,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            margin-top: 1rem;
         }
 
         .logout-btn:hover {
@@ -739,79 +379,6 @@
             border-color: var(--danger);
         }
 
-        .header-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .quick-stats {
-            display: flex;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .quick-stat {
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .quick-stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-light);
-        }
-
-        .quick-stat-label {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-top: 0.25rem;
-        }
-
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 1rem;
-        }
-
-        .user-panel {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem 1.5rem;
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: right;
-        }
-
-        .connection-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        .status-indicator.offline {
-            background: var(--danger);
-            animation: none;
-        }
-
-        /* Enhanced Navigation */
         .nav-container {
             background: var(--dark);
             border-bottom: 3px solid var(--primary);
@@ -824,12 +391,6 @@
         .nav-tabs {
             display: flex;
             overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
         }
 
         .nav-tab {
@@ -851,10 +412,6 @@
             white-space: nowrap;
         }
 
-        .nav-tab i {
-            font-size: 1.1rem;
-        }
-
         .nav-tab:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
@@ -866,31 +423,6 @@
             box-shadow: var(--shadow);
         }
 
-        .nav-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-light), var(--secondary));
-        }
-
-        .nav-tab .badge {
-            background: var(--danger);
-            color: var(--white);
-            font-size: 0.7rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            margin-left: 0.5rem;
-            min-width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Content Layout */
         .main-content {
             flex: 1;
             display: flex;
@@ -902,23 +434,11 @@
             padding: 2rem;
             flex: 1;
             background: var(--gray-light);
-            animation: slideIn 0.4s ease-out;
         }
 
         .content.active {
             display: flex;
             flex-direction: column;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .section-header {
@@ -939,13 +459,6 @@
             gap: 1rem;
         }
 
-        .section-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        /* Enhanced Cards */
         .card {
             background: var(--white);
             border-radius: var(--border-radius-lg);
@@ -953,7 +466,6 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
             overflow: hidden;
             transition: var(--transition);
-            position: relative;
         }
 
         .card:hover {
@@ -983,128 +495,6 @@
             padding: 2rem;
         }
 
-        .card-footer {
-            padding: 1rem 2rem;
-            background: var(--gray-light);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        /* Stats Grid Enhanced */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .stat-card.editable {
-            cursor: pointer;
-        }
-
-        .stat-card.editable:hover::after {
-            content: '✏️ Clique para editar';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--primary);
-            color: var(--white);
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .stat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            color: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .stat-icon.primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
-        .stat-icon.secondary { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
-        .stat-icon.accent { background: linear-gradient(135deg, var(--accent), #7c3aed); }
-        .stat-icon.warning { background: linear-gradient(135deg, var(--warning), #d97706); }
-        .stat-icon.danger { background: linear-gradient(135deg, var(--danger), #dc2626); }
-        .stat-icon.info { background: linear-gradient(135deg, var(--info), #0891b2); }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-change {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            margin-top: 0.75rem;
-            padding: 0.5rem;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        .stat-change.positive { 
-            color: var(--success); 
-            background: rgba(16, 185, 129, 0.1);
-        }
-        .stat-change.negative { 
-            color: var(--danger); 
-            background: rgba(239, 68, 68, 0.1);
-        }
-        .stat-change.neutral { 
-            color: var(--gray); 
-            background: rgba(107, 114, 128, 0.1);
-        }
-
-        /* Enhanced Alerts */
         .alert {
             padding: 1.25rem 1.5rem;
             border-radius: var(--border-radius);
@@ -1122,22 +512,16 @@
             border-left-color: var(--success);
         }
 
-        .alert-warning {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #92400e;
-            border-left-color: var(--warning);
-        }
-
         .alert-info {
             background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
             color: #1e40af;
             border-left-color: var(--info);
         }
 
-        .alert-danger {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            color: #991b1b;
-            border-left-color: var(--danger);
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border-left-color: var(--warning);
         }
 
         .alert-icon {
@@ -1154,28 +538,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .alert-dismissible {
-            position: relative;
-            padding-right: 3rem;
-        }
-
-        .alert-dismiss {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        .alert-dismiss:hover {
-            opacity: 1;
-        }
-
-        /* Enhanced Notifications */
         .notification {
             position: fixed;
             top: 2rem;
@@ -1192,7 +554,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            backdrop-filter: blur(10px);
         }
 
         .notification.show {
@@ -1230,239 +591,72 @@
             font-size: 0.9rem;
         }
 
-        /* Enhanced Loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: var(--white);
-            backdrop-filter: blur(5px);
+        .hidden {
+            display: none !important;
         }
 
-        .loading.hidden {
-            display: none;
+        .text-center {
+            text-align: center;
         }
 
-        .spinner {
-            width: 64px;
-            height: 64px;
-            border: 6px solid rgba(255, 255, 255, 0.3);
-            border-top: 6px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .p-8 {
+            padding: 2rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-6 {
             margin-bottom: 1.5rem;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .text-6xl {
+            font-size: 3.75rem;
         }
 
-        .loading-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .loading-subtext {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Enhanced Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1500;
-            backdrop-filter: blur(5px);
-            padding: 2rem;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-xl);
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .modal.show .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            padding: 2rem 2rem 1rem;
-            border-bottom: 1px solid var(--gray-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
+        .text-2xl {
             font-size: 1.5rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .font-bold {
             font-weight: 700;
-            color: var(--dark);
         }
 
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
+        .text-success {
+            color: var(--success);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+
+        .text-gray {
             color: var(--gray);
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: var(--transition);
         }
 
-        .modal-close:hover {
-            background: var(--gray-light);
-            color: var(--dark);
+        .debug-panel {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
         }
 
-        .modal-body {
-            padding: 2rem;
+        .debug-panel p {
+            font-size: 0.85rem;
+            color: #92400e;
+            margin-bottom: 1rem;
         }
 
-        .modal-footer {
-            padding: 1rem 2rem 2rem;
+        .debug-buttons {
             display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        /* Utility Classes */
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .text-left { text-align: left; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
-        .text-info { color: var(--info); }
-        .text-primary { color: var(--primary); }
-        .text-gray { color: var(--gray); }
-        .text-dark { color: var(--dark); }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-medium { font-weight: 500; }
-        .font-normal { font-weight: 400; }
-        .text-xs { font-size: 0.75rem; }
-        .text-sm { font-size: 0.875rem; }
-        .text-base { font-size: 1rem; }
-        .text-lg { font-size: 1.125rem; }
-        .text-xl { font-size: 1.25rem; }
-        .text-2xl { font-size: 1.5rem; }
-        .text-3xl { font-size: 1.875rem; }
-        .mb-0 { margin-bottom: 0; }
-        .mb-1 { margin-bottom: 0.25rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 0.75rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mt-0 { margin-top: 0; }
-        .mt-1 { margin-top: 0.25rem; }
-        .mt-2 { margin-top: 0.5rem; }
-        .mt-3 { margin-top: 0.75rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mt-6 { margin-top: 1.5rem; }
-        .mt-8 { margin-top: 2rem; }
-        .p-0 { padding: 0; }
-        .p-1 { padding: 0.25rem; }
-        .p-2 { padding: 0.5rem; }
-        .p-3 { padding: 0.75rem; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .p-8 { padding: 2rem; }
-        .hidden { display: none !important; }
-        .block { display: block !important; }
-        .inline { display: inline !important; }
-        .inline-block { display: inline-block !important; }
-        .flex { display: flex !important; }
-        .inline-flex { display: inline-flex !important; }
-        .grid { display: grid !important; }
-        .items-start { align-items: flex-start; }
-        .items-center { align-items: center; }
-        .items-end { align-items: flex-end; }
-        .justify-start { justify-content: flex-start; }
-        .justify-center { justify-content: center; }
-        .justify-end { justify-content: flex-end; }
-        .justify-between { justify-content: space-between; }
-        .justify-around { justify-content: space-around; }
-        .gap-1 { gap: 0.25rem; }
-        .gap-2 { gap: 0.5rem; }
-        .gap-3 { gap: 0.75rem; }
-        .gap-4 { gap: 1rem; }
-        .gap-6 { gap: 1.5rem; }
-        .gap-8 { gap: 2rem; }
-        .cursor-pointer { cursor: pointer; }
-        .cursor-not-allowed { cursor: not-allowed; }
-        .select-none { user-select: none; }
-        .rounded { border-radius: var(--border-radius); }
-        .rounded-lg { border-radius: var(--border-radius-lg); }
-        .shadow { box-shadow: var(--shadow); }
-        .shadow-lg { box-shadow: var(--shadow-lg); }
-        .shadow-xl { box-shadow: var(--shadow-xl); }
-        .border { border: 1px solid var(--gray-light); }
-        .border-primary { border-color: var(--primary); }
-        .border-success { border-color: var(--success); }
-        .border-danger { border-color: var(--danger); }
-        .border-warning { border-color: var(--warning); }
-        .bg-white { background-color: var(--white); }
-        .bg-gray { background-color: var(--gray-light); }
-        .bg-primary { background-color: var(--primary); }
-        .bg-success { background-color: var(--success); }
-        .bg-danger { background-color: var(--danger); }
-        .bg-warning { background-color: var(--warning); }
-        .opacity-50 { opacity: 0.5; }
-        .opacity-75 { opacity: 0.75; }
-        .hover\:opacity-100:hover { opacity: 1; }
-        .transition { transition: var(--transition); }
-        .transition-fast { transition: var(--transition-fast); }
-        .transform { transform: translateZ(0); }
-        .hover\:scale-105:hover { transform: scale(1.05); }
-        .hover\:translate-y-1:hover { transform: translateY(-0.25rem); }
-        .focus\:outline-none:focus { outline: none; }
-        .focus\:ring:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .disabled\:opacity-50:disabled { opacity: 0.5; }
-        .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
-
-        .space-y-3 > * + * { margin-top: 0.75rem; }
-        .space-y-4 > * + * { margin-top: 1rem; }
-
-        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         @keyframes bounce {
@@ -1471,20 +665,14 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .header-content {
-                grid-template-columns: 1fr auto auto;
-                gap: 1.5rem;
-            }
-
-            .header-center {
-                display: none;
-            }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
-            .login-container, .users-panel {
+            .login-container {
                 margin: 1rem;
                 padding: 2rem;
                 max-width: calc(100% - 2rem);
@@ -1506,65 +694,12 @@
                 gap: 0.5rem;
             }
 
-            .nav-tabs {
-                overflow-x: auto;
-                scrollbar-width: thin;
-            }
-
-            .nav-tab {
-                min-width: 140px;
-                font-size: 0.85rem;
-                padding: 1rem 1.5rem;
-            }
-
             .content {
                 padding: 1rem;
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .user-role-select {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-container, .users-panel {
-                padding: 1.5rem;
-            }
-
-            .header {
-                padding: 1rem;
-            }
-
-            .header-left h1 {
-                font-size: 1.75rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-tab {
-                font-size: 0.8rem;
-                padding: 0.875rem 1rem;
-            }
-
-            .btn {
-                padding: 0.75rem 1.25rem;
-                font-size: 0.9rem;
-            }
-
-            .btn-sm {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.8rem;
-            }
-
-            .card-body {
-                padding: 1.5rem;
+            .debug-buttons {
+                justify-content: center;
             }
         }
     </style>
@@ -1580,22 +715,21 @@
                     <p class="login-subtitle">Sistema Seguro de Gerenciamento de Fretes</p>
                 </div>
 
-                <!-- Login Form -->
-                <form id="loginForm" class="login-form">
+                <form id="loginForm">
                     <div class="form-group">
-                        <label class="form-label required">
+                        <label class="form-label">
                             <i class="fas fa-user"></i> Usuário
                         </label>
-                        <input type="text" class="form-input" name="username" required placeholder="Digite seu usuário">
+                        <input type="text" class="form-input" name="username" required placeholder="Digite seu usuário" value="admin">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label required">
+                        <label class="form-label">
                             <i class="fas fa-lock"></i> Senha
                         </label>
                         <div class="password-input-group">
-                            <input type="password" class="form-input" name="password" required placeholder="Digite sua senha">
-                            <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                            <input type="password" class="form-input" name="password" required placeholder="Digite sua senha" value="admin123">
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
@@ -1606,183 +740,34 @@
                             <input type="checkbox" class="checkbox" name="remember">
                             Lembrar de mim
                         </label>
-                        <a href="#" class="forgot-password" onclick="showForgotPassword()">Esqueci a senha</a>
+                        <a href="#" class="forgot-password">Esqueci a senha</a>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-full">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-sign-in-alt"></i> Entrar
                     </button>
-                </form>
-
-                <!-- Register Form (Hidden) -->
-                <form id="registerForm" class="login-form hidden">
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-user"></i> Nome Completo
-                        </label>
-                        <input type="text" class="form-input" name="fullName" required placeholder="Seu nome completo">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-envelope"></i> Email
-                        </label>
-                        <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-user-circle"></i> Usuário
-                        </label>
-                        <input type="text" class="form-input" name="newUsername" required placeholder="Digite um nome de usuário">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-lock"></i> Senha
-                        </label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input" name="newPassword" required placeholder="Digite uma senha forte">
-                            <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">
-                                <i class="fas fa-eye"></i>
+                    
+                    <!-- Status de Debug -->
+                    <div id="loginStatus" class="debug-panel">
+                        <p><strong>🔧 Status do Sistema:</strong></p>
+                        <div id="statusMessages">
+                            <div>⏳ Iniciando sistema...</div>
+                        </div>
+                        <div class="debug-buttons">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="debugCreateAdmin()">
+                                <i class="fas fa-tools"></i> Forçar Admin
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="showUsers()">
+                                <i class="fas fa-eye"></i> Ver Usuários
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="clearAll()">
+                                <i class="fas fa-trash"></i> Limpar Tudo
                             </button>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-lock"></i> Confirmar Senha
-                        </label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input" name="confirmPassword" required placeholder="Confirme sua senha">
-                            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-id-badge"></i> Tipo de Usuário
-                        </label>
-                        <div class="user-role-select">
-                            <div class="role-option" onclick="selectRole('admin')" data-role="admin">
-                                <i class="fas fa-crown role-icon"></i>
-                                <div class="role-title">Administrador</div>
-                                <div class="role-desc">Acesso total</div>
-                            </div>
-                            <div class="role-option selected" onclick="selectRole('user')" data-role="user">
-                                <i class="fas fa-user role-icon"></i>
-                                <div class="role-title">Usuário</div>
-                                <div class="role-desc">Acesso padrão</div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="role" value="user">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-key"></i> Código de Convite (opcional)
-                        </label>
-                        <input type="text" class="form-input" name="inviteCode" placeholder="Cole o código de convite aqui">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-full">
-                        <i class="fas fa-user-plus"></i> Criar Conta
-                    </button>
                 </form>
-
-                <!-- Forgot Password Form (Hidden) -->
-                <form id="forgotForm" class="login-form hidden">
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-envelope"></i> Email
-                        </label>
-                        <input type="email" class="form-input" name="resetEmail" required placeholder="Digite seu email">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-full">
-                        <i class="fas fa-paper-plane"></i> Enviar Link de Recuperação
-                    </button>
-                </form>
-
-                <div class="login-footer">
-                    <div id="loginFooterText" class="switch-form">
-                        Não tem uma conta?
-                        <a href="#" class="switch-link" onclick="switchToRegister()">Criar conta</a>
-                    </div>
-                    <div id="registerFooterText" class="switch-form hidden">
-                        Já tem uma conta?
-                        <a href="#" class="switch-link" onclick="switchToLogin()">Fazer login</a>
-                    </div>
-                    <div id="forgotFooterText" class="switch-form hidden">
-                        Lembrou da senha?
-                        <a href="#" class="switch-link" onclick="switchToLogin()">Voltar ao login</a>
-                    </div>
-                </div>
             </div>
         </div>
-    </div>
-
-    <!-- User Management Panel (Admin) -->
-    <div id="userManagementPanel" class="login-screen hidden">
-        <div class="users-panel">
-            <div class="users-header">
-                <h2 class="users-title">
-                    <i class="fas fa-users"></i>
-                    Gerenciamento de Usuários
-                </h2>
-                <div class="flex gap-2">
-                    <button class="btn btn-secondary" onclick="generateInviteLink()">
-                        <i class="fas fa-user-plus"></i> Gerar Convite
-                    </button>
-                    <button class="btn btn-outline" onclick="closeUserManagement()">
-                        <i class="fas fa-times"></i> Fechar
-                    </button>
-                </div>
-            </div>
-
-            <!-- Invite Form -->
-            <div class="invite-form">
-                <h3 class="font-semibold mb-3">🔗 Convidar Novos Usuários</h3>
-                <p class="text-sm text-gray mb-3">Gere um link de convite para permitir que novos usuários se cadastrem no sistema.</p>
-                
-                <div class="flex gap-2 mb-3">
-                    <select class="form-select" id="inviteRole">
-                        <option value="user">Usuário Padrão</option>
-                        <option value="admin">Administrador</option>
-                    </select>
-                    <button class="btn btn-primary" onclick="generateInviteLink()">
-                        <i class="fas fa-link"></i> Gerar Link
-                    </button>
-                </div>
-
-                <div id="inviteLinkContainer" class="hidden">
-                    <div class="invite-link">
-                        <span id="inviteLinkText"></span>
-                        <button class="copy-btn" onclick="copyInviteLink()">
-                            <i class="fas fa-copy"></i> Copiar
-                        </button>
-                    </div>
-                    <p class="text-xs text-gray mt-2">Este link expira em 7 dias. Compartilhe apenas com pessoas autorizadas.</p>
-                </div>
-            </div>
-
-            <!-- Users List -->
-            <div id="usersList">
-                <h3 class="font-semibold mb-4">👥 Usuários Cadastrados</h3>
-                <div id="usersContainer">
-                    <!-- Users will be populated here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading hidden">
-        <div class="spinner"></div>
-        <div class="loading-text">Carregando TransCS Pro Ultimate v3.0...</div>
-        <div class="loading-subtext">Sistema Completo de Gerenciamento de Fretes</div>
     </div>
 
     <!-- Notification Toast -->
@@ -1794,63 +779,8 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="editModalTitle">Editar Item</h3>
-                <button class="modal-close" onclick="closeEditModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <div id="editFormFields"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeEditModal()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveEdit()">
-                    <i class="fas fa-save"></i> Salvar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="confirmModalTitle">Confirmação</h3>
-                <button class="modal-close" onclick="closeConfirmModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="flex items-center gap-4">
-                    <div class="text-warning text-3xl">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <p id="confirmModalMessage">Tem certeza que deseja realizar esta ação?</p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeConfirmModal()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
-                <button type="button" class="btn btn-danger" id="confirmModalAction">
-                    <i class="fas fa-check"></i> Confirmar
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Main App -->
     <div id="appContainer" class="app-container hidden">
-        <!-- Enhanced Header -->
         <header class="header">
             <div class="header-content">
                 <div class="header-left">
@@ -1861,53 +791,22 @@
                     </h1>
                     <p>Sistema Completo de Gerenciamento de Fretes com IA</p>
                 </div>
-                <div class="header-center">
-                    <div class="quick-stats">
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="headerTotalTrips">0</div>
-                            <div class="quick-stat-label">Viagens</div>
-                        </div>
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="headerTotalRevenue">R$ 0</div>
-                            <div class="quick-stat-label">Receita</div>
-                        </div>
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="headerTotalProfit">R$ 0</div>
-                            <div class="quick-stat-label">Lucro</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-user">
+                <div class="header-right">
                     <div class="user-info-header">
                         <div>
                             <div><i class="fas fa-user"></i> <span id="currentUserName">Usuário</span></div>
-                            <div><i class="fas fa-id-badge"></i> <span id="currentUserRole">user</span></div>
+                            <div><i class="fas fa-id-badge"></i> <span id="currentUserRole">admin</span></div>
                             <div><i class="fas fa-calendar"></i> <span id="currentDate"></span></div>
                         </div>
-                        <div class="user-avatar-header" id="userAvatarHeader">U</div>
+                        <div class="user-avatar-header" id="userAvatarHeader">A</div>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-sm btn-outline" id="manageUsersBtn" onclick="openUserManagement()" style="display: none;">
-                            <i class="fas fa-users"></i> Usuários
-                        </button>
-                        <button class="logout-btn" onclick="logout()">
-                            <i class="fas fa-sign-out-alt"></i> Sair
-                        </button>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="user-panel">
-                        <div><i class="fas fa-clock"></i> <span id="currentTime"></span></div>
-                        <div class="connection-status">
-                            <div class="status-indicator" id="statusIndicator"></div>
-                            <span id="connectionStatus">Sistema Online</span>
-                        </div>
-                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
                 </div>
             </div>
         </header>
 
-        <!-- Enhanced Navigation -->
         <nav class="nav-container">
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="showTab('dashboard')">
@@ -1915,7 +814,6 @@
                 </button>
                 <button class="nav-tab" onclick="showTab('trips')">
                     <i class="fas fa-plus-circle"></i> Viagens
-                    <span class="badge" id="newTripsBadge" style="display: none;">0</span>
                 </button>
                 <button class="nav-tab" onclick="showTab('reports')">
                     <i class="fas fa-file-alt"></i> Relatórios
@@ -1923,19 +821,12 @@
                 <button class="nav-tab" onclick="showTab('financial')">
                     <i class="fas fa-dollar-sign"></i> Financeiro
                 </button>
-                <button class="nav-tab" onclick="showTab('analytics')">
-                    <i class="fas fa-chart-pie"></i> Analytics
-                </button>
-                <button class="nav-tab" onclick="showTab('tools')">
-                    <i class="fas fa-calculator"></i> Ferramentas
-                </button>
                 <button class="nav-tab" onclick="showTab('settings')">
                     <i class="fas fa-cog"></i> Configurações
                 </button>
             </div>
         </nav>
 
-        <!-- Main Content -->
         <main class="main-content">
             <!-- Dashboard Content -->
             <section id="dashboard" class="content active">
@@ -1944,110 +835,16 @@
                         <i class="fas fa-chart-line"></i>
                         Dashboard Executivo
                     </h2>
-                    <div class="section-actions">
-                        <button class="btn btn-secondary" onclick="refreshDashboard()">
-                            <i class="fas fa-sync-alt"></i> Atualizar
-                        </button>
-                        <button class="btn btn-primary" onclick="showTab('trips')">
-                            <i class="fas fa-plus"></i> Nova Viagem
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Security Alert for New Users -->
                 <div class="alert alert-success">
                     <i class="alert-icon fas fa-shield-alt"></i>
                     <div class="alert-content">
                         <div class="alert-title">🔒 Sistema Seguro Ativado!</div>
-                        <div>O TransCS Pro Ultimate v3.0 agora possui controle de acesso completo. Você está logado como <span class="font-bold" id="dashboardUserInfo">usuário</span>. Todos os dados são salvos de forma segura e isolada por usuário.</div>
+                        <div>O TransCS Pro Ultimate v3.0 agora possui controle de acesso completo. Você está logado como <span class="font-bold" id="dashboardUserInfo">Administrador</span>. Todos os dados são salvos de forma segura e isolada por usuário.</div>
                     </div>
                 </div>
 
-                <!-- Main Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card editable">
-                        <div class="stat-header">
-                            <div class="stat-icon primary">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="totalReceita">R$ 0,00</div>
-                        <div class="stat-label">Receita Total</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span id="receitaChange">+0%</span> vs mês anterior
-                        </div>
-                    </div>
-
-                    <div class="stat-card editable">
-                        <div class="stat-header">
-                            <div class="stat-icon secondary">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="totalLucro">R$ 0,00</div>
-                        <div class="stat-label">Lucro Total</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span id="lucroChange">+0%</span> vs mês anterior
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon accent">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="margemMedia">0%</div>
-                        <div class="stat-label">Margem Média</div>
-                        <div class="stat-change neutral">
-                            <span id="margemChange">Estável</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon info">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="totalViagens">0</div>
-                        <div class="stat-label">Total de Viagens</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-plus"></i>
-                            <span id="viagensChange">0</span> este mês
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon warning">
-                                <i class="fas fa-road"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="totalKm">0 km</div>
-                        <div class="stat-label">KM Rodados</div>
-                        <div class="stat-change neutral">
-                            <span id="kmMedio">R$ 0,00/km</span> média
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon danger">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="totalClientes">0</div>
-                        <div class="stat-label">Clientes Ativos</div>
-                        <div class="stat-change neutral">
-                            <span id="clienteTop">-</span> mais lucrativo
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts and additional content would go here -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -2063,7 +860,7 @@
                                 O TransCS Pro Ultimate v3.0 agora possui autenticação completa.<br>
                                 Comece adicionando suas viagens na aba "Viagens".
                             </p>
-                            <button class="btn btn-primary btn-lg" onclick="showTab('trips')">
+                            <button class="btn btn-primary" onclick="showTab('trips')">
                                 <i class="fas fa-plus"></i> Adicionar Primeira Viagem
                             </button>
                         </div>
@@ -2071,8 +868,7 @@
                 </div>
             </section>
 
-            <!-- Other content sections would continue here (trips, reports, etc.) -->
-            <!-- Simplified for this demonstration -->
+            <!-- Other sections -->
             <section id="trips" class="content">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -2101,7 +897,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center p-8">
-                            <i class="fas fa-chart-bar text-6xl text-secondary mb-4"></i>
+                            <i class="fas fa-chart-bar text-6xl text-success mb-4"></i>
                             <h3 class="text-2xl font-bold mb-4">Relatórios Seguros</h3>
                             <p class="text-gray">Relatórios personalizados para cada usuário.</p>
                         </div>
@@ -2127,42 +923,6 @@
                 </div>
             </section>
 
-            <section id="analytics" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-pie"></i>
-                        Analytics
-                    </h2>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center p-8">
-                            <i class="fas fa-brain text-6xl text-accent mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-4">Analytics Inteligente</h3>
-                            <p class="text-gray">Insights personalizados para cada usuário.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tools" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-calculator"></i>
-                        Ferramentas
-                    </h2>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center p-8">
-                            <i class="fas fa-tools text-6xl text-info mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-4">Calculadoras</h3>
-                            <p class="text-gray">Ferramentas de cálculo disponíveis.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section id="settings" class="content">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -2170,44 +930,6 @@
                         Configurações
                     </h2>
                 </div>
-                
-                <!-- User Settings -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user-cog"></i>
-                            Configurações da Conta
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="form-label">Nome de Usuário</label>
-                                <input type="text" class="form-input" id="settingsUsername" readonly>
-                            </div>
-                            <div>
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" id="settingsEmail" readonly>
-                            </div>
-                            <div>
-                                <label class="form-label">Tipo de Conta</label>
-                                <input type="text" class="form-input" id="settingsRole" readonly>
-                            </div>
-                            <div>
-                                <label class="form-label">Data de Criação</label>
-                                <input type="text" class="form-input" id="settingsCreated" readonly>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6">
-                            <button class="btn btn-primary" onclick="changePassword()">
-                                <i class="fas fa-key"></i> Alterar Senha
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Info -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -2223,25 +945,6 @@
                                 Sistema completo de gerenciamento de fretes com autenticação, controle de acesso e proteção de dados.
                             </div>
                         </div>
-                        
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <strong>Versão do Sistema:</strong><br>
-                                <span class="text-lg font-bold text-primary">v3.0.0</span>
-                            </div>
-                            <div>
-                                <strong>Status de Segurança:</strong><br>
-                                <span class="text-lg font-bold text-success">🔒 Protegido</span>
-                            </div>
-                            <div>
-                                <strong>Usuários Cadastrados:</strong><br>
-                                <span class="text-lg font-bold text-info" id="totalUsers">0</span>
-                            </div>
-                            <div>
-                                <strong>Sessão Ativa:</strong><br>
-                                <span class="text-lg font-bold text-secondary">✅ Online</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -2253,104 +956,71 @@
         let authSystem;
         let currentUser = null;
 
-        // Authentication System Class
-        class AuthenticationSystem {
+        // Simple Authentication System - Standalone
+        class SimpleAuth {
             constructor() {
-                this.users = this.loadFromStorage('users', []);
+                this.users = this.loadUsers();
                 this.currentUser = null;
-                this.inviteCodes = this.loadFromStorage('inviteCodes', {});
-                this.sessions = this.loadFromStorage('sessions', {});
                 
+                this.updateStatus('🔄 Sistema inicializado');
                 this.init();
             }
 
             init() {
-                // Check if there's a saved session
-                const savedSession = localStorage.getItem('currentSession');
-                if (savedSession) {
-                    const sessionData = JSON.parse(savedSession);
-                    if (this.validateSession(sessionData)) {
-                        this.loginUser(sessionData.userId, true);
-                        return;
-                    }
-                }
-
-                // Create admin user if no users exist
-                if (this.users.length === 0) {
-                    this.createDefaultAdmin();
-                }
-
-                this.showLoginScreen();
-                this.setupEventListeners();
+                this.updateStatus('🔍 Verificando usuários existentes...');
+                
+                // Always ensure admin exists
+                this.ensureAdminExists();
+                
+                // Setup form listener
+                this.setupLoginForm();
+                
+                this.updateStatus('✅ Sistema pronto! Use: admin / admin123');
             }
 
-            createDefaultAdmin() {
+            ensureAdminExists() {
+                const adminExists = this.users.find(u => u.username === 'admin');
+                
+                if (!adminExists) {
+                    this.updateStatus('🔨 Criando usuário admin...');
+                    this.createAdmin();
+                } else {
+                    this.updateStatus('👑 Usuário admin encontrado!');
+                }
+            }
+
+            createAdmin() {
                 const adminUser = {
                     id: Date.now(),
                     username: 'admin',
                     password: this.hashPassword('admin123'),
-                    email: 'admin@transcs.com',
                     fullName: 'Administrador',
                     role: 'admin',
-                    status: 'active',
-                    createdAt: new Date().toISOString(),
-                    lastLogin: null
+                    email: 'admin@transcs.com',
+                    createdAt: new Date().toISOString()
                 };
 
                 this.users.push(adminUser);
-                this.saveToStorage('users', this.users);
+                this.saveUsers();
                 
-                console.log('👑 Usuário admin criado:');
-                console.log('Usuário: admin');
-                console.log('Senha: admin123');
+                this.updateStatus('✅ Admin criado: admin / admin123');
+                console.log('👑 Admin criado:', adminUser);
             }
 
-            setupEventListeners() {
-                // Login form
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
+            setupLoginForm() {
+                const form = document.getElementById('loginForm');
+                form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     this.handleLogin(e);
                 });
-
-                // Register form
-                document.getElementById('registerForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleRegister(e);
-                });
-
-                // Forgot password form
-                document.getElementById('forgotForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleForgotPassword(e);
-                });
-
-                // Check for invite code in URL
-                this.checkInviteCode();
-            }
-
-            checkInviteCode() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const inviteCode = urlParams.get('invite');
-                
-                if (inviteCode) {
-                    const inviteData = this.inviteCodes[inviteCode];
-                    if (inviteData && new Date(inviteData.expiresAt) > new Date()) {
-                        switchToRegister();
-                        document.querySelector('input[name="inviteCode"]').value = inviteCode;
-                        document.querySelector('input[name="role"]').value = inviteData.role;
-                        selectRole(inviteData.role);
-                        this.showNotification('🎉 Convite válido! Complete seu cadastro abaixo.', 'success');
-                    } else {
-                        this.showNotification('❌ Código de convite inválido ou expirado.', 'error');
-                    }
-                }
             }
 
             async handleLogin(e) {
                 const formData = new FormData(e.target);
                 const username = formData.get('username');
                 const password = formData.get('password');
-                const remember = formData.get('remember');
+
+                this.updateStatus('🔐 Verificando credenciais...');
 
                 const submitBtn = e.target.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
@@ -2359,7 +1029,8 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
 
                 try {
-                    await this.simulateNetworkDelay();
+                    // Small delay for UX
+                    await new Promise(resolve => setTimeout(resolve, 500));
 
                     const user = this.users.find(u => u.username === username);
                     
@@ -2367,28 +1038,15 @@
                         throw new Error('Usuário não encontrado');
                     }
 
-                    if (user.status === 'blocked') {
-                        throw new Error('Usuário bloqueado. Entre em contato com o administrador.');
-                    }
-
                     if (!this.verifyPassword(password, user.password)) {
                         throw new Error('Senha incorreta');
                     }
 
-                    // Update last login
-                    user.lastLogin = new Date().toISOString();
-                    this.saveToStorage('users', this.users);
-
-                    // Create session
-                    const sessionId = this.createSession(user.id, remember);
-                    
-                    this.showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
-                    
-                    setTimeout(() => {
-                        this.loginUser(user.id);
-                    }, 1000);
+                    this.updateStatus('✅ Login bem-sucedido!');
+                    this.loginUser(user);
 
                 } catch (error) {
+                    this.updateStatus('❌ Erro: ' + error.message);
                     this.showNotification(error.message, 'error');
                 } finally {
                     submitBtn.disabled = false;
@@ -2396,27 +1054,202 @@
                 }
             }
 
-            async handleRegister(e) {
-                const formData = new FormData(e.target);
-                const userData = {
-                    username: formData.get('newUsername'),
-                    password: formData.get('newPassword'),
-                    confirmPassword: formData.get('confirmPassword'),
-                    email: formData.get('email'),
-                    fullName: formData.get('fullName'),
-                    role: formData.get('role'),
-                    inviteCode: formData.get('inviteCode')
+            loginUser(user) {
+                this.currentUser = user;
+                currentUser = user;
+                
+                // Update last login
+                user.lastLogin = new Date().toISOString();
+                this.saveUsers();
+
+                // Save session
+                localStorage.setItem('transcs_session', JSON.stringify({
+                    userId: user.id,
+                    timestamp: Date.now()
+                }));
+
+                this.showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
+                
+                setTimeout(() => {
+                    this.showApp();
+                }, 1000);
+            }
+
+            showApp() {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appContainer').classList.remove('hidden');
+                
+                // Update user info in header
+                document.getElementById('currentUserName').textContent = this.currentUser.fullName;
+                document.getElementById('currentUserRole').textContent = this.currentUser.role === 'admin' ? 'Administrador' : 'Usuário';
+                document.getElementById('userAvatarHeader').textContent = this.currentUser.fullName.charAt(0).toUpperCase();
+                document.getElementById('dashboardUserInfo').textContent = `${this.currentUser.fullName} (${this.currentUser.role})`;
+                document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
+            }
+
+            logout() {
+                localStorage.removeItem('transcs_session');
+                this.currentUser = null;
+                currentUser = null;
+                
+                this.showNotification('👋 Até logo!', 'info');
+                
+                setTimeout(() => {
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('appContainer').classList.add('hidden');
+                }, 1000);
+            }
+
+            // Utility methods
+            hashPassword(password) {
+                // Simple hash for demo
+                return btoa(password + 'transcs_salt').split('').reverse().join('');
+            }
+
+            verifyPassword(password, hash) {
+                return this.hashPassword(password) === hash;
+            }
+
+            loadUsers() {
+                try {
+                    const data = localStorage.getItem('transcs_users');
+                    return data ? JSON.parse(data) : [];
+                } catch (error) {
+                    console.error('Erro ao carregar usuários:', error);
+                    return [];
+                }
+            }
+
+            saveUsers() {
+                try {
+                    localStorage.setItem('transcs_users', JSON.stringify(this.users));
+                } catch (error) {
+                    console.error('Erro ao salvar usuários:', error);
+                }
+            }
+
+            updateStatus(message) {
+                const container = document.getElementById('statusMessages');
+                if (container) {
+                    container.innerHTML = `<div>${message}</div>`;
+                }
+                console.log(message);
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                const titleEl = document.getElementById('notificationTitle');
+                const messageEl = document.getElementById('notificationMessage');
+                
+                const titles = {
+                    success: 'Sucesso',
+                    error: 'Erro',
+                    warning: 'Atenção',
+                    info: 'Informação'
                 };
 
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
                 
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+                notification.className = `notification ${type}`;
+                notification.querySelector('.notification-icon').className = `notification-icon ${icons[type]}`;
+                titleEl.textContent = titles[type];
+                messageEl.textContent = message;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        }
 
-                try {
-                    await this.simulateNetworkDelay();
+        // Global helper functions
+        function togglePassword() {
+            const input = document.querySelector('input[name="password"]');
+            const button = document.querySelector('.password-toggle i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                button.className = 'fas fa-eye';
+            }
+        }
 
-                    // Validation
-                    if (userData.password !== userData.confirmPassword) {
-                        throw new Error('As sen
+        function debugCreateAdmin() {
+            authSystem.updateStatus('🔧 Forçando criação do admin...');
+            authSystem.createAdmin();
+            authSystem.updateStatus('✅ Admin criado! Tente fazer login.');
+        }
+
+        function showUsers() {
+            const users = JSON.parse(localStorage.getItem('transcs_users') || '[]');
+            console.log('👥 Usuários cadastrados:', users);
+            authSystem.updateStatus(`👥 ${users.length} usuário(s) encontrado(s) - veja o console (F12)`);
+        }
+
+        function clearAll() {
+            localStorage.clear();
+            authSystem.updateStatus('🗑️ Cache limpo! Recarregando...');
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        function logout() {
+            if (authSystem) {
+                authSystem.logout();
+            }
+        }
+
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            const content = document.getElementById(tabName);
+            if (content) {
+                content.classList.add('active');
+            }
+            
+            // Add active class to clicked tab
+            const activeTab = [...document.querySelectorAll('.nav-tab')].find(tab => 
+                tab.getAttribute('onclick').includes(tabName));
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+        // Initialize system when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌟 DOM carregado, inicializando TransCS Pro Ultimate v3.0...');
+            
+            try {
+                authSystem = new SimpleAuth();
+                console.log('✅ Sistema inicializado com sucesso!');
+            } catch (error) {
+                console.error('💥 Erro ao inicializar:', error);
+                alert('Erro ao inicializar sistema! Verifique o console (F12).');
+            }
+        });
+
+        // Backup initialization
+        window.addEventListener('load', function() {
+            if (!authSystem) {
+                console.log('🔄 Inicialização backup...');
+                authSystem = new SimpleAuth();
+            }
+        });
+    </script>
+</body>
+</html>
