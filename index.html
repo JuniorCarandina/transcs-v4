@@ -50,7 +50,7 @@
             line-height: 1.6;
         }
 
-        /* Enhanced Login Screen */
+        /* Login Screen */
         .login-screen {
             position: fixed;
             top: 0;
@@ -100,7 +100,7 @@
             z-index: 2;
         }
 
-        /* Enhanced Logo */
+        /* Logo */
         .brand-logo {
             text-align: center;
             margin-bottom: 2rem;
@@ -115,10 +115,6 @@
             border-radius: 20px;
             margin-bottom: 1rem;
             box-shadow: var(--shadow-lg);
-        }
-
-        .logo-svg {
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
 
         .brand-title {
@@ -148,7 +144,7 @@
             display: inline-block;
         }
 
-        /* Enhanced Form Styles */
+        /* Forms */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -205,7 +201,7 @@
             color: var(--dark);
         }
 
-        /* Enhanced Buttons */
+        /* Buttons */
         .btn {
             padding: 1rem 1.5rem;
             border: none;
@@ -287,7 +283,7 @@
             flex-direction: column;
         }
 
-        /* Enhanced Header */
+        /* Header */
         .header {
             background: var(--gradient-primary);
             color: var(--white);
@@ -407,7 +403,7 @@
             background: rgba(220, 38, 38, 0.4);
         }
 
-        /* Enhanced Navigation */
+        /* Navigation */
         .nav-container {
             background: var(--dark);
             border-bottom: 3px solid var(--primary);
@@ -467,7 +463,7 @@
             background: var(--secondary);
         }
 
-        /* Content Layout */
+        /* Content */
         .main-content {
             flex: 1;
             display: flex;
@@ -510,7 +506,7 @@
             align-items: center;
         }
 
-        /* Enhanced Cards */
+        /* Cards */
         .card {
             background: var(--white);
             border-radius: var(--border-radius-lg);
@@ -548,7 +544,7 @@
             padding: 2rem;
         }
 
-        /* Enhanced Stats */
+        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -646,7 +642,7 @@
             background: rgba(107, 114, 128, 0.1);
         }
 
-        /* Enhanced Alerts */
+        /* Alerts */
         .alert {
             padding: 1.5rem;
             border-radius: var(--border-radius);
@@ -697,7 +693,7 @@
             font-size: 1.1rem;
         }
 
-        /* Enhanced Notifications */
+        /* Notifications */
         .notification {
             position: fixed;
             top: 2rem;
@@ -763,43 +759,9 @@
         .form-grid-3 { grid-template-columns: repeat(3, 1fr); }
         .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-        @media (max-width: 768px) {
-            .form-grid-2, .form-grid-3, .form-grid-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Enhanced Table */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .data-table th {
-            background: var(--gray-light);
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .data-table tbody tr:hover {
-            background: var(--gray-light);
-        }
-
         /* Utility Classes */
         .hidden { display: none !important; }
         .text-center { text-align: center; }
-        .text-right { text-align: right; }
         .text-success { color: var(--success); }
         .text-danger { color: var(--danger); }
         .text-warning { color: var(--warning); }
@@ -813,15 +775,10 @@
         .text-lg { font-size: 1.125rem; }
         .text-xl { font-size: 1.25rem; }
         .text-2xl { font-size: 1.5rem; }
-        .text-3xl { font-size: 1.875rem; }
-        .text-4xl { font-size: 2.25rem; }
         .text-6xl { font-size: 3.75rem; }
         .mb-2 { margin-bottom: 0.5rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mt-6 { margin-top: 1.5rem; }
         .p-4 { padding: 1rem; }
         .p-6 { padding: 1.5rem; }
         .p-8 { padding: 2rem; }
@@ -833,7 +790,35 @@
         .gap-4 { gap: 1rem; }
         .w-full { width: 100%; }
 
-        /* Responsive Design */
+        /* Debug Panel */
+        .debug-panel {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--info);
+        }
+
+        .debug-panel p {
+            font-size: 0.85rem;
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .debug-messages {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .debug-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
         @media (max-width: 1024px) {
             .header-content {
                 grid-template-columns: 1fr;
@@ -886,6 +871,10 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .form-grid-2, .form-grid-3, .form-grid-4 {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -907,37 +896,29 @@
     </style>
 </head>
 <body>
+    <!-- Debug Console -->
+    <div id="debugConsole" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; font-size: 12px; z-index: 9999; max-width: 300px; display: none;">
+        <div id="debugMessages"></div>
+    </div>
+
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen">
         <div class="login-container">
             <div class="login-content">
                 <div class="brand-logo">
                     <div class="logo-container">
-                        <svg class="logo-svg" width="100" height="50" viewBox="0 0 200 100">
+                        <svg width="100" height="50" viewBox="0 0 200 100">
                             <defs>
                                 <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
                                     <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
                                 </linearGradient>
-                                <filter id="glow">
-                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                                    <feMerge> 
-                                        <feMergeNode in="coloredBlur"/>
-                                        <feMergeNode in="SourceGraphic"/>
-                                    </feMerge>
-                                </filter>
                             </defs>
-                            
-                            <!-- Main Triangle -->
-                            <path d="M20 70 L50 20 L80 70 Z" fill="url(#logoGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="2" filter="url(#glow)"/>
-                            
-                            <!-- Inner Lines -->
+                            <path d="M20 70 L50 20 L80 70 Z" fill="url(#logoGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
                             <path d="M30 55 L70 55" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
                             <path d="M35 45 L65 45" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"/>
                             <path d="M40 35 L60 35" stroke="rgba(255,255,255,0.5)" stroke-width="1" stroke-linecap="round"/>
-                            
-                            <!-- TransCS Text -->
-                            <text x="100" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="white" filter="url(#glow)">TransCS</text>
+                            <text x="100" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="white">TransCS</text>
                             <text x="100" y="55" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="rgba(255,255,255,0.8)" letter-spacing="2px">SOLUÇÕES</text>
                             <text x="100" y="70" font-family="Arial, sans-serif" font-size="8" font-weight="300" fill="rgba(255,255,255,0.6)">LOGÍSTICA & FRETES</text>
                         </svg>
@@ -979,15 +960,22 @@
                         <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
                     </button>
                     
-                    <!-- Status Panel -->
-                    <div style="margin-top: 2rem; padding: 1rem; background: #f1f5f9; border-radius: 8px; border-left: 4px solid var(--info);">
-                        <p style="font-size: 0.85rem; color: var(--info); margin-bottom: 0.5rem; font-weight: 600;">
-                            <i class="fas fa-info-circle"></i> Sistema Inicializado
-                        </p>
-                        <div id="statusMessages" style="font-size: 0.8rem; color: var(--gray);">
+                    <!-- Debug Panel -->
+                    <div class="debug-panel">
+                        <p><i class="fas fa-info-circle"></i> Status do Sistema</p>
+                        <div id="statusMessages" class="debug-messages">
                             <div>✅ Credenciais: admin / admin123</div>
-                            <div>🔒 Sistema de autenticação ativo</div>
-                            <div>📊 Banco de dados pronto</div>
+                        </div>
+                        <div class="debug-buttons">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="toggleDebug()" style="width: auto;">
+                                <i class="fas fa-bug"></i> Debug
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="clearStorage()" style="width: auto;">
+                                <i class="fas fa-trash"></i> Limpar
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="testLogin()" style="width: auto;">
+                                <i class="fas fa-test-tube"></i> Teste
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -1006,7 +994,7 @@
 
     <!-- Main App -->
     <div id="appContainer" class="app-container hidden">
-        <!-- Enhanced Header -->
+        <!-- Header -->
         <header class="header">
             <div class="header-content">
                 <div class="header-left">
@@ -1048,7 +1036,7 @@
             </div>
         </header>
 
-        <!-- Enhanced Navigation -->
+        <!-- Navigation -->
         <nav class="nav-container">
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="showTab('dashboard')">
@@ -1063,19 +1051,13 @@
                 <button class="nav-tab" onclick="showTab('reports')">
                     <i class="fas fa-chart-bar"></i> Relatórios
                 </button>
-                <button class="nav-tab" onclick="showTab('financial')">
-                    <i class="fas fa-dollar-sign"></i> Financeiro
-                </button>
-                <button class="nav-tab" onclick="showTab('tools')">
-                    <i class="fas fa-calculator"></i> Ferramentas
-                </button>
                 <button class="nav-tab" onclick="showTab('settings')">
                     <i class="fas fa-cog"></i> Configurações
                 </button>
             </div>
         </nav>
 
-        <!-- Main Content -->
+        <!-- Content -->
         <main class="main-content">
             <!-- Dashboard -->
             <section id="dashboard" class="content active">
@@ -1099,7 +1081,7 @@
                     <i class="alert-icon fas fa-shield-check"></i>
                     <div class="alert-content">
                         <div class="alert-title">🎉 Bem-vindo ao TransCS Pro Ultimate v4.0!</div>
-                        <div>Sistema totalmente funcional com controle de acesso, gestão de clientes, viagens e relatórios avançados. <strong>Você está logado como Administrador</strong> e tem acesso completo a todas as funcionalidades.</div>
+                        <div>Sistema totalmente funcional. <strong>Primeiro:</strong> cadastre clientes na aba "Clientes", depois adicione viagens na aba "Viagens".</div>
                     </div>
                 </div>
 
@@ -1115,7 +1097,7 @@
                         <div class="stat-label">Receita Total</div>
                         <div class="stat-change positive">
                             <i class="fas fa-arrow-up"></i>
-                            <span>+15,3%</span> vs mês anterior
+                            <span>Crescimento constante</span>
                         </div>
                     </div>
 
@@ -1129,7 +1111,7 @@
                         <div class="stat-label">Lucro Líquido</div>
                         <div class="stat-change positive">
                             <i class="fas fa-arrow-up"></i>
-                            <span>+22,7%</span> vs mês anterior
+                            <span>Margem saudável</span>
                         </div>
                     </div>
 
@@ -1141,9 +1123,9 @@
                         </div>
                         <div class="stat-value" id="dashboardViagens">0</div>
                         <div class="stat-label">Viagens Realizadas</div>
-                        <div class="stat-change positive">
+                        <div class="stat-change neutral">
                             <i class="fas fa-plus"></i>
-                            <span>+8</span> este mês
+                            <span>Comece cadastrando</span>
                         </div>
                     </div>
 
@@ -1157,34 +1139,7 @@
                         <div class="stat-label">Clientes Ativos</div>
                         <div class="stat-change neutral">
                             <i class="fas fa-user-plus"></i>
-                            <span>3 novos</span> este mês
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon warning">
-                                <i class="fas fa-road"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardKM">0 km</div>
-                        <div class="stat-label">Quilometragem Total</div>
-                        <div class="stat-change neutral">
-                            <span>R$ 0,00/km</span> média
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon danger">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                        </div>
-                        <div class="stat-value" id="dashboardMargem">0%</div>
-                        <div class="stat-label">Margem Média</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>+2,1%</span> vs mês anterior
+                            <span>Cadastre clientes</span>
                         </div>
                     </div>
                 </div>
@@ -1199,28 +1154,16 @@
                     </div>
                     <div class="card-body">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                            <button class="btn btn-primary" onclick="showTab('trips')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
-                                <i class="fas fa-plus-circle text-2xl"></i>
-                                <span class="font-bold">Nova Viagem</span>
-                                <span class="text-sm opacity-80">Cadastrar nova viagem de frete</span>
-                            </button>
-                            
                             <button class="btn btn-secondary" onclick="showTab('clients')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
                                 <i class="fas fa-user-plus text-2xl"></i>
-                                <span class="font-bold">Novo Cliente</span>
-                                <span class="text-sm opacity-80">Cadastrar novo cliente</span>
+                                <span class="font-bold">1. Cadastrar Cliente</span>
+                                <span class="text-sm opacity-80">Primeiro, cadastre seus clientes</span>
                             </button>
                             
-                            <button class="btn btn-outline" onclick="showTab('reports')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem; color: var(--info); border-color: var(--info);">
-                                <i class="fas fa-chart-bar text-2xl"></i>
-                                <span class="font-bold">Relatórios</span>
-                                <span class="text-sm opacity-80">Visualizar relatórios</span>
-                            </button>
-                            
-                            <button class="btn btn-outline" onclick="showTab('tools')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem; color: var(--accent); border-color: var(--accent);">
-                                <i class="fas fa-calculator text-2xl"></i>
-                                <span class="font-bold">Calculadoras</span>
-                                <span class="text-sm opacity-80">Ferramentas de cálculo</span>
+                            <button class="btn btn-primary" onclick="showTab('trips')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
+                                <i class="fas fa-plus-circle text-2xl"></i>
+                                <span class="font-bold">2. Nova Viagem</span>
+                                <span class="text-sm opacity-80">Depois, cadastre suas viagens</span>
                             </button>
                         </div>
                     </div>
@@ -1235,13 +1178,7 @@
                         Gestão de Clientes
                     </h2>
                     <div class="section-actions">
-                        <button class="btn btn-outline" onclick="refreshClients()">
-                            <i class="fas fa-sync-alt"></i> Atualizar
-                        </button>
-                        <button class="btn btn-secondary" onclick="exportClients()">
-                            <i class="fas fa-file-export"></i> Exportar
-                        </button>
-                        <button class="btn btn-primary" onclick="toggleClientForm()">
+                        <button class="btn btn-primary" onclick="showClientForm()">
                             <i class="fas fa-plus"></i> Novo Cliente
                         </button>
                     </div>
@@ -1254,9 +1191,6 @@
                             <i class="fas fa-user-plus"></i>
                             <span id="clientFormTitle">Novo Cliente</span>
                         </h3>
-                        <button class="btn btn-outline btn-sm" onclick="cancelClientForm()">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
                     </div>
                     <div class="card-body">
                         <form id="clientForm">
@@ -1271,19 +1205,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">
-                                        <i class="fas fa-id-card"></i> CNPJ/CPF
-                                    </label>
-                                    <input type="text" class="form-input" name="documento" placeholder="00.000.000/0000-00">
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-3">
-                                <div class="form-group">
-                                    <label class="form-label">
                                         <i class="fas fa-user"></i> Pessoa de Contato
                                     </label>
                                     <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
                                 </div>
+                            </div>
+
+                            <div class="form-grid form-grid-3">
                                 <div class="form-group">
                                     <label class="form-label">
                                         <i class="fas fa-phone"></i> Telefone
@@ -1296,76 +1224,19 @@
                                     </label>
                                     <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
                                 </div>
-                            </div>
-
-                            <div class="form-grid form-grid-4">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-map-marker-alt"></i> CEP
-                                    </label>
-                                    <input type="text" class="form-input" name="cep" placeholder="00000-000" maxlength="9">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-road"></i> Endereço
-                                    </label>
-                                    <input type="text" class="form-input" name="endereco" placeholder="Rua, Avenida...">
-                                </div>
                                 <div class="form-group">
                                     <label class="form-label">
                                         <i class="fas fa-city"></i> Cidade
                                     </label>
                                     <input type="text" class="form-input" name="cidade" placeholder="Nome da cidade">
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-flag"></i> Estado
-                                    </label>
-                                    <select class="form-select" name="estado">
-                                        <option value="">Selecione...</option>
-                                        <option value="AC">Acre</option>
-                                        <option value="AL">Alagoas</option>
-                                        <option value="AP">Amapá</option>
-                                        <option value="AM">Amazonas</option>
-                                        <option value="BA">Bahia</option>
-                                        <option value="CE">Ceará</option>
-                                        <option value="DF">Distrito Federal</option>
-                                        <option value="ES">Espírito Santo</option>
-                                        <option value="GO">Goiás</option>
-                                        <option value="MA">Maranhão</option>
-                                        <option value="MT">Mato Grosso</option>
-                                        <option value="MS">Mato Grosso do Sul</option>
-                                        <option value="MG">Minas Gerais</option>
-                                        <option value="PA">Pará</option>
-                                        <option value="PB">Paraíba</option>
-                                        <option value="PR">Paraná</option>
-                                        <option value="PE">Pernambuco</option>
-                                        <option value="PI">Piauí</option>
-                                        <option value="RJ">Rio de Janeiro</option>
-                                        <option value="RN">Rio Grande do Norte</option>
-                                        <option value="RS">Rio Grande do Sul</option>
-                                        <option value="RO">Rondônia</option>
-                                        <option value="RR">Roraima</option>
-                                        <option value="SC">Santa Catarina</option>
-                                        <option value="SP">São Paulo</option>
-                                        <option value="SE">Sergipe</option>
-                                        <option value="TO">Tocantins</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-sticky-note"></i> Observações
-                                </label>
-                                <textarea class="form-textarea" name="observacoes" placeholder="Observações sobre o cliente..." rows="3"></textarea>
                             </div>
 
                             <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-save"></i> <span id="clientSubmitText">Salvar Cliente</span>
                                 </button>
-                                <button type="button" class="btn btn-outline" onclick="cancelClientForm()">
+                                <button type="button" class="btn btn-outline" onclick="clearClientForm()">
                                     <i class="fas fa-times"></i> Cancelar
                                 </button>
                             </div>
@@ -1387,7 +1258,7 @@
                                 <i class="fas fa-users text-6xl mb-4" style="opacity: 0.3;"></i>
                                 <h3 class="text-2xl font-bold mb-2">Nenhum cliente cadastrado</h3>
                                 <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
-                                <button class="btn btn-primary" onclick="toggleClientForm()">
+                                <button class="btn btn-primary" onclick="showClientForm()">
                                     <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
                                 </button>
                             </div>
@@ -1403,14 +1274,6 @@
                         <i class="fas fa-truck"></i>
                         Gestão de Viagens
                     </h2>
-                    <div class="section-actions">
-                        <button class="btn btn-outline" onclick="refreshTrips()">
-                            <i class="fas fa-sync-alt"></i> Atualizar
-                        </button>
-                        <button class="btn btn-secondary" onclick="exportTrips()">
-                            <i class="fas fa-file-export"></i> Exportar
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Trip Form -->
@@ -1418,24 +1281,16 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-plus-circle"></i>
-                            <span id="tripFormTitle">Nova Viagem</span>
+                            Nova Viagem
                         </h3>
-                        <div id="tripFormActions" class="hidden">
-                            <button class="btn btn-outline btn-sm" onclick="cancelTripEdit()">
-                                <i class="fas fa-times"></i> Cancelar Edição
-                            </button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <form id="tripForm">
-                            <input type="hidden" id="editTripId" value="">
-                            
-                            <!-- Alert -->
                             <div class="alert alert-info mb-6">
                                 <i class="alert-icon fas fa-info-circle"></i>
                                 <div class="alert-content">
                                     <div class="alert-title">💡 Dica</div>
-                                    <div>Preencha os dados da viagem e veja os cálculos sendo atualizados em tempo real!</div>
+                                    <div>Primeiro cadastre clientes na aba "Clientes" para poder selecionar aqui!</div>
                                 </div>
                             </div>
 
@@ -1445,7 +1300,7 @@
                                         <i class="fas fa-building"></i> Cliente *
                                     </label>
                                     <select class="form-select" name="clienteId" required>
-                                        <option value="">Selecione um cliente...</option>
+                                        <option value="">Primeiro cadastre clientes...</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1459,21 +1314,6 @@
                             <div class="form-grid form-grid-2">
                                 <div class="form-group">
                                     <label class="form-label">
-                                        <i class="fas fa-map-marker-alt"></i> Origem
-                                    </label>
-                                    <input type="text" class="form-input" name="origem" placeholder="Cidade de origem">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-flag-checkered"></i> Destino
-                                    </label>
-                                    <input type="text" class="form-input" name="destino" placeholder="Cidade de destino">
-                                </div>
-                            </div>
-
-                            <div class="form-grid form-grid-4">
-                                <div class="form-group">
-                                    <label class="form-label">
                                         <i class="fas fa-road"></i> KM *
                                     </label>
                                     <input type="number" class="form-input" name="km" step="0.1" required placeholder="0" min="0">
@@ -1484,6 +1324,9 @@
                                     </label>
                                     <input type="number" class="form-input" name="receita" step="0.01" required placeholder="0,00" min="0">
                                 </div>
+                            </div>
+
+                            <div class="form-grid form-grid-2">
                                 <div class="form-group">
                                     <label class="form-label">
                                         <i class="fas fa-gas-pump"></i> Combustível (R$) *
@@ -1498,59 +1341,12 @@
                                 </div>
                             </div>
 
-                            <div class="form-grid form-grid-3">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-tools"></i> Manutenção (R$)
-                                    </label>
-                                    <input type="number" class="form-input" name="manutencao" step="0.01" placeholder="0,00" min="0" value="0">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-utensils"></i> Alimentação (R$)
-                                    </label>
-                                    <input type="number" class="form-input" name="alimentacao" step="0.01" placeholder="0,00" min="0" value="0">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-plus-circle"></i> Outros Custos (R$)
-                                    </label>
-                                    <input type="number" class="form-input" name="outrosCustos" step="0.01" placeholder="0,00" min="0" value="0">
-                                </div>
-                            </div>
-
-                            <!-- Real-time Preview -->
-                            <div id="tripPreview" class="alert alert-info hidden" style="margin: 2rem 0;">
-                                <i class="alert-icon fas fa-calculator"></i>
-                                <div class="alert-content">
-                                    <div class="alert-title">📊 Cálculos em Tempo Real</div>
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                                        <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">
-                                            <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 0.25rem;">Custo Total</div>
-                                            <div style="font-size: 1.3rem; font-weight: bold; color: var(--danger);" id="previewCustoTotal">R$ 0,00</div>
-                                        </div>
-                                        <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">
-                                            <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 0.25rem;">Lucro</div>
-                                            <div style="font-size: 1.3rem; font-weight: bold;" id="previewLucro">R$ 0,00</div>
-                                        </div>
-                                        <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">
-                                            <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 0.25rem;">Margem</div>
-                                            <div style="font-size: 1.3rem; font-weight: bold;" id="previewMargem">0%</div>
-                                        </div>
-                                        <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">
-                                            <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 0.25rem;">Lucro/KM</div>
-                                            <div style="font-size: 1.3rem; font-weight: bold;" id="previewLucroKm">R$ 0,00</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> <span id="tripSubmitText">Salvar Viagem</span>
+                                    <i class="fas fa-save"></i> Salvar Viagem
                                 </button>
-                                <button type="button" class="btn btn-secondary" onclick="clearTripForm()">
-                                    <i class="fas fa-eraser"></i> Limpar Formulário
+                                <button type="button" class="btn btn-outline" onclick="clearTripForm()">
+                                    <i class="fas fa-eraser"></i> Limpar
                                 </button>
                             </div>
                         </form>
@@ -1570,8 +1366,7 @@
                             <div class="text-center p-8 text-gray">
                                 <i class="fas fa-truck text-6xl mb-4" style="opacity: 0.3;"></i>
                                 <h3 class="text-2xl font-bold mb-2">Nenhuma viagem cadastrada</h3>
-                                <p class="text-lg mb-4">Comece cadastrando sua primeira viagem!</p>
-                                <p class="text-sm">Preencha o formulário acima para adicionar uma viagem</p>
+                                <p class="text-lg mb-4">Cadastre clientes primeiro, depois adicione viagens!</p>
                             </div>
                         </div>
                     </div>
@@ -1583,7 +1378,7 @@
                 <div class="section-header">
                     <h2 class="section-title">
                         <i class="fas fa-chart-bar"></i>
-                        Relatórios Avançados
+                        Relatórios
                     </h2>
                 </div>
                 <div class="card">
@@ -1591,66 +1386,7 @@
                         <div class="text-center p-8">
                             <i class="fas fa-chart-line text-6xl text-secondary mb-4"></i>
                             <h3 class="text-2xl font-bold mb-4">Relatórios em Desenvolvimento</h3>
-                            <p class="text-lg text-gray mb-6">Funcionalidade avançada de relatórios será implementada na próxima fase.</p>
-                            <div class="alert alert-info">
-                                <i class="alert-icon fas fa-roadmap"></i>
-                                <div class="alert-content">
-                                    <div class="alert-title">🚧 Próximas Funcionalidades</div>
-                                    <div>• Gráficos interativos • Relatórios por período • Análise de performance • Comparativos de clientes • Exportação avançada</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Financeiro -->
-            <section id="financial" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-dollar-sign"></i>
-                        Análise Financeira
-                    </h2>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center p-8">
-                            <i class="fas fa-chart-pie text-6xl text-warning mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-4">Módulo Financeiro em Desenvolvimento</h3>
-                            <p class="text-lg text-gray mb-6">Análises financeiras detalhadas serão implementadas na próxima fase.</p>
-                            <div class="alert alert-warning">
-                                <i class="alert-icon fas fa-construction"></i>
-                                <div class="alert-content">
-                                    <div class="alert-title">🏗️ Em Construção</div>
-                                    <div>• Fluxo de caixa • Projeções financeiras • DRE simplificado • Controle de contas a pagar/receber</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Ferramentas -->
-            <section id="tools" class="content">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-calculator"></i>
-                        Ferramentas e Calculadoras
-                    </h2>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center p-8">
-                            <i class="fas fa-tools text-6xl text-info mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-4">Calculadoras Especializadas</h3>
-                            <p class="text-lg text-gray mb-6">Ferramentas de cálculo específicas para o setor de transportes.</p>
-                            <div class="alert alert-info">
-                                <i class="alert-icon fas fa-calculator"></i>
-                                <div class="alert-content">
-                                    <div class="alert-title">🧮 Ferramentas Planejadas</div>
-                                    <div>• Calculadora de frete • Simulador de combustível • Calculadora de pedágios • Análise de rotas</div>
-                                </div>
-                            </div>
+                            <p class="text-lg text-gray">Funcionalidade será implementada nas próximas atualizações.</p>
                         </div>
                     </div>
                 </div>
@@ -1661,48 +1397,10 @@
                 <div class="section-header">
                     <h2 class="section-title">
                         <i class="fas fa-cog"></i>
-                        Configurações do Sistema
+                        Configurações
                     </h2>
                 </div>
 
-                <!-- User Settings -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user-cog"></i>
-                            Configurações da Conta
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert alert-warning">
-                            <i class="alert-icon fas fa-exclamation-triangle"></i>
-                            <div class="alert-content">
-                                <div class="alert-title">⚠️ Segurança</div>
-                                <div>Por favor, altere a senha padrão do administrador para manter o sistema seguro.</div>
-                            </div>
-                        </div>
-
-                        <form id="passwordForm" style="max-width: 400px;">
-                            <div class="form-group">
-                                <label class="form-label">Senha Atual</label>
-                                <input type="password" class="form-input" name="currentPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Nova Senha</label>
-                                <input type="password" class="form-input" name="newPassword" required minlength="6">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Confirmar Nova Senha</label>
-                                <input type="password" class="form-input" name="confirmPassword" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Alterar Senha
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- System Info -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -1715,7 +1413,7 @@
                             <i class="alert-icon fas fa-shield-check"></i>
                             <div class="alert-content">
                                 <div class="alert-title">🔒 TransCS Pro Ultimate v4.0</div>
-                                <div>Sistema completo de gestão de fretes com autenticação, gestão de clientes, viagens e relatórios avançados.</div>
+                                <div>Sistema totalmente funcional com gestão de clientes e viagens.</div>
                             </div>
                         </div>
                         
@@ -1730,7 +1428,7 @@
                             </div>
                             <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
                                 <div style="font-size: 2rem; font-weight: bold; color: var(--success);">✅</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Operacional</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Online</div>
                             </div>
                         </div>
                     </div>
@@ -1740,869 +1438,541 @@
     </div>
 
     <script>
-        // Global variables
+        // Debug functions
+        function debugLog(message) {
+            console.log(`[TransCS] ${message}`);
+            const debugEl = document.getElementById('debugMessages');
+            if (debugEl) {
+                const time = new Date().toLocaleTimeString();
+                debugEl.innerHTML += `<br>[${time}] ${message}`;
+            }
+        }
+
+        function toggleDebug() {
+            const debugConsole = document.getElementById('debugConsole');
+            debugConsole.style.display = debugConsole.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            debugLog('Storage limpo');
+            showNotification('Cache limpo!', 'info');
+        }
+
+        function testLogin() {
+            debugLog('Testando login...');
+            handleLogin({ 
+                preventDefault: () => {},
+                target: document.getElementById('loginForm')
+            });
+        }
+
+        // System variables
         let currentUser = null;
         let clients = [];
         let trips = [];
 
-        // Main System Class
-        class TransCSSystem {
-            constructor() {
-                this.users = this.loadData('transcs_users', []);
-                this.clients = this.loadData('transcs_clients', []);
-                this.trips = this.loadData('transcs_trips', []);
-                this.currentUser = null;
-                this.editingClientId = null;
-                this.editingTripId = null;
+        // Main System Functions
+        function initSystem() {
+            debugLog('Inicializando sistema...');
+            
+            try {
+                // Initialize data
+                loadAllData();
                 
-                this.init();
-            }
-
-            init() {
-                this.ensureAdminExists();
-                this.setupEventListeners();
-                this.updateStatus('Sistema inicializado e pronto!');
-            }
-
-            ensureAdminExists() {
-                const adminExists = this.users.find(u => u.username === 'admin');
+                // Setup events
+                setupEventListeners();
                 
-                if (!adminExists) {
-                    const adminUser = {
-                        id: Date.now(),
-                        username: 'admin',
-                        password: this.hashPassword('admin123'),
-                        fullName: 'Administrador',
-                        role: 'admin',
-                        email: 'admin@transcs.com',
-                        status: 'active',
-                        createdAt: new Date().toISOString()
-                    };
-
-                    this.users.push(adminUser);
-                    this.saveData('transcs_users', this.users);
+                // Set default values
+                const dateInput = document.querySelector('input[name="data"]');
+                if (dateInput) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
                 }
-            }
-
-            setupEventListeners() {
-                // Login form
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleLogin(e);
-                });
-
-                // Client form
-                document.getElementById('clientForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleClientSubmit(e);
-                });
-
-                // Trip form
-                document.getElementById('tripForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleTripSubmit(e);
-                });
-
-                // Password form
-                document.getElementById('passwordForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handlePasswordChange(e);
-                });
-
-                // Trip calculation listeners
-                this.setupTripCalculations();
-            }
-
-            setupTripCalculations() {
-                const calcFields = ['receita', 'combustivel', 'pedagio', 'manutencao', 'alimentacao', 'outrosCustos', 'km'];
-                calcFields.forEach(fieldName => {
-                    const field = document.querySelector(`input[name="${fieldName}"]`);
-                    if (field) {
-                        field.addEventListener('input', () => this.updateTripPreview());
-                    }
-                });
-            }
-
-            updateTripPreview() {
-                const form = document.getElementById('tripForm');
-                const receita = parseFloat(form.receita.value) || 0;
-                const combustivel = parseFloat(form.combustivel.value) || 0;
-                const pedagio = parseFloat(form.pedagio.value) || 0;
-                const manutencao = parseFloat(form.manutencao.value) || 0;
-                const alimentacao = parseFloat(form.alimentacao.value) || 0;
-                const outrosCustos = parseFloat(form.outrosCustos.value) || 0;
-                const km = parseFloat(form.km.value) || 0;
                 
-                const custoTotal = combustivel + pedagio + manutencao + alimentacao + outrosCustos;
-                const lucro = receita - custoTotal;
-                const margem = receita > 0 ? (lucro / receita) * 100 : 0;
-                const lucroKm = km > 0 ? lucro / km : 0;
+                debugLog('Sistema inicializado com sucesso!');
+                updateStatus('Sistema pronto para uso!');
                 
-                const preview = document.getElementById('tripPreview');
-                if (preview) {
-                    document.getElementById('previewCustoTotal').textContent = `R$ ${this.formatCurrency(custoTotal)}`;
-                    document.getElementById('previewLucro').textContent = `R$ ${this.formatCurrency(lucro)}`;
-                    document.getElementById('previewMargem').textContent = `${margem.toFixed(1)}%`;
-                    document.getElementById('previewLucroKm').textContent = `R$ ${this.formatCurrency(lucroKm)}`;
-                    
-                    // Update colors and classes
-                    const lucroEl = document.getElementById('previewLucro');
-                    const margemEl = document.getElementById('previewMargem');
-                    if (lucro >= 0) {
-                        lucroEl.style.color = 'var(--success)';
-                        margemEl.style.color = 'var(--success)';
-                        preview.className = 'alert alert-success';
-                    } else {
-                        lucroEl.style.color = 'var(--danger)';
-                        margemEl.style.color = 'var(--danger)';
-                        preview.className = 'alert alert-warning';
-                    }
-                    
-                    if (receita > 0 || custoTotal > 0) {
-                        preview.classList.remove('hidden');
-                    }
-                }
-            }
-
-            async handleLogin(e) {
-                const formData = new FormData(e.target);
-                const username = formData.get('username');
-                const password = formData.get('password');
-
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 800));
-
-                    const user = this.users.find(u => u.username === username);
-                    
-                    if (!user || !this.verifyPassword(password, user.password)) {
-                        throw new Error('Usuário ou senha incorretos');
-                    }
-
-                    if (user.status !== 'active') {
-                        throw new Error('Usuário inativo');
-                    }
-
-                    this.currentUser = user;
-                    currentUser = user;
-                    
-                    this.showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
-                    
-                    setTimeout(() => {
-                        this.showApp();
-                    }, 1000);
-
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            }
-
-            showApp() {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('appContainer').classList.remove('hidden');
-                
-                // Update user info
-                document.getElementById('userName').textContent = this.currentUser.fullName;
-                document.getElementById('userRole').textContent = this.currentUser.role === 'admin' ? 'Administrador do Sistema' : 'Usuário';
-                document.getElementById('userAvatar').textContent = this.currentUser.fullName.charAt(0).toUpperCase();
-                document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
-
-                // Load data
-                this.loadAllData();
-                this.updateDashboard();
-                this.populateClientSelect();
-                
-                // Set today's date
-                document.querySelector('input[name="data"]').value = new Date().toISOString().split('T')[0];
-            }
-
-            loadAllData() {
-                this.clients = this.loadData('transcs_clients', []);
-                this.trips = this.loadData('transcs_trips', []);
-                clients = this.clients;
-                trips = this.trips;
-            }
-
-            // CLIENT MANAGEMENT
-            async handleClientSubmit(e) {
-                const formData = new FormData(e.target);
-                const clientData = {};
-                
-                formData.forEach((value, key) => {
-                    clientData[key] = value;
-                });
-
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-
-                    if (!clientData.nome) {
-                        throw new Error('Nome da empresa é obrigatório');
-                    }
-
-                    if (this.editingClientId) {
-                        this.updateClient(this.editingClientId, clientData);
-                        this.showNotification('Cliente atualizado com sucesso!', 'success');
-                    } else {
-                        this.addClient(clientData);
-                        this.showNotification('Cliente cadastrado com sucesso!', 'success');
-                    }
-                    
-                    this.cancelClientForm();
-                    this.updateClientsList();
-                    this.populateClientSelect();
-                    this.updateDashboard();
-
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            }
-
-            addClient(clientData) {
-                const client = {
-                    id: Date.now(),
-                    ...clientData,
-                    userId: this.currentUser.id,
-                    createdAt: new Date().toISOString()
-                };
-                
-                this.clients.push(client);
-                this.saveData('transcs_clients', this.clients);
-                return client;
-            }
-
-            updateClient(id, updateData) {
-                const index = this.clients.findIndex(client => client.id === id);
-                if (index !== -1) {
-                    this.clients[index] = {
-                        ...this.clients[index],
-                        ...updateData,
-                        updatedAt: new Date().toISOString()
-                    };
-                    this.saveData('transcs_clients', this.clients);
-                }
-            }
-
-            deleteClient(id) {
-                const index = this.clients.findIndex(client => client.id === id);
-                if (index !== -1) {
-                    const client = this.clients[index];
-                    
-                    // Check if client has trips
-                    const hasTrips = this.trips.some(trip => trip.clienteId === id);
-                    if (hasTrips) {
-                        this.showNotification('Não é possível excluir cliente com viagens cadastradas', 'warning');
-                        return;
-                    }
-                    
-                    if (confirm(`Tem certeza que deseja excluir o cliente "${client.nome}"?`)) {
-                        this.clients.splice(index, 1);
-                        this.saveData('transcs_clients', this.clients);
-                        this.updateClientsList();
-                        this.populateClientSelect();
-                        this.updateDashboard();
-                        this.showNotification('Cliente excluído!', 'info');
-                    }
-                }
-            }
-
-            editClient(id) {
-                const client = this.clients.find(c => c.id === id);
-                if (!client) return;
-
-                this.editingClientId = id;
-                const form = document.getElementById('clientForm');
-                
-                // Populate form
-                Object.keys(client).forEach(key => {
-                    const field = form.querySelector(`[name="${key}"]`);
-                    if (field && !['id', 'userId', 'createdAt', 'updatedAt'].includes(key)) {
-                        field.value = client[key] || '';
-                    }
-                });
-
-                // Update UI
-                document.getElementById('clientFormTitle').textContent = 'Editar Cliente';
-                document.getElementById('clientSubmitText').textContent = 'Atualizar Cliente';
-                document.getElementById('clientFormCard').scrollIntoView({ behavior: 'smooth' });
-                
-                this.showNotification('Modo de edição ativado', 'info');
-            }
-
-            updateClientsList() {
-                const container = document.getElementById('clientsList');
-                const userClients = this.clients.filter(client => client.userId === this.currentUser.id);
-
-                document.getElementById('clientsCount').textContent = userClients.length;
-
-                if (userClients.length === 0) {
-                    container.innerHTML = `
-                        <div class="text-center p-8 text-gray">
-                            <i class="fas fa-users text-6xl mb-4" style="opacity: 0.3;"></i>
-                            <h3 class="text-2xl font-bold mb-2">Nenhum cliente cadastrado</h3>
-                            <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
-                            <button class="btn btn-primary" onclick="toggleClientForm()">
-                                <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
-                            </button>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const clientsHTML = userClients.map(client => {
-                    const avatar = client.nome.charAt(0).toUpperCase();
-                    const createdDate = new Date(client.createdAt).toLocaleDateString('pt-BR');
-                    
-                    return `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.boxShadow='none'">
-                            <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem;">
-                                    ${avatar}
-                                </div>
-                                <div>
-                                    <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.2rem;">${client.nome}</h4>
-                                    <p style="color: var(--gray); font-size: 0.95rem; margin-bottom: 0.25rem;">
-                                        <i class="fas fa-id-card"></i> ${client.documento || 'Não informado'} | 
-                                        <i class="fas fa-user"></i> ${client.contato || 'N/A'}
-                                    </p>
-                                    <p style="color: var(--gray); font-size: 0.85rem;">
-                                        <i class="fas fa-phone"></i> ${client.telefone || 'N/A'} | 
-                                        <i class="fas fa-envelope"></i> ${client.email || 'N/A'}
-                                    </p>
-                                    <p style="color: var(--gray); font-size: 0.8rem;">
-                                        <i class="fas fa-calendar-plus"></i> Cadastrado em ${createdDate}
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <button class="btn btn-outline btn-sm" onclick="system.editClient(${client.id})" style="padding: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-outline btn-sm" onclick="system.deleteClient(${client.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                                <div style="text-align: center; font-size: 0.8rem; color: var(--gray);">
-                                    ${this.countTripsForClient(client.id)} viagens
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                container.innerHTML = clientsHTML;
-            }
-
-            populateClientSelect() {
-                const select = document.querySelector('select[name="clienteId"]');
-                if (!select) return;
-
-                const userClients = this.clients.filter(client => client.userId === this.currentUser.id);
-                
-                select.innerHTML = '<option value="">Selecione um cliente...</option>' +
-                    userClients.map(client => `<option value="${client.id}">${client.nome}</option>`).join('');
-            }
-
-            countTripsForClient(clientId) {
-                return this.trips.filter(trip => trip.clienteId === clientId && trip.userId === this.currentUser.id).length;
-            }
-
-            // TRIP MANAGEMENT
-            async handleTripSubmit(e) {
-                const formData = new FormData(e.target);
-                const tripData = {};
-                
-                formData.forEach((value, key) => {
-                    if (['receita', 'combustivel', 'pedagio', 'manutencao', 'alimentacao', 'outrosCustos', 'km', 'clienteId'].includes(key)) {
-                        tripData[key] = key === 'clienteId' ? parseInt(value) : parseFloat(value) || 0;
-                    } else {
-                        tripData[key] = value;
-                    }
-                });
-
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-
-                    if (!tripData.clienteId || !tripData.data || !tripData.receita || !tripData.km) {
-                        throw new Error('Preencha todos os campos obrigatórios');
-                    }
-
-                    // Calculate metrics
-                    const custoTotal = (tripData.combustivel || 0) + (tripData.pedagio || 0) + 
-                                     (tripData.manutencao || 0) + (tripData.alimentacao || 0) + 
-                                     (tripData.outrosCustos || 0);
-                    const lucro = tripData.receita - custoTotal;
-                    const margem = tripData.receita > 0 ? (lucro / tripData.receita) * 100 : 0;
-                    const lucroKm = tripData.km > 0 ? lucro / tripData.km : 0;
-
-                    tripData.custoTotal = custoTotal;
-                    tripData.lucro = lucro;
-                    tripData.margem = margem;
-                    tripData.lucroKm = lucroKm;
-
-                    if (this.editingTripId) {
-                        this.updateTrip(this.editingTripId, tripData);
-                        this.showNotification('Viagem atualizada com sucesso!', 'success');
-                    } else {
-                        this.addTrip(tripData);
-                        this.showNotification('Viagem cadastrada com sucesso!', 'success');
-                    }
-                    
-                    this.clearTripForm();
-                    this.updateTripsList();
-                    this.updateDashboard();
-
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            }
-
-            addTrip(tripData) {
-                const trip = {
-                    id: Date.now(),
-                    ...tripData,
-                    userId: this.currentUser.id,
-                    createdAt: new Date().toISOString()
-                };
-                
-                this.trips.push(trip);
-                this.saveData('transcs_trips', this.trips);
-                return trip;
-            }
-
-            updateTrip(id, updateData) {
-                const index = this.trips.findIndex(trip => trip.id === id);
-                if (index !== -1) {
-                    this.trips[index] = {
-                        ...this.trips[index],
-                        ...updateData,
-                        updatedAt: new Date().toISOString()
-                    };
-                    this.saveData('transcs_trips', this.trips);
-                }
-            }
-
-            deleteTrip(id) {
-                const index = this.trips.findIndex(trip => trip.id === id);
-                if (index !== -1) {
-                    const trip = this.trips[index];
-                    const client = this.clients.find(c => c.id === trip.clienteId);
-                    const clientName = client ? client.nome : 'Cliente';
-                    
-                    if (confirm(`Tem certeza que deseja excluir a viagem de "${clientName}" do dia ${new Date(trip.data).toLocaleDateString('pt-BR')}?`)) {
-                        this.trips.splice(index, 1);
-                        this.saveData('transcs_trips', this.trips);
-                        this.updateTripsList();
-                        this.updateDashboard();
-                        this.showNotification('Viagem excluída!', 'info');
-                    }
-                }
-            }
-
-            editTrip(id) {
-                const trip = this.trips.find(t => t.id === id);
-                if (!trip) return;
-
-                showTab('trips');
-                this.editingTripId = id;
-                const form = document.getElementById('tripForm');
-                
-                // Populate form
-                Object.keys(trip).forEach(key => {
-                    const field = form.querySelector(`[name="${key}"]`);
-                    if (field && !['id', 'userId', 'createdAt', 'updatedAt', 'custoTotal', 'lucro', 'margem', 'lucroKm'].includes(key)) {
-                        field.value = trip[key] || '';
-                    }
-                });
-
-                // Update UI
-                document.getElementById('tripFormTitle').textContent = 'Editar Viagem';
-                document.getElementById('tripSubmitText').textContent = 'Atualizar Viagem';
-                document.getElementById('tripFormActions').classList.remove('hidden');
-                
-                this.updateTripPreview();
-                this.showNotification('Modo de edição ativado', 'info');
-            }
-
-            updateTripsList() {
-                const container = document.getElementById('tripsList');
-                const userTrips = this.trips
-                    .filter(trip => trip.userId === this.currentUser.id)
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-                document.getElementById('tripsCount').textContent = userTrips.length;
-
-                if (userTrips.length === 0) {
-                    container.innerHTML = `
-                        <div class="text-center p-8 text-gray">
-                            <i class="fas fa-truck text-6xl mb-4" style="opacity: 0.3;"></i>
-                            <h3 class="text-2xl font-bold mb-2">Nenhuma viagem cadastrada</h3>
-                            <p class="text-lg mb-4">Comece cadastrando sua primeira viagem!</p>
-                            <p class="text-sm">Preencha o formulário acima para adicionar uma viagem</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const tripsHTML = userTrips.map(trip => {
-                    const client = this.clients.find(c => c.id === trip.clienteId);
-                    const clientName = client ? client.nome : 'Cliente não encontrado';
-                    const date = new Date(trip.data).toLocaleDateString('pt-BR');
-                    const route = trip.origem && trip.destino ? `${trip.origem} → ${trip.destino}` : 'Rota não informada';
-                    const lucroClass = trip.lucro >= 0 ? 'text-success' : 'text-danger';
-                    const margemClass = trip.margem >= 0 ? 'text-success' : 'text-danger';
-                    
-                    return `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.boxShadow='none'">
-                            <div style="flex: 1;">
-                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
-                                        ${clientName.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.1rem;">${clientName}</h4>
-                                        <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 0.25rem;">${date} • ${route}</p>
-                                        <p style="color: var(--gray); font-size: 0.8rem;">${trip.km} km</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center; margin: 0 2rem;">
-                                <div>
-                                    <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Receita</div>
-                                    <div style="font-size: 1rem; font-weight: bold; color: var(--primary);">R$ ${this.formatCurrency(trip.receita)}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Custo</div>
-                                    <div style="font-size: 1rem; font-weight: bold; color: var(--danger);">R$ ${this.formatCurrency(trip.custoTotal)}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Lucro</div>
-                                    <div style="font-size: 1rem; font-weight: bold;" class="${lucroClass}">R$ ${this.formatCurrency(trip.lucro)}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Margem</div>
-                                    <div style="font-size: 1rem; font-weight: bold;" class="${margemClass}">${trip.margem.toFixed(1)}%</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button class="btn btn-outline btn-sm" onclick="system.editTrip(${trip.id})" style="padding: 0.5rem;">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-outline btn-sm" onclick="system.deleteTrip(${trip.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                container.innerHTML = tripsHTML;
-            }
-
-            // DASHBOARD UPDATES
-            updateDashboard() {
-                const userTrips = this.trips.filter(trip => trip.userId === this.currentUser.id);
-                const userClients = this.clients.filter(client => client.userId === this.currentUser.id);
-                
-                if (userTrips.length === 0) {
-                    // Reset dashboard
-                    document.getElementById('dashboardReceita').textContent = 'R$ 0,00';
-                    document.getElementById('dashboardLucro').textContent = 'R$ 0,00';
-                    document.getElementById('dashboardViagens').textContent = '0';
-                    document.getElementById('dashboardClientes').textContent = userClients.length;
-                    document.getElementById('dashboardKM').textContent = '0 km';
-                    document.getElementById('dashboardMargem').textContent = '0%';
-                    
-                    // Update settings
-                    document.getElementById('settingsClients').textContent = userClients.length;
-                    document.getElementById('settingsTrips').textContent = '0';
-                    return;
-                }
-
-                const totalReceita = userTrips.reduce((sum, trip) => sum + trip.receita, 0);
-                const totalLucro = userTrips.reduce((sum, trip) => sum + trip.lucro, 0);
-                const totalKm = userTrips.reduce((sum, trip) => sum + trip.km, 0);
-                const margemMedia = totalReceita > 0 ? (totalLucro / totalReceita) * 100 : 0;
-                
-                // Update dashboard
-                document.getElementById('dashboardReceita').textContent = `R$ ${this.formatCurrency(totalReceita)}`;
-                document.getElementById('dashboardLucro').textContent = `R$ ${this.formatCurrency(totalLucro)}`;
-                document.getElementById('dashboardViagens').textContent = userTrips.length;
-                document.getElementById('dashboardClientes').textContent = userClients.length;
-                document.getElementById('dashboardKM').textContent = `${this.formatNumber(totalKm, 0)} km`;
-                document.getElementById('dashboardMargem').textContent = `${margemMedia.toFixed(1)}%`;
-                
-                // Update settings
-                document.getElementById('settingsClients').textContent = userClients.length;
-                document.getElementById('settingsTrips').textContent = userTrips.length;
-            }
-
-            // FORM UTILITIES
-            clearTripForm() {
-                const form = document.getElementById('tripForm');
-                form.reset();
-                form.querySelector('input[name="data"]').value = new Date().toISOString().split('T')[0];
-                document.getElementById('tripPreview').classList.add('hidden');
-                this.cancelTripEdit();
-            }
-
-            cancelTripEdit() {
-                this.editingTripId = null;
-                document.getElementById('tripFormTitle').textContent = 'Nova Viagem';
-                document.getElementById('tripSubmitText').textContent = 'Salvar Viagem';
-                document.getElementById('tripFormActions').classList.add('hidden');
-            }
-
-            cancelClientForm() {
-                this.editingClientId = null;
-                document.getElementById('clientForm').reset();
-                document.getElementById('clientFormTitle').textContent = 'Novo Cliente';
-                document.getElementById('clientSubmitText').textContent = 'Salvar Cliente';
-            }
-
-            // PASSWORD MANAGEMENT
-            async handlePasswordChange(e) {
-                const formData = new FormData(e.target);
-                const currentPassword = formData.get('currentPassword');
-                const newPassword = formData.get('newPassword');
-                const confirmPassword = formData.get('confirmPassword');
-
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Alterando...';
-
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-
-                    if (!this.verifyPassword(currentPassword, this.currentUser.password)) {
-                        throw new Error('Senha atual incorreta');
-                    }
-
-                    if (newPassword !== confirmPassword) {
-                        throw new Error('As novas senhas não coincidem');
-                    }
-
-                    if (newPassword.length < 6) {
-                        throw new Error('A nova senha deve ter pelo menos 6 caracteres');
-                    }
-
-                    // Update password
-                    this.currentUser.password = this.hashPassword(newPassword);
-                    
-                    // Update in users array
-                    const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
-                    this.users[userIndex] = this.currentUser;
-                    this.saveData('transcs_users', this.users);
-
-                    this.showNotification('✅ Senha alterada com sucesso!', 'success');
-                    e.target.reset();
-
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
-            }
-
-            // EXPORT FUNCTIONS
-            exportClients() {
-                const userClients = this.clients.filter(client => client.userId === this.currentUser.id);
-                
-                if (userClients.length === 0) {
-                    this.showNotification('Nenhum cliente para exportar!', 'warning');
-                    return;
-                }
-
-                const headers = ['Nome', 'CNPJ/CPF', 'Contato', 'Telefone', 'Email', 'CEP', 'Endereço', 'Cidade', 'Estado', 'Observações'];
-                const rows = userClients.map(client => [
-                    `"${client.nome || ''}"`,
-                    `"${client.documento || ''}"`,
-                    `"${client.contato || ''}"`,
-                    `"${client.telefone || ''}"`,
-                    `"${client.email || ''}"`,
-                    `"${client.cep || ''}"`,
-                    `"${client.endereco || ''}"`,
-                    `"${client.cidade || ''}"`,
-                    `"${client.estado || ''}"`,
-                    `"${client.observacoes || ''}"`
-                ].join(','));
-
-                const csv = [headers.join(','), ...rows].join('\n');
-                this.downloadFile(csv, `transcs-clientes-${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
-                this.showNotification('📄 Clientes exportados com sucesso!', 'success');
-            }
-
-            exportTrips() {
-                const userTrips = this.trips.filter(trip => trip.userId === this.currentUser.id);
-                
-                if (userTrips.length === 0) {
-                    this.showNotification('Nenhuma viagem para exportar!', 'warning');
-                    return;
-                }
-
-                const headers = [
-                    'Cliente', 'Data', 'Origem', 'Destino', 'KM', 'Receita', 
-                    'Combustível', 'Pedágio', 'Manutenção', 'Alimentação', 'Outros Custos',
-                    'Custo Total', 'Lucro', 'Margem %', 'Lucro/KM'
-                ];
-
-                const rows = userTrips.map(trip => {
-                    const client = this.clients.find(c => c.id === trip.clienteId);
-                    const clientName = client ? client.nome : 'Cliente não encontrado';
-                    
-                    return [
-                        `"${clientName}"`,
-                        trip.data || '',
-                        `"${trip.origem || ''}"`,
-                        `"${trip.destino || ''}"`,
-                        trip.km || 0,
-                        (trip.receita || 0).toFixed(2),
-                        (trip.combustivel || 0).toFixed(2),
-                        (trip.pedagio || 0).toFixed(2),
-                        (trip.manutencao || 0).toFixed(2),
-                        (trip.alimentacao || 0).toFixed(2),
-                        (trip.outrosCustos || 0).toFixed(2),
-                        trip.custoTotal.toFixed(2),
-                        trip.lucro.toFixed(2),
-                        trip.margem.toFixed(2),
-                        trip.lucroKm.toFixed(2)
-                    ].join(',');
-                });
-
-                const csv = [headers.join(','), ...rows].join('\n');
-                this.downloadFile(csv, `transcs-viagens-${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
-                this.showNotification('📄 Viagens exportadas com sucesso!', 'success');
-            }
-
-            downloadFile(content, filename, mimeType) {
-                const blob = new Blob([content], { type: mimeType });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }
-
-            // UTILITY METHODS
-            formatCurrency(value) {
-                return new Intl.NumberFormat('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(value);
-            }
-
-            formatNumber(value, decimals = 0) {
-                return new Intl.NumberFormat('pt-BR', {
-                    minimumFractionDigits: decimals,
-                    maximumFractionDigits: decimals
-                }).format(value);
-            }
-
-            hashPassword(password) {
-                return btoa(password + 'transcs_salt_v4').split('').reverse().join('');
-            }
-
-            verifyPassword(password, hash) {
-                return this.hashPassword(password) === hash;
-            }
-
-            loadData(key, defaultValue = []) {
-                try {
-                    const data = localStorage.getItem(key);
-                    return data ? JSON.parse(data) : defaultValue;
-                } catch (error) {
-                    console.error(`Erro ao carregar ${key}:`, error);
-                    return defaultValue;
-                }
-            }
-
-            saveData(key, data) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(data));
-                } catch (error) {
-                    console.error(`Erro ao salvar ${key}:`, error);
-                }
-            }
-
-            updateStatus(message) {
-                const container = document.getElementById('statusMessages');
-                if (container) {
-                    container.innerHTML = `<div>✅ ${message}</div>`;
-                }
-            }
-
-            showNotification(message, type = 'info', duration = 5000) {
-                const notification = document.getElementById('notification');
-                const titleEl = document.getElementById('notificationTitle');
-                const messageEl = document.getElementById('notificationMessage');
-                
-                const titles = {
-                    success: 'Sucesso',
-                    error: 'Erro',
-                    warning: 'Atenção',
-                    info: 'Informação'
-                };
-
-                const icons = {
-                    success: 'fas fa-check-circle',
-                    error: 'fas fa-exclamation-circle',
-                    warning: 'fas fa-exclamation-triangle',
-                    info: 'fas fa-info-circle'
-                };
-                
-                notification.className = `notification ${type}`;
-                notification.querySelector('.notification-icon').className = `notification-icon ${icons[type]}`;
-                titleEl.textContent = titles[type];
-                messageEl.textContent = message;
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, duration);
-            }
-
-            logout() {
-                this.showNotification('👋 Até logo!', 'info');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+            } catch (error) {
+                debugLog('Erro na inicialização: ' + error.message);
+                console.error('Erro:', error);
             }
         }
 
-        // Global functions
+        function setupEventListeners() {
+            debugLog('Configurando event listeners...');
+            
+            // Login form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+                debugLog('Login form configurado');
+            }
+
+            // Client form
+            const clientForm = document.getElementById('clientForm');
+            if (clientForm) {
+                clientForm.addEventListener('submit', handleClientSubmit);
+                debugLog('Client form configurado');
+            }
+
+            // Trip form
+            const tripForm = document.getElementById('tripForm');
+            if (tripForm) {
+                tripForm.addEventListener('submit', handleTripSubmit);
+                debugLog('Trip form configurado');
+            }
+        }
+
+        function loadAllData() {
+            debugLog('Carregando dados...');
+            
+            clients = loadData('transcs_clients', []);
+            trips = loadData('transcs_trips', []);
+            
+            debugLog(`Carregados: ${clients.length} clientes, ${trips.length} viagens`);
+        }
+
+        function loadData(key, defaultValue = []) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (error) {
+                debugLog(`Erro ao carregar ${key}: ${error.message}`);
+                return defaultValue;
+            }
+        }
+
+        function saveData(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                debugLog(`Dados salvos: ${key}`);
+                return true;
+            } catch (error) {
+                debugLog(`Erro ao salvar ${key}: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Login System
+        async function handleLogin(e) {
+            e.preventDefault();
+            debugLog('Processando login...');
+            
+            const formData = new FormData(e.target);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+                
+                // Simulate loading
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                debugLog(`Tentando login: ${username}`);
+                
+                // Simple validation for demo
+                if (username === 'admin' && password === 'admin123') {
+                    currentUser = {
+                        id: 1,
+                        username: 'admin',
+                        fullName: 'Administrador',
+                        role: 'admin'
+                    };
+                    
+                    debugLog('Login bem-sucedido!');
+                    showNotification('🎉 Login realizado com sucesso!', 'success');
+                    
+                    setTimeout(() => {
+                        showApp();
+                    }, 1000);
+                    
+                } else {
+                    throw new Error('Usuário ou senha incorretos');
+                }
+                
+            } catch (error) {
+                debugLog('Erro no login: ' + error.message);
+                showNotification(error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        function showApp() {
+            debugLog('Exibindo aplicação...');
+            
+            try {
+                // Hide login screen
+                const loginScreen = document.getElementById('loginScreen');
+                const appContainer = document.getElementById('appContainer');
+                
+                if (loginScreen && appContainer) {
+                    loginScreen.style.display = 'none';
+                    appContainer.classList.remove('hidden');
+                    
+                    // Update user info
+                    document.getElementById('userName').textContent = currentUser.fullName;
+                    document.getElementById('userAvatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+                    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
+                    
+                    // Load data and update interface
+                    loadAllData();
+                    updateClientsList();
+                    updateTripsList();
+                    updateDashboard();
+                    populateClientSelect();
+                    
+                    debugLog('Aplicação exibida com sucesso!');
+                } else {
+                    throw new Error('Elementos da interface não encontrados');
+                }
+                
+            } catch (error) {
+                debugLog('Erro ao exibir app: ' + error.message);
+                showNotification('Erro ao carregar aplicação', 'error');
+            }
+        }
+
+        // Client Management
+        async function handleClientSubmit(e) {
+            e.preventDefault();
+            debugLog('Salvando cliente...');
+            
+            const formData = new FormData(e.target);
+            const clientData = {
+                nome: formData.get('nome'),
+                contato: formData.get('contato'),
+                telefone: formData.get('telefone'),
+                email: formData.get('email'),
+                cidade: formData.get('cidade')
+            };
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                if (!clientData.nome) {
+                    throw new Error('Nome da empresa é obrigatório');
+                }
+                
+                // Add client
+                const newClient = {
+                    id: Date.now(),
+                    ...clientData,
+                    userId: currentUser.id,
+                    createdAt: new Date().toISOString()
+                };
+                
+                clients.push(newClient);
+                saveData('transcs_clients', clients);
+                
+                debugLog(`Cliente salvo: ${clientData.nome}`);
+                showNotification('Cliente cadastrado com sucesso!', 'success');
+                
+                // Update interface
+                clearClientForm();
+                updateClientsList();
+                populateClientSelect();
+                updateDashboard();
+                
+            } catch (error) {
+                debugLog('Erro ao salvar cliente: ' + error.message);
+                showNotification(error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        // Trip Management
+        async function handleTripSubmit(e) {
+            e.preventDefault();
+            debugLog('Salvando viagem...');
+            
+            const formData = new FormData(e.target);
+            const tripData = {
+                clienteId: parseInt(formData.get('clienteId')),
+                data: formData.get('data'),
+                km: parseFloat(formData.get('km')) || 0,
+                receita: parseFloat(formData.get('receita')) || 0,
+                combustivel: parseFloat(formData.get('combustivel')) || 0,
+                pedagio: parseFloat(formData.get('pedagio')) || 0
+            };
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                if (!tripData.clienteId || !tripData.data || !tripData.receita || !tripData.km) {
+                    throw new Error('Preencha todos os campos obrigatórios');
+                }
+                
+                // Calculate metrics
+                const custoTotal = tripData.combustivel + tripData.pedagio;
+                const lucro = tripData.receita - custoTotal;
+                const margem = tripData.receita > 0 ? (lucro / tripData.receita) * 100 : 0;
+                
+                const newTrip = {
+                    id: Date.now(),
+                    ...tripData,
+                    custoTotal,
+                    lucro,
+                    margem,
+                    userId: currentUser.id,
+                    createdAt: new Date().toISOString()
+                };
+                
+                trips.push(newTrip);
+                saveData('transcs_trips', trips);
+                
+                debugLog(`Viagem salva: Cliente ${tripData.clienteId}`);
+                showNotification('Viagem cadastrada com sucesso!', 'success');
+                
+                // Update interface
+                clearTripForm();
+                updateTripsList();
+                updateDashboard();
+                
+            } catch (error) {
+                debugLog('Erro ao salvar viagem: ' + error.message);
+                showNotification(error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        // Interface Updates
+        function updateClientsList() {
+            const container = document.getElementById('clientsList');
+            const userClients = clients.filter(client => client.userId === currentUser.id);
+            
+            document.getElementById('clientsCount').textContent = userClients.length;
+            
+            if (userClients.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-8 text-gray">
+                        <i class="fas fa-users text-6xl mb-4" style="opacity: 0.3;"></i>
+                        <h3 class="text-2xl font-bold mb-2">Nenhum cliente cadastrado</h3>
+                        <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
+                        <button class="btn btn-primary" onclick="showClientForm()">
+                            <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const clientsHTML = userClients.map(client => {
+                const avatar = client.nome.charAt(0).toUpperCase();
+                const createdDate = new Date(client.createdAt).toLocaleDateString('pt-BR');
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;">
+                        <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem;">
+                                ${avatar}
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.2rem;">${client.nome}</h4>
+                                <p style="color: var(--gray); font-size: 0.95rem; margin-bottom: 0.25rem;">
+                                    <i class="fas fa-user"></i> ${client.contato || 'N/A'} | 
+                                    <i class="fas fa-phone"></i> ${client.telefone || 'N/A'}
+                                </p>
+                                <p style="color: var(--gray); font-size: 0.85rem;">
+                                    <i class="fas fa-envelope"></i> ${client.email || 'N/A'} | 
+                                    <i class="fas fa-city"></i> ${client.cidade || 'N/A'}
+                                </p>
+                                <p style="color: var(--gray); font-size: 0.8rem;">
+                                    <i class="fas fa-calendar-plus"></i> Cadastrado em ${createdDate}
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="deleteClient(${client.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = clientsHTML;
+            debugLog(`Lista de clientes atualizada: ${userClients.length} clientes`);
+        }
+
+        function updateTripsList() {
+            const container = document.getElementById('tripsList');
+            const userTrips = trips
+                .filter(trip => trip.userId === currentUser.id)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            document.getElementById('tripsCount').textContent = userTrips.length;
+            
+            if (userTrips.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-8 text-gray">
+                        <i class="fas fa-truck text-6xl mb-4" style="opacity: 0.3;"></i>
+                        <h3 class="text-2xl font-bold mb-2">Nenhuma viagem cadastrada</h3>
+                        <p class="text-lg mb-4">Cadastre clientes primeiro, depois adicione viagens!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const tripsHTML = userTrips.map(trip => {
+                const client = clients.find(c => c.id === trip.clienteId);
+                const clientName = client ? client.nome : 'Cliente não encontrado';
+                const date = new Date(trip.data).toLocaleDateString('pt-BR');
+                const lucroClass = trip.lucro >= 0 ? 'text-success' : 'text-danger';
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
+                                    ${clientName.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                    <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.1rem;">${clientName}</h4>
+                                    <p style="color: var(--gray); font-size: 0.9rem;">${date} • ${trip.km} km</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; margin: 0 2rem;">
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Receita</div>
+                                <div style="font-size: 1rem; font-weight: bold; color: var(--primary);">R$ ${formatCurrency(trip.receita)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Custo</div>
+                                <div style="font-size: 1rem; font-weight: bold; color: var(--danger);">R$ ${formatCurrency(trip.custoTotal)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem;">Lucro</div>
+                                <div style="font-size: 1rem; font-weight: bold;" class="${lucroClass}">R$ ${formatCurrency(trip.lucro)}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline btn-sm" onclick="deleteTrip(${trip.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = tripsHTML;
+            debugLog(`Lista de viagens atualizada: ${userTrips.length} viagens`);
+        }
+
+        function populateClientSelect() {
+            const select = document.querySelector('select[name="clienteId"]');
+            if (!select) return;
+            
+            const userClients = clients.filter(client => client.userId === currentUser.id);
+            
+            if (userClients.length === 0) {
+                select.innerHTML = '<option value="">Primeiro cadastre clientes...</option>';
+            } else {
+                select.innerHTML = '<option value="">Selecione um cliente...</option>' +
+                    userClients.map(client => `<option value="${client.id}">${client.nome}</option>`).join('');
+            }
+            
+            debugLog(`Select de clientes atualizado: ${userClients.length} opções`);
+        }
+
+        function updateDashboard() {
+            const userTrips = trips.filter(trip => trip.userId === currentUser.id);
+            const userClients = clients.filter(client => client.userId === currentUser.id);
+            
+            if (userTrips.length === 0) {
+                document.getElementById('dashboardReceita').textContent = 'R$ 0,00';
+                document.getElementById('dashboardLucro').textContent = 'R$ 0,00';
+                document.getElementById('dashboardViagens').textContent = '0';
+                document.getElementById('dashboardClientes').textContent = userClients.length;
+                
+                document.getElementById('settingsClients').textContent = userClients.length;
+                document.getElementById('settingsTrips').textContent = '0';
+                return;
+            }
+            
+            const totalReceita = userTrips.reduce((sum, trip) => sum + trip.receita, 0);
+            const totalLucro = userTrips.reduce((sum, trip) => sum + trip.lucro, 0);
+            
+            document.getElementById('dashboardReceita').textContent = `R$ ${formatCurrency(totalReceita)}`;
+            document.getElementById('dashboardLucro').textContent = `R$ ${formatCurrency(totalLucro)}`;
+            document.getElementById('dashboardViagens').textContent = userTrips.length;
+            document.getElementById('dashboardClientes').textContent = userClients.length;
+            
+            document.getElementById('settingsClients').textContent = userClients.length;
+            document.getElementById('settingsTrips').textContent = userTrips.length;
+            
+            debugLog('Dashboard atualizado');
+        }
+
+        // Utility Functions
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+        }
+
+        function updateStatus(message) {
+            const container = document.getElementById('statusMessages');
+            if (container) {
+                container.innerHTML = `<div>✅ ${message}</div>`;
+            }
+            debugLog(message);
+        }
+
+        function showNotification(message, type = 'info', duration = 5000) {
+            const notification = document.getElementById('notification');
+            const titleEl = document.getElementById('notificationTitle');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            const titles = {
+                success: 'Sucesso',
+                error: 'Erro',
+                warning: 'Atenção',
+                info: 'Informação'
+            };
+
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            
+            notification.className = `notification ${type}`;
+            notification.querySelector('.notification-icon').className = `notification-icon ${icons[type]}`;
+            titleEl.textContent = titles[type];
+            messageEl.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
+        // UI Functions
         function togglePassword() {
             const input = document.querySelector('input[name="password"]');
             const button = document.querySelector('.password-toggle i');
@@ -2617,6 +1987,8 @@
         }
 
         function showTab(tabName) {
+            debugLog(`Mudando para aba: ${tabName}`);
+            
             // Hide all content
             document.querySelectorAll('.content').forEach(content => {
                 content.classList.remove('active');
@@ -2641,90 +2013,87 @@
             }
         }
 
-        function toggleClientForm() {
+        function showClientForm() {
             const card = document.getElementById('clientFormCard');
             if (card) {
                 card.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        function cancelClientForm() {
-            if (system) {
-                system.cancelClientForm();
-            }
-        }
-
-        function cancelTripEdit() {
-            if (system) {
-                system.cancelTripEdit();
+        function clearClientForm() {
+            const form = document.getElementById('clientForm');
+            if (form) {
+                form.reset();
+                document.getElementById('editClientId').value = '';
+                document.getElementById('clientFormTitle').textContent = 'Novo Cliente';
+                document.getElementById('clientSubmitText').textContent = 'Salvar Cliente';
             }
         }
 
         function clearTripForm() {
-            if (system) {
-                system.clearTripForm();
+            const form = document.getElementById('tripForm');
+            if (form) {
+                form.reset();
+                form.querySelector('input[name="data"]').value = new Date().toISOString().split('T')[0];
+            }
+        }
+
+        function deleteClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (!client) return;
+            
+            if (confirm(`Tem certeza que deseja excluir o cliente "${client.nome}"?`)) {
+                clients = clients.filter(c => c.id !== id);
+                saveData('transcs_clients', clients);
+                updateClientsList();
+                populateClientSelect();
+                updateDashboard();
+                showNotification('Cliente excluído!', 'info');
+                debugLog(`Cliente excluído: ${client.nome}`);
+            }
+        }
+
+        function deleteTrip(id) {
+            const trip = trips.find(t => t.id === id);
+            if (!trip) return;
+            
+            const client = clients.find(c => c.id === trip.clienteId);
+            const clientName = client ? client.nome : 'Cliente';
+            
+            if (confirm(`Tem certeza que deseja excluir a viagem de "${clientName}"?`)) {
+                trips = trips.filter(t => t.id !== id);
+                saveData('transcs_trips', trips);
+                updateTripsList();
+                updateDashboard();
+                showNotification('Viagem excluída!', 'info');
+                debugLog(`Viagem excluída: ${clientName}`);
             }
         }
 
         function refreshDashboard() {
-            if (system) {
-                system.updateDashboard();
-                system.showNotification('Dashboard atualizado!', 'success');
-            }
-        }
-
-        function refreshClients() {
-            if (system) {
-                system.updateClientsList();
-                system.showNotification('Lista de clientes atualizada!', 'success');
-            }
-        }
-
-        function refreshTrips() {
-            if (system) {
-                system.updateTripsList();
-                system.showNotification('Lista de viagens atualizada!', 'success');
-            }
-        }
-
-        function exportClients() {
-            if (system) {
-                system.exportClients();
-            }
-        }
-
-        function exportTrips() {
-            if (system) {
-                system.exportTrips();
-            }
+            updateDashboard();
+            showNotification('Dashboard atualizado!', 'success');
         }
 
         function logout() {
-            if (system) {
-                system.logout();
-            }
+            debugLog('Fazendo logout...');
+            showNotification('👋 Até logo!', 'info');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         }
 
-        // Initialize system
-        let system;
-
+        // Initialize system when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Inicializando TransCS Pro Ultimate v4.0...');
-            
-            try {
-                system = new TransCSSystem();
-                console.log('✅ Sistema inicializado com sucesso!');
-            } catch (error) {
-                console.error('💥 Erro ao inicializar:', error);
-                alert('Erro ao inicializar sistema! Verifique o console (F12).');
-            }
+            debugLog('DOM carregado, inicializando...');
+            initSystem();
         });
 
         // Backup initialization
         window.addEventListener('load', function() {
-            if (!system) {
-                console.log('🔄 Inicialização backup...');
-                system = new TransCSSystem();
+            if (!currentUser) {
+                debugLog('Backup initialization...');
+                initSystem();
             }
         });
     </script>
