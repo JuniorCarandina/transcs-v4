@@ -425,20 +425,20 @@
 
         .nav-tab {
             flex: 0 0 auto;
-            min-width: 160px;
-            padding: 1.25rem 2rem;
+            min-width: 140px;
+            padding: 1.25rem 1.5rem;
             background: transparent;
             border: none;
             color: var(--white);
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: var(--transition);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             white-space: nowrap;
         }
 
@@ -759,6 +759,87 @@
         .form-grid-3 { grid-template-columns: repeat(3, 1fr); }
         .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+        /* User Role Select */
+        .user-role-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .role-option {
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .role-option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .role-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .role-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Invite System */
+        .invite-form {
+            background: var(--gray-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .invite-link {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-light);
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
         /* Utility Classes */
         .hidden { display: none !important; }
         .text-center { text-align: center; }
@@ -875,13 +956,17 @@
             .form-grid-2, .form-grid-3, .form-grid-4 {
                 grid-template-columns: 1fr;
             }
+
+            .user-role-select {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
             .nav-tab {
-                min-width: 120px;
-                font-size: 0.9rem;
-                padding: 1rem 1.5rem;
+                min-width: 100px;
+                font-size: 0.85rem;
+                padding: 1rem 1rem;
             }
 
             .card-body {
@@ -896,11 +981,6 @@
     </style>
 </head>
 <body>
-    <!-- Debug Console -->
-    <div id="debugConsole" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; font-size: 12px; z-index: 9999; max-width: 300px; display: none;">
-        <div id="debugMessages"></div>
-    </div>
-
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen">
         <div class="login-container">
@@ -925,10 +1005,11 @@
                     </div>
                     <h1 class="brand-title">TransCS Pro Ultimate</h1>
                     <p class="brand-subtitle">Sistema Completo de Gestão de Fretes</p>
-                    <span class="brand-version">v4.0</span>
+                    <span class="brand-version">v4.0 • Sistema Seguro</span>
                 </div>
 
-                <form id="loginForm">
+                <!-- Login Form -->
+                <form id="loginForm" class="hidden">
                     <div class="form-group">
                         <label class="form-label">
                             <i class="fas fa-user"></i> Usuário
@@ -942,7 +1023,7 @@
                         </label>
                         <div class="password-input-group">
                             <input type="password" class="form-input" name="password" required placeholder="Digite sua senha" value="admin123">
-                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <button type="button" class="password-toggle" onclick="togglePassword('login')">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
@@ -953,32 +1034,143 @@
                             <input type="checkbox" name="remember" style="accent-color: var(--primary);">
                             Lembrar de mim
                         </label>
-                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">Esqueci a senha</a>
+                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="showForgotPassword()">Esqueci a senha</a>
                     </div>
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
                     </button>
                     
-                    <!-- Debug Panel -->
-                    <div class="debug-panel">
-                        <p><i class="fas fa-info-circle"></i> Status do Sistema</p>
-                        <div id="statusMessages" class="debug-messages">
-                            <div>✅ Credenciais: admin / admin123</div>
-                        </div>
-                        <div class="debug-buttons">
-                            <button type="button" class="btn btn-outline btn-sm" onclick="toggleDebug()" style="width: auto;">
-                                <i class="fas fa-bug"></i> Debug
-                            </button>
-                            <button type="button" class="btn btn-outline btn-sm" onclick="clearStorage()" style="width: auto;">
-                                <i class="fas fa-trash"></i> Limpar
-                            </button>
-                            <button type="button" class="btn btn-outline btn-sm" onclick="testLogin()" style="width: auto;">
-                                <i class="fas fa-test-tube"></i> Teste
+                    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--gray);">
+                        Não tem acesso? 
+                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="showRegisterInfo()">Solicitar convite</a>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="hidden">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> Nome Completo
+                        </label>
+                        <input type="text" class="form-input" name="fullName" required placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user-circle"></i> Nome de Usuário
+                        </label>
+                        <input type="text" class="form-input" name="newUsername" required placeholder="Escolha um nome de usuário">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i> Senha
+                        </label>
+                        <div class="password-input-group">
+                            <input type="password" class="form-input" name="newPassword" required placeholder="Escolha uma senha forte" minlength="6">
+                            <button type="button" class="password-toggle" onclick="togglePassword('register')">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i> Confirmar Senha
+                        </label>
+                        <div class="password-input-group">
+                            <input type="password" class="form-input" name="confirmPassword" required placeholder="Confirme sua senha">
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirm')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-badge"></i> Tipo de Usuário
+                        </label>
+                        <div class="user-role-select">
+                            <div class="role-option" onclick="selectRole('user')" data-role="user">
+                                <i class="fas fa-user role-icon"></i>
+                                <div class="role-title">Usuário</div>
+                                <div class="role-desc">Acesso padrão</div>
+                            </div>
+                            <div class="role-option selected" onclick="selectRole('admin')" data-role="admin">
+                                <i class="fas fa-crown role-icon"></i>
+                                <div class="role-title">Administrador</div>
+                                <div class="role-desc">Acesso total</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="role" value="admin" id="selectedRole">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-key"></i> Código de Convite *
+                        </label>
+                        <input type="text" class="form-input" name="inviteCode" required placeholder="Cole o código de convite aqui" id="inviteCodeInput">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Criar Conta
+                    </button>
                 </form>
+
+                <!-- Register Info -->
+                <div id="registerInfo" class="hidden">
+                    <div class="alert alert-info">
+                        <i class="alert-icon fas fa-shield-alt"></i>
+                        <div class="alert-content">
+                            <div class="alert-title">🔒 Sistema Fechado</div>
+                            <div>Este é um sistema privado. Para ter acesso, você precisa de um convite de um administrador. Entre em contato conosco para solicitar seu convite:</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <p style="margin-bottom: 1rem; color: var(--gray);">📧 <strong>Email para contato:</strong></p>
+                        <p style="font-size: 1.2rem; font-weight: 600; color: var(--primary);">contato@transcs.com</p>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--gray);">Responderemos em até 24 horas com seu link de convite</p>
+                    </div>
+
+                    <button type="button" class="btn btn-outline" onclick="backToLogin()">
+                        <i class="fas fa-arrow-left"></i> Voltar ao Login
+                    </button>
+                </div>
+
+                <!-- Form Navigation -->
+                <div class="login-footer" id="loginFooter">
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;" onclick="backToLogin()">
+                            ← Voltar ao Login
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Admin Panel Access -->
+                <div class="debug-panel">
+                    <p><i class="fas fa-info-circle"></i> Acesso de Demonstração</p>
+                    <div class="debug-messages">
+                        <div>👑 Admin: admin / admin123</div>
+                        <div>🔒 Sistema com convites ativo</div>
+                    </div>
+                    <div class="debug-buttons">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="showLoginForm()" style="width: auto;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="clearStorage()" style="width: auto;">
+                            <i class="fas fa-trash"></i> Limpar
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1045,6 +1237,9 @@
                 <button class="nav-tab" onclick="showTab('clients')">
                     <i class="fas fa-users"></i> Clientes
                 </button>
+                <button class="nav-tab" onclick="showTab('suppliers')">
+                    <i class="fas fa-truck-loading"></i> Fornecedores
+                </button>
                 <button class="nav-tab" onclick="showTab('trips')">
                     <i class="fas fa-truck"></i> Viagens
                 </button>
@@ -1081,7 +1276,7 @@
                     <i class="alert-icon fas fa-shield-check"></i>
                     <div class="alert-content">
                         <div class="alert-title">🎉 Bem-vindo ao TransCS Pro Ultimate v4.0!</div>
-                        <div>Sistema totalmente funcional. <strong>Primeiro:</strong> cadastre clientes na aba "Clientes", depois adicione viagens na aba "Viagens".</div>
+                        <div>Sistema totalmente funcional com controle de acesso seguro. <strong>Primeiro:</strong> cadastre clientes e fornecedores, depois adicione viagens. <strong>Administradores</strong> podem gerenciar usuários em Configurações.</div>
                     </div>
                 </div>
 
@@ -1142,6 +1337,20 @@
                             <span>Cadastre clientes</span>
                         </div>
                     </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-truck-loading"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="dashboardFornecedores">0</div>
+                        <div class="stat-label">Fornecedores</div>
+                        <div class="stat-change neutral">
+                            <i class="fas fa-building"></i>
+                            <span>Cadastre fornecedores</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Quick Actions -->
@@ -1153,17 +1362,23 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
                             <button class="btn btn-secondary" onclick="showTab('clients')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
                                 <i class="fas fa-user-plus text-2xl"></i>
-                                <span class="font-bold">1. Cadastrar Cliente</span>
-                                <span class="text-sm opacity-80">Primeiro, cadastre seus clientes</span>
+                                <span class="font-bold">1. Clientes</span>
+                                <span class="text-sm opacity-80">Cadastre seus clientes</span>
+                            </button>
+                            
+                            <button class="btn btn-outline" onclick="showTab('suppliers')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem; color: var(--warning); border-color: var(--warning);">
+                                <i class="fas fa-truck-loading text-2xl"></i>
+                                <span class="font-bold">2. Fornecedores</span>
+                                <span class="text-sm opacity-80">Gerencie fornecedores</span>
                             </button>
                             
                             <button class="btn btn-primary" onclick="showTab('trips')" style="padding: 1.5rem; height: auto; flex-direction: column; gap: 0.5rem;">
                                 <i class="fas fa-plus-circle text-2xl"></i>
-                                <span class="font-bold">2. Nova Viagem</span>
-                                <span class="text-sm opacity-80">Depois, cadastre suas viagens</span>
+                                <span class="font-bold">3. Viagens</span>
+                                <span class="text-sm opacity-80">Cadastre suas viagens</span>
                             </button>
                         </div>
                     </div>
@@ -1260,6 +1475,141 @@
                                 <p class="text-lg mb-4">Comece cadastrando seu primeiro cliente!</p>
                                 <button class="btn btn-primary" onclick="showClientForm()">
                                     <i class="fas fa-plus"></i> Cadastrar Primeiro Cliente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fornecedores -->
+            <section id="suppliers" class="content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-truck-loading"></i>
+                        Gestão de Fornecedores
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showSupplierForm()">
+                            <i class="fas fa-plus"></i> Novo Fornecedor
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Supplier Form -->
+                <div id="supplierFormCard" class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-building-warehouse"></i>
+                            <span id="supplierFormTitle">Novo Fornecedor</span>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="supplierForm">
+                            <input type="hidden" id="editSupplierId" value="">
+                            
+                            <div class="form-grid form-grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-industry"></i> Nome da Empresa *
+                                    </label>
+                                    <input type="text" class="form-input" name="nome" required placeholder="Nome da empresa">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-tags"></i> Tipo de Serviço
+                                    </label>
+                                    <select class="form-select" name="tipoServico">
+                                        <option value="">Selecione o tipo...</option>
+                                        <option value="Combustível">Posto de Combustível</option>
+                                        <option value="Manutenção">Oficina/Manutenção</option>
+                                        <option value="Pneus">Borracharia/Pneus</option>
+                                        <option value="Peças">Autopeças</option>
+                                        <option value="Seguro">Seguradora</option>
+                                        <option value="Financeiro">Serviços Financeiros</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-grid form-grid-3">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-user-tie"></i> Pessoa de Contato
+                                    </label>
+                                    <input type="text" class="form-input" name="contato" placeholder="Nome do responsável">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-phone"></i> Telefone
+                                    </label>
+                                    <input type="tel" class="form-input" name="telefone" placeholder="(00) 00000-0000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-envelope"></i> Email
+                                    </label>
+                                    <input type="email" class="form-input" name="email" placeholder="contato@empresa.com">
+                                </div>
+                            </div>
+
+                            <div class="form-grid form-grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-city"></i> Cidade
+                                    </label>
+                                    <input type="text" class="form-input" name="cidade" placeholder="Nome da cidade">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-star"></i> Avaliação
+                                    </label>
+                                    <select class="form-select" name="avaliacao">
+                                        <option value="">Selecione...</option>
+                                        <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                                        <option value="4">⭐⭐⭐⭐ Muito Bom</option>
+                                        <option value="3">⭐⭐⭐ Bom</option>
+                                        <option value="2">⭐⭐ Regular</option>
+                                        <option value="1">⭐ Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-sticky-note"></i> Observações
+                                </label>
+                                <textarea class="form-textarea" name="observacoes" placeholder="Observações sobre o fornecedor, preços, condições de pagamento..." rows="3"></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> <span id="supplierSubmitText">Salvar Fornecedor</span>
+                                </button>
+                                <button type="button" class="btn btn-outline" onclick="clearSupplierForm()">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Suppliers List -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-list"></i>
+                            Fornecedores Cadastrados (<span id="suppliersCount">0</span>)
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="suppliersList">
+                            <div class="text-center p-8 text-gray">
+                                <i class="fas fa-truck-loading text-6xl mb-4" style="opacity: 0.3;"></i>
+                                <h3 class="text-2xl font-bold mb-2">Nenhum fornecedor cadastrado</h3>
+                                <p class="text-lg mb-4">Comece cadastrando seus fornecedores!</p>
+                                <button class="btn btn-primary" onclick="showSupplierForm()">
+                                    <i class="fas fa-plus"></i> Cadastrar Primeiro Fornecedor
                                 </button>
                             </div>
                         </div>
@@ -1386,7 +1736,7 @@
                         <div class="text-center p-8">
                             <i class="fas fa-chart-line text-6xl text-secondary mb-4"></i>
                             <h3 class="text-2xl font-bold mb-4">Relatórios em Desenvolvimento</h3>
-                            <p class="text-lg text-gray">Funcionalidade será implementada nas próximas atualizações.</p>
+                            <p class="text-lg text-gray">Próxima fase: Gráficos avançados e análises detalhadas.</p>
                         </div>
                     </div>
                 </div>
@@ -1401,6 +1751,79 @@
                     </h2>
                 </div>
 
+                <!-- User Management (Admin Only) -->
+                <div id="userManagementCard" class="card hidden">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-users-cog"></i>
+                            Gerenciamento de Usuários
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Invite System -->
+                        <div class="alert alert-info">
+                            <i class="alert-icon fas fa-shield-alt"></i>
+                            <div class="alert-content">
+                                <div class="alert-title">🔒 Sistema Fechado</div>
+                                Apenas usuários convidados podem se cadastrar. Gere links de convite únicos abaixo.
+                            </div>
+                        </div>
+
+                        <div class="invite-form">
+                            <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-user-plus"></i> Convidar Novo Usuário
+                            </h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end; margin-bottom: 1rem;">
+                                <div>
+                                    <label class="form-label">Tipo de Usuário</label>
+                                    <select id="inviteRole" class="form-select">
+                                        <option value="user">👤 Usuário Padrão</option>
+                                        <option value="admin">👑 Administrador</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Validade</label>
+                                    <select id="inviteExpiry" class="form-select">
+                                        <option value="1">1 dia</option>
+                                        <option value="7" selected>7 dias</option>
+                                        <option value="30">30 dias</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="generateInvite()">
+                                    <i class="fas fa-link"></i> Gerar Convite
+                                </button>
+                            </div>
+
+                            <div id="inviteResult" class="hidden" style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <p style="margin-bottom: 0.5rem; font-weight: 600;">🔗 Link de Convite Gerado:</p>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="inviteLink" class="form-input" readonly style="font-family: monospace; font-size: 0.85rem;">
+                                    <button class="btn btn-outline btn-sm" onclick="copyInviteLink()">
+                                        <i class="fas fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                                <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                                    ⚠️ Compartilhe apenas com pessoas autorizadas. O link expira automaticamente.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Users List -->
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-list"></i> Usuários Cadastrados
+                        </h4>
+                        <div id="usersList"></div>
+
+                        <!-- Active Invites -->
+                        <h4 style="margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-clock"></i> Convites Ativos
+                        </h4>
+                        <div id="activeInvites"></div>
+                    </div>
+                </div>
+
+                <!-- System Info -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -1413,7 +1836,7 @@
                             <i class="alert-icon fas fa-shield-check"></i>
                             <div class="alert-content">
                                 <div class="alert-title">🔒 TransCS Pro Ultimate v4.0</div>
-                                <div>Sistema totalmente funcional com gestão de clientes e viagens.</div>
+                                <div>Sistema completo com gestão de clientes, fornecedores, viagens e controle de acesso seguro.</div>
                             </div>
                         </div>
                         
@@ -1423,12 +1846,16 @@
                                 <div style="font-size: 0.9rem; color: var(--gray);">Clientes Cadastrados</div>
                             </div>
                             <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--warning);" id="settingsSuppliersCount">0</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Fornecedores</div>
+                            </div>
+                            <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
                                 <div style="font-size: 2rem; font-weight: bold; color: var(--secondary);" id="settingsTrips">0</div>
                                 <div style="font-size: 0.9rem; color: var(--gray);">Viagens Realizadas</div>
                             </div>
                             <div style="text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
                                 <div style="font-size: 2rem; font-weight: bold; color: var(--success);">✅</div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Online</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Seguro</div>
                             </div>
                         </div>
                     </div>
@@ -1438,59 +1865,30 @@
     </div>
 
     <script>
-        // Debug functions
-        function debugLog(message) {
-            console.log(`[TransCS] ${message}`);
-            const debugEl = document.getElementById('debugMessages');
-            if (debugEl) {
-                const time = new Date().toLocaleTimeString();
-                debugEl.innerHTML += `<br>[${time}] ${message}`;
-            }
-        }
-
-        function toggleDebug() {
-            const debugConsole = document.getElementById('debugConsole');
-            debugConsole.style.display = debugConsole.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function clearStorage() {
-            localStorage.clear();
-            debugLog('Storage limpo');
-            showNotification('Cache limpo!', 'info');
-        }
-
-        function testLogin() {
-            debugLog('Testando login...');
-            handleLogin({ 
-                preventDefault: () => {},
-                target: document.getElementById('loginForm')
-            });
-        }
-
-        // System variables
+        // Global variables
         let currentUser = null;
         let clients = [];
+        let suppliers = [];
         let trips = [];
+        let users = [];
+        let invites = {};
 
-        // Main System Functions
+        // System initialization
         function initSystem() {
-            debugLog('Inicializando sistema...');
+            debugLog('Inicializando TransCS Pro Ultimate v4.0...');
             
             try {
-                // Initialize data
                 loadAllData();
-                
-                // Setup events
                 setupEventListeners();
+                checkInviteCode();
+                showLoginForm(); // Show login by default
                 
-                // Set default values
                 const dateInput = document.querySelector('input[name="data"]');
                 if (dateInput) {
                     dateInput.value = new Date().toISOString().split('T')[0];
                 }
                 
                 debugLog('Sistema inicializado com sucesso!');
-                updateStatus('Sistema pronto para uso!');
                 
             } catch (error) {
                 debugLog('Erro na inicialização: ' + error.message);
@@ -1505,55 +1903,88 @@
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', handleLogin);
-                debugLog('Login form configurado');
+            }
+
+            // Register form
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
             }
 
             // Client form
             const clientForm = document.getElementById('clientForm');
             if (clientForm) {
                 clientForm.addEventListener('submit', handleClientSubmit);
-                debugLog('Client form configurado');
+            }
+
+            // Supplier form
+            const supplierForm = document.getElementById('supplierForm');
+            if (supplierForm) {
+                supplierForm.addEventListener('submit', handleSupplierSubmit);
             }
 
             // Trip form
             const tripForm = document.getElementById('tripForm');
             if (tripForm) {
                 tripForm.addEventListener('submit', handleTripSubmit);
-                debugLog('Trip form configurado');
             }
         }
 
         function loadAllData() {
             debugLog('Carregando dados...');
             
+            users = loadData('transcs_users', []);
             clients = loadData('transcs_clients', []);
+            suppliers = loadData('transcs_suppliers', []);
             trips = loadData('transcs_trips', []);
+            invites = loadData('transcs_invites', {});
             
-            debugLog(`Carregados: ${clients.length} clientes, ${trips.length} viagens`);
+            // Ensure admin exists
+            ensureAdminExists();
+            
+            debugLog(`Dados carregados: ${users.length} usuários, ${clients.length} clientes, ${suppliers.length} fornecedores, ${trips.length} viagens`);
         }
 
-        function loadData(key, defaultValue = []) {
-            try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : defaultValue;
-            } catch (error) {
-                debugLog(`Erro ao carregar ${key}: ${error.message}`);
-                return defaultValue;
+        function ensureAdminExists() {
+            const adminExists = users.find(u => u.username === 'admin');
+            
+            if (!adminExists) {
+                const adminUser = {
+                    id: Date.now(),
+                    username: 'admin',
+                    password: hashPassword('admin123'),
+                    fullName: 'Administrador',
+                    role: 'admin',
+                    email: 'admin@transcs.com',
+                    status: 'active',
+                    createdAt: new Date().toISOString()
+                };
+                
+                users.push(adminUser);
+                saveData('transcs_users', users);
+                debugLog('Usuário admin criado');
             }
         }
 
-        function saveData(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-                debugLog(`Dados salvos: ${key}`);
-                return true;
-            } catch (error) {
-                debugLog(`Erro ao salvar ${key}: ${error.message}`);
-                return false;
+        function checkInviteCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteCode = urlParams.get('invite');
+            
+            if (inviteCode) {
+                debugLog('Código de convite detectado: ' + inviteCode);
+                
+                const invite = invites[inviteCode];
+                if (invite && new Date(invite.expiresAt) > new Date()) {
+                    showRegisterForm(inviteCode, invite.role);
+                    showNotification('🎉 Convite válido! Complete seu cadastro abaixo.', 'success');
+                } else {
+                    showNotification('❌ Código de convite inválido ou expirado.', 'error');
+                    showLoginForm();
+                }
             }
         }
 
-        // Login System
+        // Authentication functions
         async function handleLogin(e) {
             e.preventDefault();
             debugLog('Processando login...');
@@ -1569,33 +2000,112 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
                 
-                // Simulate loading
                 await new Promise(resolve => setTimeout(resolve, 800));
                 
-                debugLog(`Tentando login: ${username}`);
+                const user = users.find(u => u.username === username);
                 
-                // Simple validation for demo
-                if (username === 'admin' && password === 'admin123') {
-                    currentUser = {
-                        id: 1,
-                        username: 'admin',
-                        fullName: 'Administrador',
-                        role: 'admin'
-                    };
-                    
-                    debugLog('Login bem-sucedido!');
-                    showNotification('🎉 Login realizado com sucesso!', 'success');
-                    
-                    setTimeout(() => {
-                        showApp();
-                    }, 1000);
-                    
-                } else {
+                if (!user || !verifyPassword(password, user.password)) {
                     throw new Error('Usuário ou senha incorretos');
                 }
+
+                if (user.status !== 'active') {
+                    throw new Error('Usuário inativo');
+                }
+
+                currentUser = user;
+                
+                debugLog(`Login bem-sucedido: ${user.fullName}`);
+                showNotification(`🎉 Bem-vindo, ${user.fullName}!`, 'success');
+                
+                setTimeout(() => {
+                    showApp();
+                }, 1000);
                 
             } catch (error) {
                 debugLog('Erro no login: ' + error.message);
+                showNotification(error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            debugLog('Processando registro...');
+            
+            const formData = new FormData(e.target);
+            const userData = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                username: formData.get('newUsername'),
+                password: formData.get('newPassword'),
+                confirmPassword: formData.get('confirmPassword'),
+                role: formData.get('role'),
+                inviteCode: formData.get('inviteCode')
+            };
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // Validation
+                if (userData.password !== userData.confirmPassword) {
+                    throw new Error('As senhas não coincidem');
+                }
+
+                if (userData.password.length < 6) {
+                    throw new Error('A senha deve ter pelo menos 6 caracteres');
+                }
+
+                if (users.find(u => u.username === userData.username)) {
+                    throw new Error('Nome de usuário já existe');
+                }
+
+                if (users.find(u => u.email === userData.email)) {
+                    throw new Error('Email já cadastrado');
+                }
+
+                // Validate invite code
+                const invite = invites[userData.inviteCode];
+                if (!invite || new Date(invite.expiresAt) < new Date()) {
+                    throw new Error('Código de convite inválido ou expirado');
+                }
+
+                // Create user
+                const newUser = {
+                    id: Date.now(),
+                    username: userData.username,
+                    password: hashPassword(userData.password),
+                    fullName: userData.fullName,
+                    email: userData.email,
+                    role: invite.role,
+                    status: 'active',
+                    createdAt: new Date().toISOString(),
+                    invitedBy: invite.createdBy
+                };
+
+                users.push(newUser);
+                saveData('transcs_users', users);
+
+                // Mark invite as used
+                delete invites[userData.inviteCode];
+                saveData('transcs_invites', invites);
+
+                debugLog(`Usuário registrado: ${newUser.fullName}`);
+                showNotification('✅ Conta criada com sucesso! Redirecionando para login...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = window.location.pathname;
+                }, 2000);
+
+            } catch (error) {
+                debugLog('Erro no registro: ' + error.message);
                 showNotification(error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
@@ -1607,7 +2117,6 @@
             debugLog('Exibindo aplicação...');
             
             try {
-                // Hide login screen
                 const loginScreen = document.getElementById('loginScreen');
                 const appContainer = document.getElementById('appContainer');
                 
@@ -1617,12 +2126,21 @@
                     
                     // Update user info
                     document.getElementById('userName').textContent = currentUser.fullName;
+                    document.getElementById('userRole').textContent = currentUser.role === 'admin' ? 'Administrador do Sistema' : 'Usuário do Sistema';
                     document.getElementById('userAvatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
                     document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
+                    
+                    // Show admin features if admin
+                    if (currentUser.role === 'admin') {
+                        document.getElementById('userManagementCard').classList.remove('hidden');
+                        updateUsersDisplay();
+                        updateInvitesDisplay();
+                    }
                     
                     // Load data and update interface
                     loadAllData();
                     updateClientsList();
+                    updateSuppliersList();
                     updateTripsList();
                     updateDashboard();
                     populateClientSelect();
@@ -1665,7 +2183,6 @@
                     throw new Error('Nome da empresa é obrigatório');
                 }
                 
-                // Add client
                 const newClient = {
                     id: Date.now(),
                     ...clientData,
@@ -1679,7 +2196,6 @@
                 debugLog(`Cliente salvo: ${clientData.nome}`);
                 showNotification('Cliente cadastrado com sucesso!', 'success');
                 
-                // Update interface
                 clearClientForm();
                 updateClientsList();
                 populateClientSelect();
@@ -1687,6 +2203,62 @@
                 
             } catch (error) {
                 debugLog('Erro ao salvar cliente: ' + error.message);
+                showNotification(error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        // Supplier Management
+        async function handleSupplierSubmit(e) {
+            e.preventDefault();
+            debugLog('Salvando fornecedor...');
+            
+            const formData = new FormData(e.target);
+            const supplierData = {
+                nome: formData.get('nome'),
+                tipoServico: formData.get('tipoServico'),
+                contato: formData.get('contato'),
+                telefone: formData.get('telefone'),
+                email: formData.get('email'),
+                cidade: formData.get('cidade'),
+                avaliacao: formData.get('avaliacao'),
+                observacoes: formData.get('observacoes')
+            };
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                if (!supplierData.nome) {
+                    throw new Error('Nome da empresa é obrigatório');
+                }
+                
+                const newSupplier = {
+                    id: Date.now(),
+                    ...supplierData,
+                    userId: currentUser.id,
+                    createdAt: new Date().toISOString()
+                };
+                
+                suppliers.push(newSupplier);
+                saveData('transcs_suppliers', suppliers);
+                
+                debugLog(`Fornecedor salvo: ${supplierData.nome}`);
+                showNotification('Fornecedor cadastrado com sucesso!', 'success');
+                
+                clearSupplierForm();
+                updateSuppliersList();
+                updateDashboard();
+                
+            } catch (error) {
+                debugLog('Erro ao salvar fornecedor: ' + error.message);
                 showNotification(error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
@@ -1743,7 +2315,6 @@
                 debugLog(`Viagem salva: Cliente ${tripData.clienteId}`);
                 showNotification('Viagem cadastrada com sucesso!', 'success');
                 
-                // Update interface
                 clearTripForm();
                 updateTripsList();
                 updateDashboard();
@@ -1814,6 +2385,66 @@
             
             container.innerHTML = clientsHTML;
             debugLog(`Lista de clientes atualizada: ${userClients.length} clientes`);
+        }
+
+        function updateSuppliersList() {
+            const container = document.getElementById('suppliersList');
+            const userSuppliers = suppliers.filter(supplier => supplier.userId === currentUser.id);
+            
+            document.getElementById('suppliersCount').textContent = userSuppliers.length;
+            
+            if (userSuppliers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-8 text-gray">
+                        <i class="fas fa-truck-loading text-6xl mb-4" style="opacity: 0.3;"></i>
+                        <h3 class="text-2xl font-bold mb-2">Nenhum fornecedor cadastrado</h3>
+                        <p class="text-lg mb-4">Comece cadastrando seus fornecedores!</p>
+                        <button class="btn btn-primary" onclick="showSupplierForm()">
+                            <i class="fas fa-plus"></i> Cadastrar Primeiro Fornecedor
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const suppliersHTML = userSuppliers.map(supplier => {
+                const avatar = supplier.nome.charAt(0).toUpperCase();
+                const createdDate = new Date(supplier.createdAt).toLocaleDateString('pt-BR');
+                const serviceIcon = getServiceIcon(supplier.tipoServico);
+                const stars = supplier.avaliacao ? '⭐'.repeat(parseInt(supplier.avaliacao)) : '';
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: white; border-radius: 12px; margin-bottom: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease;">
+                        <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem;">
+                                ${avatar}
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; font-size: 1.2rem;">${supplier.nome}</h4>
+                                <p style="color: var(--gray); font-size: 0.95rem; margin-bottom: 0.25rem;">
+                                    ${serviceIcon} ${supplier.tipoServico || 'Serviço não especificado'} ${stars ? `| ${stars}` : ''}
+                                </p>
+                                <p style="color: var(--gray); font-size: 0.85rem;">
+                                    <i class="fas fa-user-tie"></i> ${supplier.contato || 'N/A'} | 
+                                    <i class="fas fa-phone"></i> ${supplier.telefone || 'N/A'}
+                                </p>
+                                <p style="color: var(--gray); font-size: 0.8rem;">
+                                    <i class="fas fa-city"></i> ${supplier.cidade || 'N/A'} | 
+                                    <i class="fas fa-calendar-plus"></i> Cadastrado em ${createdDate}
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="deleteSupplier(${supplier.id})" style="padding: 0.5rem; color: var(--danger); border-color: var(--danger);">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = suppliersHTML;
+            debugLog(`Lista de fornecedores atualizada: ${userSuppliers.length} fornecedores`);
         }
 
         function updateTripsList() {
@@ -1900,14 +2531,17 @@
         function updateDashboard() {
             const userTrips = trips.filter(trip => trip.userId === currentUser.id);
             const userClients = clients.filter(client => client.userId === currentUser.id);
+            const userSuppliers = suppliers.filter(supplier => supplier.userId === currentUser.id);
             
             if (userTrips.length === 0) {
                 document.getElementById('dashboardReceita').textContent = 'R$ 0,00';
                 document.getElementById('dashboardLucro').textContent = 'R$ 0,00';
                 document.getElementById('dashboardViagens').textContent = '0';
                 document.getElementById('dashboardClientes').textContent = userClients.length;
+                document.getElementById('dashboardFornecedores').textContent = userSuppliers.length;
                 
                 document.getElementById('settingsClients').textContent = userClients.length;
+                document.getElementById('settingsSuppliersCount').textContent = userSuppliers.length;
                 document.getElementById('settingsTrips').textContent = '0';
                 return;
             }
@@ -1919,11 +2553,167 @@
             document.getElementById('dashboardLucro').textContent = `R$ ${formatCurrency(totalLucro)}`;
             document.getElementById('dashboardViagens').textContent = userTrips.length;
             document.getElementById('dashboardClientes').textContent = userClients.length;
+            document.getElementById('dashboardFornecedores').textContent = userSuppliers.length;
             
             document.getElementById('settingsClients').textContent = userClients.length;
+            document.getElementById('settingsSuppliersCount').textContent = userSuppliers.length;
             document.getElementById('settingsTrips').textContent = userTrips.length;
             
             debugLog('Dashboard atualizado');
+        }
+
+        // User Management (Admin only)
+        function generateInvite() {
+            if (currentUser.role !== 'admin') {
+                showNotification('Apenas administradores podem gerar convites', 'error');
+                return;
+            }
+
+            const role = document.getElementById('inviteRole').value;
+            const expiryDays = parseInt(document.getElementById('inviteExpiry').value);
+            
+            const inviteCode = 'INV-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            const expiresAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
+            
+            invites[inviteCode] = {
+                code: inviteCode,
+                role: role,
+                createdBy: currentUser.id,
+                createdAt: new Date().toISOString(),
+                expiresAt: expiresAt.toISOString()
+            };
+            
+            saveData('transcs_invites', invites);
+            updateInvitesDisplay();
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            const inviteLink = `${baseUrl}?invite=${inviteCode}`;
+            
+            document.getElementById('inviteLink').value = inviteLink;
+            document.getElementById('inviteResult').classList.remove('hidden');
+            
+            showNotification(`🔗 Convite ${role === 'admin' ? 'de administrador' : 'de usuário'} gerado!`, 'success');
+            debugLog(`Convite gerado: ${inviteCode} (${role})`);
+        }
+
+        function copyInviteLink() {
+            const linkInput = document.getElementById('inviteLink');
+            linkInput.select();
+            navigator.clipboard.writeText(linkInput.value).then(() => {
+                showNotification('📋 Link copiado para a área de transferência!', 'success');
+            });
+        }
+
+        function updateUsersDisplay() {
+            const container = document.getElementById('usersList');
+            if (!container) return;
+
+            const usersHTML = users.map(user => {
+                const avatar = user.fullName.charAt(0).toUpperCase();
+                const isCurrentUser = user.id === currentUser.id;
+                const lastLogin = user.lastLogin ? 
+                    new Date(user.lastLogin).toLocaleDateString('pt-BR') : 'Nunca';
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                ${avatar}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">${user.fullName}</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">@${user.username} • ${user.email}</div>
+                                <div style="font-size: 0.8rem; color: var(--gray);">Último acesso: ${lastLogin}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="padding: 0.25rem 0.75rem; background: ${user.role === 'admin' ? '#fef3c7' : '#dbeafe'}; color: ${user.role === 'admin' ? '#92400e' : '#1e40af'}; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                ${user.role === 'admin' ? '👑 Admin' : '👤 Usuário'}
+                            </span>
+                            ${isCurrentUser ? 
+                                '<span style="font-size: 0.8rem; color: var(--gray);">Você</span>' : 
+                                `<button class="btn btn-sm btn-outline" onclick="deleteUser(${user.id})" style="padding: 0.25rem 0.5rem;">
+                                    <i class="fas fa-trash"></i>
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = usersHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum usuário encontrado</p>';
+        }
+
+        function updateInvitesDisplay() {
+            const container = document.getElementById('activeInvites');
+            if (!container) return;
+
+            const activeInvites = Object.values(invites).filter(invite => 
+                new Date(invite.expiresAt) > new Date()
+            );
+
+            const invitesHTML = activeInvites.map(invite => {
+                const expiresAt = new Date(invite.expiresAt).toLocaleString('pt-BR');
+                const createdAt = new Date(invite.createdAt).toLocaleString('pt-BR');
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
+                        <div>
+                            <div style="font-weight: 600; font-family: monospace;">${invite.code}</div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">
+                                ${invite.role === 'admin' ? '👑 Admin' : '👤 Usuário'} • 
+                                Criado em: ${createdAt}
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--danger);">
+                                ⏰ Expira em: ${expiresAt}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-sm btn-outline" onclick="copyInviteCode('${invite.code}')" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="revokeInvite('${invite.code}')" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = invitesHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum convite ativo</p>';
+        }
+
+        function copyInviteCode(code) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const inviteLink = `${baseUrl}?invite=${code}`;
+            
+            navigator.clipboard.writeText(inviteLink).then(() => {
+                showNotification('🔗 Link de convite copiado!', 'success');
+            });
+        }
+
+        function revokeInvite(code) {
+            delete invites[code];
+            saveData('transcs_invites', invites);
+            updateInvitesDisplay();
+            showNotification('❌ Convite revogado!', 'info');
+        }
+
+        function deleteUser(userId) {
+            if (userId === currentUser.id) {
+                showNotification('Você não pode excluir sua própria conta', 'error');
+                return;
+            }
+
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            if (confirm(`Tem certeza que deseja excluir o usuário "${user.fullName}"?`)) {
+                users = users.filter(u => u.id !== userId);
+                saveData('transcs_users', users);
+                updateUsersDisplay();
+                showNotification(`Usuário "${user.fullName}" excluído!`, 'success');
+            }
         }
 
         // Utility Functions
@@ -1934,12 +2724,50 @@
             }).format(value);
         }
 
-        function updateStatus(message) {
-            const container = document.getElementById('statusMessages');
-            if (container) {
-                container.innerHTML = `<div>✅ ${message}</div>`;
+        function getServiceIcon(tipoServico) {
+            const icons = {
+                'Combustível': '<i class="fas fa-gas-pump"></i>',
+                'Manutenção': '<i class="fas fa-tools"></i>',
+                'Pneus': '<i class="fas fa-circle"></i>',
+                'Peças': '<i class="fas fa-cog"></i>',
+                'Seguro': '<i class="fas fa-shield-alt"></i>',
+                'Financeiro': '<i class="fas fa-credit-card"></i>',
+                'Outros': '<i class="fas fa-building"></i>'
+            };
+            return icons[tipoServico] || '<i class="fas fa-building"></i>';
+        }
+
+        function hashPassword(password) {
+            return btoa(password + 'transcs_salt_v4').split('').reverse().join('');
+        }
+
+        function verifyPassword(password, hash) {
+            return hashPassword(password) === hash;
+        }
+
+        function loadData(key, defaultValue = []) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (error) {
+                debugLog(`Erro ao carregar ${key}: ${error.message}`);
+                return defaultValue;
             }
-            debugLog(message);
+        }
+
+        function saveData(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                debugLog(`Dados salvos: ${key}`);
+                return true;
+            } catch (error) {
+                debugLog(`Erro ao salvar ${key}: ${error.message}`);
+                return false;
+            }
+        }
+
+        function debugLog(message) {
+            console.log(`[TransCS] ${message}`);
         }
 
         function showNotification(message, type = 'info', duration = 5000) {
@@ -1973,17 +2801,37 @@
         }
 
         // UI Functions
-        function togglePassword() {
-            const input = document.querySelector('input[name="password"]');
-            const button = document.querySelector('.password-toggle i');
+        function togglePassword(type) {
+            let input, button;
             
-            if (input.type === 'password') {
-                input.type = 'text';
-                button.className = 'fas fa-eye-slash';
-            } else {
-                input.type = 'password';
-                button.className = 'fas fa-eye';
+            if (type === 'login') {
+                input = document.querySelector('input[name="password"]');
+                button = document.querySelector('#loginForm .password-toggle i');
+            } else if (type === 'register') {
+                input = document.querySelector('input[name="newPassword"]');
+                button = document.querySelector('#registerForm .password-toggle i');
+            } else if (type === 'confirm') {
+                input = document.querySelector('input[name="confirmPassword"]');
+                button = document.querySelectorAll('#registerForm .password-toggle i')[1];
             }
+            
+            if (input && button) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    button.className = 'fas fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    button.className = 'fas fa-eye';
+                }
+            }
+        }
+
+        function selectRole(role) {
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-role="${role}"]`).classList.add('selected');
+            document.getElementById('selectedRole').value = role;
         }
 
         function showTab(tabName) {
@@ -2013,8 +2861,50 @@
             }
         }
 
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('registerInfo').classList.add('hidden');
+            document.getElementById('loginFooter').classList.add('hidden');
+        }
+
+        function showRegisterForm(inviteCode = '', role = 'user') {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('registerInfo').classList.add('hidden');
+            document.getElementById('loginFooter').classList.remove('hidden');
+            
+            if (inviteCode) {
+                document.getElementById('inviteCodeInput').value = inviteCode;
+            }
+            
+            selectRole(role);
+        }
+
+        function showRegisterInfo() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('registerInfo').classList.remove('hidden');
+            document.getElementById('loginFooter').classList.remove('hidden');
+        }
+
+        function showForgotPassword() {
+            showNotification('🔒 Entre em contato com o administrador para redefinir sua senha: contato@transcs.com', 'info', 8000);
+        }
+
+        function backToLogin() {
+            showLoginForm();
+        }
+
         function showClientForm() {
             const card = document.getElementById('clientFormCard');
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showSupplierForm() {
+            const card = document.getElementById('supplierFormCard');
             if (card) {
                 card.scrollIntoView({ behavior: 'smooth' });
             }
@@ -2027,6 +2917,16 @@
                 document.getElementById('editClientId').value = '';
                 document.getElementById('clientFormTitle').textContent = 'Novo Cliente';
                 document.getElementById('clientSubmitText').textContent = 'Salvar Cliente';
+            }
+        }
+
+        function clearSupplierForm() {
+            const form = document.getElementById('supplierForm');
+            if (form) {
+                form.reset();
+                document.getElementById('editSupplierId').value = '';
+                document.getElementById('supplierFormTitle').textContent = 'Novo Fornecedor';
+                document.getElementById('supplierSubmitText').textContent = 'Salvar Fornecedor';
             }
         }
 
@@ -2053,6 +2953,20 @@
             }
         }
 
+        function deleteSupplier(id) {
+            const supplier = suppliers.find(s => s.id === id);
+            if (!supplier) return;
+            
+            if (confirm(`Tem certeza que deseja excluir o fornecedor "${supplier.nome}"?`)) {
+                suppliers = suppliers.filter(s => s.id !== id);
+                saveData('transcs_suppliers', suppliers);
+                updateSuppliersList();
+                updateDashboard();
+                showNotification('Fornecedor excluído!', 'info');
+                debugLog(`Fornecedor excluído: ${supplier.nome}`);
+            }
+        }
+
         function deleteTrip(id) {
             const trip = trips.find(t => t.id === id);
             if (!trip) return;
@@ -2075,6 +2989,13 @@
             showNotification('Dashboard atualizado!', 'success');
         }
 
+        function clearStorage() {
+            localStorage.clear();
+            debugLog('Storage limpo');
+            showNotification('Cache limpo! Recarregando...', 'info');
+            setTimeout(() => location.reload(), 1000);
+        }
+
         function logout() {
             debugLog('Fazendo logout...');
             showNotification('👋 Até logo!', 'info');
@@ -2085,7 +3006,7 @@
 
         // Initialize system when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            debugLog('DOM carregado, inicializando...');
+            debugLog('DOM carregado, inicializando TransCS Pro Ultimate v4.0...');
             initSystem();
         });
 
@@ -2096,6 +3017,3 @@
                 initSystem();
             }
         });
-    </script>
-</body>
-</html>
