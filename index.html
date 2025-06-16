@@ -753,6 +753,11 @@
                         <div id="statusMessages">
                             <div>⏳ Iniciando sistema...</div>
                         </div>
+                        <div style="margin: 1rem 0; padding: 0.75rem; background: #fef3c7; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                            <p style="font-size: 0.8rem; color: #92400e; margin: 0;">
+                                ⚠️ <strong>Importante:</strong> Após fazer login como admin, altere a senha padrão em Configurações!
+                            </p>
+                        </div>
                         <div class="debug-buttons">
                             <button type="button" class="btn btn-sm btn-outline" onclick="debugCreateAdmin()">
                                 <i class="fas fa-tools"></i> Forçar Admin
@@ -803,6 +808,9 @@
                     <button class="logout-btn" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Sair
                     </button>
+                    <button class="btn btn-sm btn-outline" onclick="showTab('settings')" id="settingsQuickBtn" style="display: none; margin-top: 0.5rem; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: white;">
+                        <i class="fas fa-cog"></i> Configurações
+                    </button>
                 </div>
             </div>
         </header>
@@ -841,7 +849,7 @@
                     <i class="alert-icon fas fa-shield-alt"></i>
                     <div class="alert-content">
                         <div class="alert-title">🔒 Sistema Seguro Ativado!</div>
-                        <div>O TransCS Pro Ultimate v3.0 agora possui controle de acesso completo. Você está logado como <span class="font-bold" id="dashboardUserInfo">Administrador</span>. Todos os dados são salvos de forma segura e isolada por usuário.</div>
+                        <div>O TransCS Pro Ultimate v3.0 agora possui controle de acesso completo. Você está logado como <span class="font-bold" id="dashboardUserInfo">Administrador</span>. Apenas usuários convidados podem se cadastrar no sistema.</div>
                     </div>
                 </div>
 
@@ -857,11 +865,15 @@
                             <i class="fas fa-shield-check text-6xl text-success mb-4"></i>
                             <h3 class="text-2xl font-bold mb-4">Sistema Protegido e Funcional!</h3>
                             <p class="text-lg text-gray mb-6">
-                                O TransCS Pro Ultimate v3.0 agora possui autenticação completa.<br>
+                                O TransCS Pro Ultimate v3.0 agora possui autenticação completa e sistema de convites.<br>
+                                <strong>Como administrador</strong>, você pode gerenciar usuários e gerar convites em <strong>Configurações</strong>.<br>
                                 Comece adicionando suas viagens na aba "Viagens".
                             </p>
-                            <button class="btn btn-primary" onclick="showTab('trips')">
+                            <button class="btn btn-primary" onclick="showTab('trips')" style="margin-right: 1rem;">
                                 <i class="fas fa-plus"></i> Adicionar Primeira Viagem
+                            </button>
+                            <button class="btn btn-outline" onclick="showTab('settings')" id="manageUsersMainBtn" style="display: none;">
+                                <i class="fas fa-users"></i> Gerenciar Usuários
                             </button>
                         </div>
                     </div>
@@ -930,6 +942,117 @@
                         Configurações
                     </h2>
                 </div>
+
+                <!-- User Management Card (Admin Only) -->
+                <div id="userManagementCard" class="card" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-users"></i>
+                            Gerenciamento de Usuários
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Invite System -->
+                        <div class="alert alert-info">
+                            <i class="alert-icon fas fa-shield-alt"></i>
+                            <div class="alert-content">
+                                <div class="alert-title">🔒 Sistema Fechado</div>
+                                Apenas usuários convidados podem se cadastrar. Gere links de convite únicos abaixo.
+                            </div>
+                        </div>
+
+                        <div style="background: #f3f4f6; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                            <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-user-plus"></i> Convidar Novo Usuário
+                            </h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end; margin-bottom: 1rem;">
+                                <div>
+                                    <label class="form-label">Tipo de Usuário</label>
+                                    <select id="inviteRole" class="form-input">
+                                        <option value="user">👤 Usuário Padrão</option>
+                                        <option value="admin">👑 Administrador</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Validade</label>
+                                    <select id="inviteExpiry" class="form-input">
+                                        <option value="1">1 dia</option>
+                                        <option value="7" selected>7 dias</option>
+                                        <option value="30">30 dias</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="generateInvite()">
+                                    <i class="fas fa-link"></i> Gerar Convite
+                                </button>
+                            </div>
+
+                            <div id="inviteResult" class="hidden" style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <p style="margin-bottom: 0.5rem; font-weight: 600;">🔗 Link de Convite Gerado:</p>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="inviteLink" class="form-input" readonly style="font-family: monospace; font-size: 0.85rem;">
+                                    <button class="btn btn-outline btn-sm" onclick="copyInviteLink()">
+                                        <i class="fas fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                                <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                                    ⚠️ Compartilhe apenas com pessoas autorizadas. O link expira automaticamente.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Users List -->
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-list"></i> Usuários Cadastrados
+                        </h4>
+                        <div id="usersList"></div>
+
+                        <!-- Active Invites -->
+                        <h4 style="margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-clock"></i> Convites Ativos
+                        </h4>
+                        <div id="activeInvites"></div>
+                    </div>
+                </div>
+
+                <!-- Change Password Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-key"></i>
+                            Alterar Senha
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <i class="alert-icon fas fa-exclamation-triangle"></i>
+                            <div class="alert-content">
+                                <div class="alert-title">⚠️ Importante!</div>
+                                Altere a senha padrão do administrador para manter o sistema seguro.
+                            </div>
+                        </div>
+
+                        <form id="changePasswordForm" style="max-width: 400px;">
+                            <div class="form-group">
+                                <label class="form-label">Senha Atual</label>
+                                <input type="password" class="form-input" name="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nova Senha</label>
+                                <input type="password" class="form-input" name="newPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirmar Nova Senha</label>
+                                <input type="password" class="form-input" name="confirmNewPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Alterar Senha
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- System Info -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -943,6 +1066,21 @@
                             <div class="alert-content">
                                 <div class="alert-title">🔒 TransCS Pro Ultimate v3.0 - Sistema Seguro</div>
                                 Sistema completo de gerenciamento de fretes com autenticação, controle de acesso e proteção de dados.
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);" id="totalUsersCount">0</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Usuários Total</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--secondary);" id="activeInvitesCount">0</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Convites Ativos</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--success);">✅</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Sistema Seguro</div>
                             </div>
                         </div>
                     </div>
@@ -960,6 +1098,7 @@
         class SimpleAuth {
             constructor() {
                 this.users = this.loadUsers();
+                this.invites = this.loadInvites();
                 this.currentUser = null;
                 
                 this.updateStatus('🔄 Sistema inicializado');
@@ -972,8 +1111,12 @@
                 // Always ensure admin exists
                 this.ensureAdminExists();
                 
-                // Setup form listener
+                // Setup form listeners
                 this.setupLoginForm();
+                this.setupPasswordForm();
+                
+                // Check for invite code in URL
+                this.checkInviteCode();
                 
                 this.updateStatus('✅ Sistema pronto! Use: admin / admin123');
             }
@@ -997,7 +1140,9 @@
                     fullName: 'Administrador',
                     role: 'admin',
                     email: 'admin@transcs.com',
-                    createdAt: new Date().toISOString()
+                    status: 'active',
+                    createdAt: new Date().toISOString(),
+                    lastLogin: null
                 };
 
                 this.users.push(adminUser);
@@ -1007,12 +1152,181 @@
                 console.log('👑 Admin criado:', adminUser);
             }
 
+            checkInviteCode() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const inviteCode = urlParams.get('invite');
+                
+                if (inviteCode) {
+                    this.updateStatus('🔗 Código de convite detectado!');
+                    this.showRegisterForm(inviteCode);
+                }
+            }
+
+            showRegisterForm(inviteCode = '') {
+                // Switch to register mode
+                const loginScreen = document.getElementById('loginScreen');
+                loginScreen.innerHTML = `
+                    <div class="login-container">
+                        <div class="login-content">
+                            <div class="login-logo">
+                                <i class="fas fa-user-plus"></i>
+                                <h1 class="login-title">Criar Conta</h1>
+                                <p class="login-subtitle">Complete seu cadastro no sistema</p>
+                            </div>
+
+                            <form id="registerForm">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-user"></i> Nome Completo
+                                    </label>
+                                    <input type="text" class="form-input" name="fullName" required placeholder="Seu nome completo">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-envelope"></i> Email
+                                    </label>
+                                    <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-user-circle"></i> Nome de Usuário
+                                    </label>
+                                    <input type="text" class="form-input" name="username" required placeholder="Escolha um nome de usuário">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-lock"></i> Senha
+                                    </label>
+                                    <input type="password" class="form-input" name="password" required placeholder="Escolha uma senha forte" minlength="6">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-lock"></i> Confirmar Senha
+                                    </label>
+                                    <input type="password" class="form-input" name="confirmPassword" required placeholder="Confirme sua senha">
+                                </div>
+
+                                <input type="hidden" name="inviteCode" value="${inviteCode}">
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-user-plus"></i> Criar Conta
+                                </button>
+                            </form>
+
+                            <div style="text-align: center; margin-top: 1rem;">
+                                <a href="?" style="color: var(--primary); text-decoration: none;">
+                                    ← Voltar ao Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Setup register form
+                document.getElementById('registerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleRegister(e);
+                });
+            }
+
+            async handleRegister(e) {
+                const formData = new FormData(e.target);
+                const userData = {
+                    fullName: formData.get('fullName'),
+                    email: formData.get('email'),
+                    username: formData.get('username'),
+                    password: formData.get('password'),
+                    confirmPassword: formData.get('confirmPassword'),
+                    inviteCode: formData.get('inviteCode')
+                };
+
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    // Validation
+                    if (userData.password !== userData.confirmPassword) {
+                        throw new Error('As senhas não coincidem');
+                    }
+
+                    if (userData.password.length < 6) {
+                        throw new Error('A senha deve ter pelo menos 6 caracteres');
+                    }
+
+                    if (this.users.find(u => u.username === userData.username)) {
+                        throw new Error('Nome de usuário já existe');
+                    }
+
+                    if (this.users.find(u => u.email === userData.email)) {
+                        throw new Error('Email já cadastrado');
+                    }
+
+                    // Validate invite code
+                    if (!userData.inviteCode) {
+                        throw new Error('Código de convite obrigatório');
+                    }
+
+                    const invite = this.invites[userData.inviteCode];
+                    if (!invite || new Date(invite.expiresAt) < new Date()) {
+                        throw new Error('Código de convite inválido ou expirado');
+                    }
+
+                    // Create user
+                    const newUser = {
+                        id: Date.now(),
+                        username: userData.username,
+                        password: this.hashPassword(userData.password),
+                        fullName: userData.fullName,
+                        email: userData.email,
+                        role: invite.role,
+                        status: 'active',
+                        createdAt: new Date().toISOString(),
+                        lastLogin: null,
+                        invitedBy: invite.createdBy
+                    };
+
+                    this.users.push(newUser);
+                    this.saveUsers();
+
+                    // Mark invite as used
+                    delete this.invites[userData.inviteCode];
+                    this.saveInvites();
+
+                    this.showNotification('✅ Conta criada com sucesso! Redirecionando para login...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = window.location.pathname;
+                    }, 2000);
+
+                } catch (error) {
+                    this.showNotification(error.message, 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            }
+
             setupLoginForm() {
                 const form = document.getElementById('loginForm');
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleLogin(e);
-                });
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleLogin(e);
+                    });
+                }
+            }
+
+            setupPasswordForm() {
+                // Will be set up when user logs in and visits settings
             }
 
             async handleLogin(e) {
@@ -1029,13 +1343,16 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
 
                 try {
-                    // Small delay for UX
                     await new Promise(resolve => setTimeout(resolve, 500));
 
                     const user = this.users.find(u => u.username === username);
                     
                     if (!user) {
                         throw new Error('Usuário não encontrado');
+                    }
+
+                    if (user.status !== 'active') {
+                        throw new Error('Usuário inativo ou bloqueado');
                     }
 
                     if (!this.verifyPassword(password, user.password)) {
@@ -1085,6 +1402,228 @@
                 document.getElementById('userAvatarHeader').textContent = this.currentUser.fullName.charAt(0).toUpperCase();
                 document.getElementById('dashboardUserInfo').textContent = `${this.currentUser.fullName} (${this.currentUser.role})`;
                 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR');
+
+                // Show admin features if admin
+                if (this.currentUser.role === 'admin') {
+                    document.getElementById('userManagementCard').style.display = 'block';
+                    document.getElementById('manageUsersMainBtn').style.display = 'inline-flex';
+                    document.getElementById('settingsQuickBtn').style.display = 'flex';
+                    this.updateUsersDisplay();
+                    this.updateInvitesDisplay();
+                    this.setupPasswordChangeForm();
+                    
+                    // Show warning for default password
+                    if (this.currentUser.username === 'admin' && this.verifyPassword('admin123', this.currentUser.password)) {
+                        setTimeout(() => {
+                            this.showNotification('⚠️ IMPORTANTE: Altere a senha padrão do administrador em Configurações → Alterar Senha', 'warning', 8000);
+                        }, 3000);
+                    }
+                }
+            }
+
+            // User Management Methods
+            generateInvite(role = 'user', expiryDays = 7) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showNotification('Apenas administradores podem gerar convites', 'error');
+                    return;
+                }
+
+                const inviteCode = this.generateInviteCode();
+                const expiresAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
+                
+                this.invites[inviteCode] = {
+                    code: inviteCode,
+                    role: role,
+                    createdBy: this.currentUser.id,
+                    createdAt: new Date().toISOString(),
+                    expiresAt: expiresAt.toISOString()
+                };
+                
+                this.saveInvites();
+                this.updateInvitesDisplay();
+                
+                const baseUrl = window.location.origin + window.location.pathname;
+                const inviteLink = `${baseUrl}?invite=${inviteCode}`;
+                
+                return inviteLink;
+            }
+
+            generateInviteCode() {
+                return 'INV-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            }
+
+            updateUsersDisplay() {
+                const container = document.getElementById('usersList');
+                if (!container) return;
+
+                const usersHTML = this.users.map(user => {
+                    const avatar = user.fullName.charAt(0).toUpperCase();
+                    const isCurrentUser = user.id === this.currentUser.id;
+                    const lastLogin = user.lastLogin ? 
+                        new Date(user.lastLogin).toLocaleDateString('pt-BR') : 'Nunca';
+                    
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    ${avatar}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">${user.fullName}</div>
+                                    <div style="font-size: 0.9rem; color: var(--gray);">@${user.username} • ${user.email}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Último acesso: ${lastLogin}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="padding: 0.25rem 0.75rem; background: ${user.role === 'admin' ? '#fef3c7' : '#dbeafe'}; color: ${user.role === 'admin' ? '#92400e' : '#1e40af'}; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                    ${user.role === 'admin' ? '👑 Admin' : '👤 Usuário'}
+                                </span>
+                                ${isCurrentUser ? 
+                                    '<span style="font-size: 0.8rem; color: var(--gray);">Você</span>' : 
+                                    `<button class="btn btn-sm btn-outline" onclick="authSystem.deleteUser(${user.id})" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = usersHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum usuário encontrado</p>';
+                
+                // Update counter
+                document.getElementById('totalUsersCount').textContent = this.users.length;
+            }
+
+            updateInvitesDisplay() {
+                const container = document.getElementById('activeInvites');
+                if (!container) return;
+
+                const activeInvites = Object.values(this.invites).filter(invite => 
+                    new Date(invite.expiresAt) > new Date()
+                );
+
+                const invitesHTML = activeInvites.map(invite => {
+                    const expiresAt = new Date(invite.expiresAt).toLocaleString('pt-BR');
+                    const createdAt = new Date(invite.createdAt).toLocaleString('pt-BR');
+                    
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e5e7eb;">
+                            <div>
+                                <div style="font-weight: 600; font-family: monospace;">${invite.code}</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">
+                                    ${invite.role === 'admin' ? '👑 Admin' : '👤 Usuário'} • 
+                                    Criado em: ${createdAt}
+                                </div>
+                                <div style="font-size: 0.8rem; color: var(--danger);">
+                                    ⏰ Expira em: ${expiresAt}
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-sm btn-outline" onclick="authSystem.copyInviteCode('${invite.code}')" style="padding: 0.25rem 0.5rem;">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="authSystem.revokeInvite('${invite.code}')" style="padding: 0.25rem 0.5rem;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = invitesHTML || '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum convite ativo</p>';
+                
+                // Update counter
+                document.getElementById('activeInvitesCount').textContent = activeInvites.length;
+            }
+
+            copyInviteCode(code) {
+                const baseUrl = window.location.origin + window.location.pathname;
+                const inviteLink = `${baseUrl}?invite=${code}`;
+                
+                navigator.clipboard.writeText(inviteLink).then(() => {
+                    this.showNotification('🔗 Link de convite copiado!', 'success');
+                });
+            }
+
+            revokeInvite(code) {
+                delete this.invites[code];
+                this.saveInvites();
+                this.updateInvitesDisplay();
+                this.showNotification('❌ Convite revogado!', 'info');
+            }
+
+            deleteUser(userId) {
+                if (userId === this.currentUser.id) {
+                    this.showNotification('Você não pode excluir sua própria conta', 'error');
+                    return;
+                }
+
+                const user = this.users.find(u => u.id === userId);
+                if (!user) return;
+
+                if (confirm(`Tem certeza que deseja excluir o usuário "${user.fullName}"?`)) {
+                    this.users = this.users.filter(u => u.id !== userId);
+                    this.saveUsers();
+                    this.updateUsersDisplay();
+                    this.showNotification(`Usuário "${user.fullName}" excluído!`, 'success');
+                }
+            }
+
+            setupPasswordChangeForm() {
+                const form = document.getElementById('changePasswordForm');
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handlePasswordChange(e);
+                    });
+                }
+            }
+
+            async handlePasswordChange(e) {
+                const formData = new FormData(e.target);
+                const currentPassword = formData.get('currentPassword');
+                const newPassword = formData.get('newPassword');
+                const confirmNewPassword = formData.get('confirmNewPassword');
+
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Alterando...';
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    if (!this.verifyPassword(currentPassword, this.currentUser.password)) {
+                        throw new Error('Senha atual incorreta');
+                    }
+
+                    if (newPassword !== confirmNewPassword) {
+                        throw new Error('As novas senhas não coincidem');
+                    }
+
+                    if (newPassword.length < 6) {
+                        throw new Error('A nova senha deve ter pelo menos 6 caracteres');
+                    }
+
+                    // Update password
+                    this.currentUser.password = this.hashPassword(newPassword);
+                    
+                    // Find user in array and update
+                    const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+                    this.users[userIndex] = this.currentUser;
+                    this.saveUsers();
+
+                    this.showNotification('✅ Senha alterada com sucesso!', 'success');
+                    e.target.reset();
+
+                } catch (error) {
+                    this.showNotification(error.message, 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
             }
 
             logout() {
@@ -1095,21 +1634,11 @@
                 this.showNotification('👋 Até logo!', 'info');
                 
                 setTimeout(() => {
-                    document.getElementById('loginScreen').style.display = 'flex';
-                    document.getElementById('appContainer').classList.add('hidden');
+                    window.location.href = window.location.pathname;
                 }, 1000);
             }
 
-            // Utility methods
-            hashPassword(password) {
-                // Simple hash for demo
-                return btoa(password + 'transcs_salt').split('').reverse().join('');
-            }
-
-            verifyPassword(password, hash) {
-                return this.hashPassword(password) === hash;
-            }
-
+            // Storage methods
             loadUsers() {
                 try {
                     const data = localStorage.getItem('transcs_users');
@@ -1128,6 +1657,33 @@
                 }
             }
 
+            loadInvites() {
+                try {
+                    const data = localStorage.getItem('transcs_invites');
+                    return data ? JSON.parse(data) : {};
+                } catch (error) {
+                    console.error('Erro ao carregar convites:', error);
+                    return {};
+                }
+            }
+
+            saveInvites() {
+                try {
+                    localStorage.setItem('transcs_invites', JSON.stringify(this.invites));
+                } catch (error) {
+                    console.error('Erro ao salvar convites:', error);
+                }
+            }
+
+            // Utility methods
+            hashPassword(password) {
+                return btoa(password + 'transcs_salt').split('').reverse().join('');
+            }
+
+            verifyPassword(password, hash) {
+                return this.hashPassword(password) === hash;
+            }
+
             updateStatus(message) {
                 const container = document.getElementById('statusMessages');
                 if (container) {
@@ -1136,7 +1692,7 @@
                 console.log(message);
             }
 
-            showNotification(message, type = 'info') {
+            showNotification(message, type = 'info', duration = 5000) {
                 const notification = document.getElementById('notification');
                 const titleEl = document.getElementById('notificationTitle');
                 const messageEl = document.getElementById('notificationMessage');
@@ -1163,7 +1719,7 @@
                 
                 setTimeout(() => {
                     notification.classList.remove('show');
-                }, 5000);
+                }, duration);
             }
         }
 
@@ -1197,6 +1753,26 @@
             localStorage.clear();
             authSystem.updateStatus('🗑️ Cache limpo! Recarregando...');
             setTimeout(() => location.reload(), 1000);
+        }
+
+        function generateInvite() {
+            const role = document.getElementById('inviteRole').value;
+            const expiryDays = parseInt(document.getElementById('inviteExpiry').value);
+            
+            const inviteLink = authSystem.generateInvite(role, expiryDays);
+            
+            document.getElementById('inviteLink').value = inviteLink;
+            document.getElementById('inviteResult').classList.remove('hidden');
+            
+            authSystem.showNotification(`🔗 Convite ${role === 'admin' ? 'de administrador' : 'de usuário'} gerado!`, 'success');
+        }
+
+        function copyInviteLink() {
+            const linkInput = document.getElementById('inviteLink');
+            linkInput.select();
+            navigator.clipboard.writeText(linkInput.value).then(() => {
+                authSystem.showNotification('📋 Link copiado para a área de transferência!', 'success');
+            });
         }
 
         function logout() {
