@@ -1,918 +1,491 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TransCS Pro v5.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: system-ui, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #1f2937;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .login-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .login-logo h1 {
-            color: #2563eb;
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #f3f4f6;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            width: 100%;
-        }
-
-        .btn-secondary { background: #10b981; color: white; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-sm { padding: 0.5rem 1rem; font-size: 0.9rem; }
-
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .app { display: none; }
-        .app.active { display: block; }
-
-        .header {
-            background: #1f2937;
-            color: white;
-            padding: 2rem;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-panel {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .nav {
-            background: #374151;
-            padding: 0;
-        }
-
-        .nav-tabs { display: flex; overflow-x: auto; }
-
-        .nav-btn {
-            padding: 1rem 2rem;
-            background: transparent;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .nav-btn:hover { background: rgba(255,255,255,0.1); }
-        .nav-btn.active { background: #2563eb; }
-
-        .page {
-            display: none;
-            padding: 2rem;
-            background: #f3f4f6;
-            min-height: 80vh;
-        }
-
-        .page.active { display: block; }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #2563eb;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1f2937;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 1.5rem;
-            background: #f3f4f6;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-body { padding: 1.5rem; }
-
-        .tab-container {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .tab-nav {
-            display: flex;
-            background: #f3f4f6;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #6b7280;
-            transition: all 0.3s;
-        }
-
-        .tab-btn:hover {
-            background: rgba(37, 99, 235, 0.1);
-            color: #2563eb;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 2rem;
-        }
-
-        .tab-content.active { display: block; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid #f3f4f6;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            background: white;
-        }
-
-        .item-info { flex: 1; }
-
-        .item-name {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .item-details {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .stat-change {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .stat-change.positive {
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .stat-change.negative {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #6b7280;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .empty-state h3 {
-            margin-bottom: 0.5rem;
-            color: #374151;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            max-width: 350px;
-            padding: 1rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .notification.show { transform: translateX(0); }
-        .notification.success { background: #10b981; }
-        .notification.error { background: #ef4444; }
-
-        @media (max-width: 768px) {
-            .header-content { flex-direction: column; gap: 1rem; }
-            .form-row { grid-template-columns: 1fr; }
-            .page { padding: 1rem; }
-            .item { flex-direction: column; align-items: flex-start; gap: 1rem; }
-            .item-actions { width: 100%; justify-content: center; }
-        }
-    </style>
-</head>
-<body>
-    <div id="loginScreen" class="login-screen">
-        <div class="login-box">
-            <div class="login-logo">
-                <h1><i class="fas fa-truck"></i> TransCS Pro v5.0</h1>
-            </div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">Usuário</label>
-                    <input type="text" class="form-input" id="username" value="admin" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Senha</label>
-                    <input type="password" class="form-input" id="password" value="123" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Entrar
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notificationText">Mensagem</span>
-    </div>
-
-    <div id="app" class="container app">
-        <div class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-truck"></i> TransCS Pro v5.0</h1>
-                <div class="user-panel">
-                    <span><strong>Admin</strong></span>
-                    <div class="user-avatar">A</div>
-                    <button class="btn btn-sm btn-danger" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Sair
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="nav">
-            <div class="nav-tabs">
-                <button class="nav-btn active" onclick="showPage('dashboard')">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </button>
-                <button class="nav-btn" onclick="showPage('clients')">
-                    <i class="fas fa-users"></i> Clientes
-                </button>
-                <button class="nav-btn" onclick="showPage('financial')">
-                    <i class="fas fa-dollar-sign"></i> Financeiro
-                </button>
-            </div>
-        </div>
-
-        <div id="dashboard" class="page active">
-            <div class="page-header">
-                <h2 class="page-title">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </h2>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-rocket"></i> Sistema Funcionando
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <p>✅ TransCS Pro v5.0 funcionando perfeitamente!</p>
-                    <p>🚀 Teste o sistema de Receitas e Despesas na aba "Financeiro".</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="clients" class="page">
-            <div class="page-header">
-                <h2 class="page-title">
-                    <i class="fas fa-users"></i> Clientes
-                </h2>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-plus"></i> Novo Cliente
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <form id="clientForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Razão Social *</label>
-                                <input type="text" class="form-input" name="razaoSocial" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">CNPJ</label>
-                                <input type="text" class="form-input" name="cnpj">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" name="email">
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Salvar
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-list"></i> Lista de Clientes
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div id="clientsList">
-                        <div class="empty-state">
-                            <i class="fas fa-users"></i>
-                            <h3>Nenhum cliente cadastrado</h3>
-                            <p>Cadastre seu primeiro cliente acima</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<!-- FINANCIAL PAGE -->
         <div id="financial" class="page">
             <div class="page-header">
                 <h2 class="page-title">
-                    <i class="fas fa-dollar-sign"></i> Financeiro
+                    <i class="fas fa-dollar-sign"></i> Gestão Financeira
                 </h2>
             </div>
 
             <div class="tab-container">
                 <div class="tab-nav">
-                    <button class="tab-btn active" onclick="showTab('revenue-form', this)">
+                    <button class="tab-btn active" onclick="showTab('financial-overview', this)">
+                        <i class="fas fa-chart-line"></i> Visão Geral
+                    </button>
+                    <button class="tab-btn" onclick="showTab('financial-expenses', this)">
+                        <i class="fas fa-receipt"></i> Nova Despesa
+                    </button>
+                    <button class="tab-btn" onclick="showTab('financial-revenues', this)">
                         <i class="fas fa-plus-circle"></i> Nova Receita
                     </button>
-                    <button class="tab-btn" onclick="showTab('expense-form', this)">
-                        <i class="fas fa-minus-circle"></i> Nova Despesa
+                    <button class="tab-btn" onclick="showTab('financial-goals', this)">
+                        <i class="fas fa-bullseye"></i> Metas
                     </button>
-                    <button class="tab-btn" onclick="showTab('entries-list', this)">
-                        <i class="fas fa-list"></i> Lançamentos
+                    <button class="tab-btn" onclick="showTab('financial-flow', this)">
+                        <i class="fas fa-exchange-alt"></i> Fluxo de Caixa
                     </button>
                 </div>
 
-                <div id="revenue-form" class="tab-content active">
-                    <form id="revenueForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Cliente</label>
-                                <select class="form-select" name="fornecedor">
-                                    <option value="">Selecione...</option>
-                                </select>
+                <div id="financial-overview" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon primary">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Data *</label>
-                                <input type="date" class="form-input" name="dataCompetencia" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Descrição *</label>
-                                <input type="text" class="form-input" name="descricao" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Valor *</label>
-                                <input type="number" class="form-input" name="valor" step="0.01" required>
+                            <div class="stat-value" id="financial-revenue">R$ 0,00</div>
+                            <div class="stat-label">Receita Mensal</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="revenue-growth">+0%</span> vs mês anterior
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Categoria *</label>
-                                <select class="form-select" name="categoria" required>
-                                    <option value="">Selecione...</option>
-                                    <option value="Frete">Frete</option>
-                                    <option value="Serviços">Serviços</option>
-                                    <option value="Vendas">Vendas</option>
-                                    <option value="Outros">Outros</option>
-                                </select>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon danger">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Forma de Pagamento</label>
-                                <select class="form-select" name="formaPagamento">
-                                    <option value="">Selecione...</option>
-                                    <option value="PIX">PIX</option>
-                                    <option value="Transferência">Transferência</option>
-                                    <option value="Dinheiro">Dinheiro</option>
-                                    <option value="Cartão">Cartão</option>
-                                </select>
+                            <div class="stat-value" id="financial-expenses">R$ 0,00</div>
+                            <div class="stat-label">Despesas Mensais</div>
+                            <div class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span id="expenses-growth">-0%</span> vs mês anterior
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="fas fa-save"></i> Salvar Receita
-                        </button>
-                    </form>
-                </div>
-
-                <div id="expense-form" class="tab-content">
-                    <form id="expenseForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Fornecedor</label>
-                                <select class="form-select" name="fornecedor">
-                                    <option value="">Selecione...</option>
-                                </select>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon secondary">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Data *</label>
-                                <input type="date" class="form-input" name="dataCompetencia" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Descrição *</label>
-                                <input type="text" class="form-input" name="descricao" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Valor *</label>
-                                <input type="number" class="form-input" name="valor" step="0.01" required>
+                            <div class="stat-value" id="financial-profit">R$ 0,00</div>
+                            <div class="stat-label">Lucro Líquido</div>
+                            <div class="stat-change positive">
+                                <span id="profit-margin">0%</span> de margem
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Categoria *</label>
-                                <select class="form-select" name="categoria" required>
-                                    <option value="">Selecione...</option>
-                                    <option value="Combustível">Combustível</option>
-                                    <option value="Manutenção">Manutenção</option>
-                                    <option value="Seguro">Seguro</option>
-                                    <option value="IPVA">IPVA</option>
-                                    <option value="Pedágio">Pedágio</option>
-                                    <option value="Alimentação">Alimentação</option>
-                                    <option value="Outros">Outros</option>
-                                </select>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon accent">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Forma de Pagamento</label>
-                                <select class="form-select" name="formaPagamento">
-                                    <option value="">Selecione...</option>
-                                    <option value="PIX">PIX</option>
-                                    <option value="Transferência">Transferência</option>
-                                    <option value="Dinheiro">Dinheiro</option>
-                                    <option value="Cartão">Cartão</option>
-                                </select>
+                            <div class="stat-value" id="financial-balance">R$ 0,00</div>
+                            <div class="stat-label">Saldo Projetado</div>
+                            <div class="stat-change neutral">
+                                Para o próximo mês
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-save"></i> Salvar Despesa
-                        </button>
-                    </form>
-                </div>
-
-                <div id="entries-list" class="tab-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3>Lançamentos Financeiros</h3>
-                        <select class="form-select" id="entryFilter" onchange="filterEntries()" style="width: 200px;">
-                            <option value="">Todos</option>
-                            <option value="receita">Receitas</option>
-                            <option value="despesa">Despesas</option>
-                        </select>
                     </div>
-                    
-                    <div id="financialEntriesList">
-                        <div class="empty-state">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <h3>Nenhum lançamento</h3>
-                            <p>Adicione receitas e despesas</p>
+                </div>
+
+                <div id="financial-expenses" class="tab-content">
+                    <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 12px; margin-bottom: 20px; color: #155724;">
+                        <strong>Notas baixadas da Receita!</strong>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px;">
+                        <h3 style="margin-bottom: 24px; color: #495057; font-size: 24px; font-weight: 600;">Nova despesa</h3>
+                        
+                        <form id="expenseForm">
+                            <div style="margin-bottom: 24px;">
+                                <h4 style="margin-bottom: 16px; color: #6c757d; font-size: 16px; font-weight: 600;">Informações do lançamento</h4>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                                    <div>
+                                        <label style="display: flex; align-items: center; margin-bottom: 8px; color: #495057; font-weight: 500;">
+                                            <input type="checkbox" style="margin-right: 8px;" name="habilitarRateioReceita">
+                                            Habilitar rateio
+                                        </label>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Categoria <span style="color: #dc3545;">*</span></label>
+                                        <select class="form-select" name="categoriaReceita" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Frete">Frete</option>
+                                            <option value="Prestação de Serviços">Prestação de Serviços</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Centro de custo</label>
+                                        <select class="form-select" name="centroCustoReceita" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Operacional">Operacional</option>
+                                            <option value="Administrativo">Administrativo</option>
+                                            <option value="Comercial">Comercial</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 16px; color: #495057; font-weight: 500;">
+                                        <input type="checkbox" style="margin-right: 8px;" name="repetirLancamentoReceita" id="repetirLancamentoReceita" onchange="toggleRepetitionRevenue()">
+                                        Repetir lançamento?
+                                    </label>
+                                    
+                                    <div id="repetitionConfigRevenue" style="display: none;">
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Configurações de repetição <span style="color: #dc3545;">*</span></label>
+                                        <select class="form-select" name="configRepetitionReceita" style="width: 100%; max-width: 400px; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="semanal">Semanal: A cada 1 semana(s), 48 vez(es)</option>
+                                            <option value="mensal">Mensal: A cada 1 mês(es), 12 vez(es)</option>
+                                            <option value="anual">Anual: A cada 1 ano(s), 1 vez(es)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 24px;">
+                                <h4 style="margin-bottom: 16px; color: #6c757d; font-size: 16px; font-weight: 600;">Condição de recebimento</h4>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; align-items: end;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Receber sempre no</label>
+                                        <select class="form-select" name="receberSempre" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="segunda">Segunda-feira</option>
+                                            <option value="terca">Terça-feira</option>
+                                            <option value="quarta">Quarta-feira</option>
+                                            <option value="quinta">Quinta-feira</option>
+                                            <option value="sexta">Sexta-feira</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">1º vencimento <span style="color: #dc3545;">*</span></label>
+                                        <input type="date" class="form-input" name="primeiroVencimentoReceita" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Forma de recebimento</label>
+                                        <select class="form-select" name="formaRecebimento" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="dinheiro">Dinheiro</option>
+                                            <option value="pix">PIX</option>
+                                            <option value="cartao">Cartão</option>
+                                            <option value="transferencia">Transferência</option>
+                                            <option value="boleto">Boleto</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Conta de recebimento</label>
+                                        <select class="form-select" name="contaRecebimento" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="conta-corrente">CONTA CORRENTE</option>
+                                            <option value="poupanca">POUPANÇA</option>
+                                            <option value="caixa">CAIXA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid #dee2e6; margin-top: 24px; padding-top: 24px;">
+                                <div style="display: flex; gap: 16px;">
+                                    <button type="button" class="btn btn-outline" onclick="document.getElementById('revenueForm').reset(); toggleRepetitionRevenue();" style="padding: 12px 24px; border: 1px solid #6c757d; background: white; color: #6c757d; border-radius: 6px; cursor: pointer;">
+                                        Voltar
+                                    </button>
+                                    <button type="submit" style="padding: 12px 24px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                                        <i class="fas fa-save"></i> Salvar
+                                        <i class="fas fa-chevron-down" style="margin-left: 8px; font-size: 12px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list"></i> Receitas Registradas
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="revenuesList">
+                                <div class="empty-state">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <h3>Nenhuma receita registrada</h3>
+                                    <p>Registre suas receitas para ter controle total dos ganhos</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="financial-goals" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-bullseye"></i> Definir Metas
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="goalsForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Meta de Receita Mensal (R$)</label>
+                                        <input type="number" class="form-input" name="metaReceita" placeholder="0.00" step="0.01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Meta de Viagens/Mês</label>
+                                        <input type="number" class="form-input" name="metaViagens" placeholder="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Meta de Margem de Lucro (%)</label>
+                                        <input type="number" class="form-input" name="metaMargem" placeholder="15" value="15">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-accent">
+                                    <i class="fas fa-save"></i> Salvar Metas
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon primary">
+                                    <i class="fas fa-target"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="goal-revenue-progress">0%</div>
+                            <div class="stat-label">Meta de Receita</div>
+                            <div class="stat-change neutral">
+                                <span id="goal-revenue-status">R$ 0 / R$ 0</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon secondary">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="goal-trips-progress">0%</div>
+                            <div class="stat-label">Meta de Viagens</div>
+                            <div class="stat-change neutral">
+                                <span id="goal-trips-status">0 / 0 viagens</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="financial-flow" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line"></i> Projeção de Fluxo de Caixa
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="cashFlowChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> 2fr 1fr 2fr; gap: 16px; margin-bottom: 24px;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Fornecedor</label>
+                                        <select class="form-select" name="fornecedor" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Posto ABC">Posto ABC</option>
+                                            <option value="Oficina XYZ">Oficina XYZ</option>
+                                            <option value="Seguradora">Seguradora</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Data de competência <span style="color: #dc3545;">*</span></label>
+                                        <input type="date" class="form-input" name="dataCompetencia" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Descrição <span style="color: #dc3545;">*</span></label>
+                                        <input type="text" class="form-input" name="descricao" placeholder="" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Valor <span style="color: #dc3545;">*</span></label>
+                                        <div style="position: relative;">
+                                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6c757d; background: #f8f9fa; padding: 0 6px; border-radius: 4px; font-size: 14px;">R$</span>
+                                            <input type="number" class="form-input" name="valor" placeholder="0,00" step="0.01" required style="width: 100%; padding: 12px 12px 12px 50px; border: 1px solid #ced4da; border-radius: 6px;">
+                                        </div>
+                                    </div>
+                                </div>
 
-    <script>
-        let data = { clients: [], financialEntries: [] };
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                                    <div>
+                                        <label style="display: flex; align-items: center; margin-bottom: 8px; color: #495057; font-weight: 500;">
+                                            <input type="checkbox" style="margin-right: 8px;" name="habilitarRateio">
+                                            Habilitar rateio
+                                        </label>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Categoria <span style="color: #dc3545;">*</span></label>
+                                        <select class="form-select" name="categoria" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Combustível">Combustível</option>
+                                            <option value="Manutenção">Manutenção</option>
+                                            <option value="Seguro">Seguro</option>
+                                            <option value="IPVA">IPVA</option>
+                                            <option value="Financiamento">Financiamento</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Centro de custo</label>
+                                        <select class="form-select" name="centroCusto" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Operacional">Operacional</option>
+                                            <option value="Administrativo">Administrativo</option>
+                                            <option value="Comercial">Comercial</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-        function init() {
-            loadData();
-            setupEvents();
-            setTodayDate();
-            updateClientSelect();
-        }
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 16px; color: #495057; font-weight: 500;">
+                                        <input type="checkbox" style="margin-right: 8px;" name="repetirLancamento" id="repetirLancamento" onchange="toggleRepetition()">
+                                        Repetir lançamento?
+                                    </label>
+                                    
+                                    <div id="repetitionConfig" style="display: none;">
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Configurações de repetição <span style="color: #dc3545;">*</span></label>
+                                        <select class="form-select" name="configRepetition" style="width: 100%; max-width: 400px; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="semanal">Semanal: A cada 1 semana(s), 48 vez(es)</option>
+                                            <option value="mensal">Mensal: A cada 1 mês(es), 12 vez(es)</option>
+                                            <option value="anual">Anual: A cada 1 ano(s), 1 vez(es)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-        function loadData() {
-            const saved = localStorage.getItem('transcs_data');
-            if (saved) data = { ...data, ...JSON.parse(saved) };
-        }
+                            <div style="margin-bottom: 24px;">
+                                <h4 style="margin-bottom: 16px; color: #6c757d; font-size: 16px; font-weight: 600;">Condição de pagamento</h4>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; align-items: end;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Cobrar sempre no</label>
+                                        <select class="form-select" name="cobrarSempre" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="segunda">Segunda-feira</option>
+                                            <option value="terca">Terça-feira</option>
+                                            <option value="quarta">Quarta-feira</option>
+                                            <option value="quinta">Quinta-feira</option>
+                                            <option value="sexta">Sexta-feira</option>
+                                            <option value="sabado">Sábado</option>
+                                            <option value="domingo">Domingo</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">1º vencimento <span style="color: #dc3545;">*</span></label>
+                                        <input type="date" class="form-input" name="primeiroVencimento" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Forma de pagamento</label>
+                                        <select class="form-select" name="formaPagamento" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                            <option value="dinheiro">Dinheiro</option>
+                                            <option value="pix">PIX</option>
+                                            <option value="cartao">Cartão</option>
+                                            <option value="transferencia">Transferência</option>
+                                            <option value="boleto">Boleto</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Conta de pagamento</label>
+                                        <select class="form-select" name="contaPagamento" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="conta-corrente">CONTA CORRENTE</option>
+                                            <option value="poupanca">POUPANÇA</option>
+                                            <option value="caixa">CAIXA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-        function saveData() {
-            localStorage.setItem('transcs_data', JSON.stringify(data));
-        }
-
-        function setupEvents() {
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            document.getElementById('clientForm').addEventListener('submit', handleClientSubmit);
-            document.getElementById('revenueForm').addEventListener('submit', handleRevenueSubmit);
-            document.getElementById('expenseForm').addEventListener('submit', handleExpenseSubmit);
-        }
-
-        function setTodayDate() {
-            const today = new Date().toISOString().split('T')[0];
-            document.querySelectorAll('input[type="date"]').forEach(input => {
-                if (!input.value) input.value = today;
-            });
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === 'admin' && password === '123') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('app').classList.add('active');
-                showNotification('✅ Login realizado com sucesso!', 'success');
-                updateClientSelect();
-            } else {
-                showNotification('❌ Usuário ou senha incorretos', 'error');
-            }
-        }
-
-        function logout() {
-            showNotification('👋 Saindo do sistema...', 'success');
-            setTimeout(() => window.location.reload(), 1500);
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function showTab(tabId, button) {
-            const container = button.closest('.tab-container');
-            container.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            button.classList.add('active');
-        }
-
-        function handleClientSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            const client = {
-                id: Date.now(),
-                razaoSocial: formData.get('razaoSocial'),
-                cnpj: formData.get('cnpj'),
-                email: formData.get('email'),
-                createdAt: new Date().toISOString()
-            };
-            
-            data.clients.push(client);
-            saveData();
-            e.target.reset();
-            updateClientsList();
-            updateClientSelect();
-            showNotification('✅ Cliente cadastrado!', 'success');
-        }
-
-        function updateClientsList() {
-            const container = document.getElementById('clientsList');
-            
-            if (data.clients.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><h3>Nenhum cliente cadastrado</h3><p>Cadastre seu primeiro cliente acima</p></div>';
-                return;
-            }
-            
-            container.innerHTML = data.clients.map(client => `
-                <div class="item">
-                    <div class="item-info">
-                        <div class="item-name">${client.razaoSocial}</div>
-                        <div class="item-details">${client.cnpj || 'CNPJ não informado'} | ${client.email || 'Email não informado'}</div>
+                            <div style="border-top: 1px solid #dee2e6; margin-top: 24px; padding-top: 24px;">
+                                <div style="display: flex; gap: 16px;">
+                                    <button type="button" class="btn btn-outline" onclick="document.getElementById('expenseForm').reset(); toggleRepetition();" style="padding: 12px 24px; border: 1px solid #6c757d; background: white; color: #6c757d; border-radius: 6px; cursor: pointer;">
+                                        Voltar
+                                    </button>
+                                    <button type="submit" style="padding: 12px 24px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                                        <i class="fas fa-save"></i> Salvar
+                                        <i class="fas fa-chevron-down" style="margin-left: 8px; font-size: 12px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="item-actions">
-                        <button class="btn btn-sm btn-danger" onclick="deleteClient(${client.id})">
-                            <i class="fas fa-trash"></i> Excluir
-                        </button>
+
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list"></i> Despesas Registradas
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="expensesList">
+                                <div class="empty-state">
+                                    <i class="fas fa-receipt"></i>
+                                    <h3>Nenhuma despesa registrada</h3>
+                                    <p>Registre suas despesas para ter controle total dos custos</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            `).join('');
-        }
 
-        function updateClientSelect() {
-            const selects = document.querySelectorAll('select[name="fornecedor"]');
-            const options = '<option value="">Selecione...</option>' +
-                data.clients.map(client => `<option value="${client.id}">${client.razaoSocial}</option>`).join('');
-            
-            selects.forEach(select => select.innerHTML = options);
-        }
-
-        function deleteClient(id) {
-            if (confirm('Excluir cliente?')) {
-                data.clients = data.clients.filter(c => c.id !== id);
-                saveData();
-                updateClientsList();
-                updateClientSelect();
-                showNotification('✅ Cliente excluído!', 'success');
-            }
-        }
-
-        function handleRevenueSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            const revenue = {
-                id: Date.now(),
-                type: 'receita',
-                fornecedor: formData.get('fornecedor'),
-                dataCompetencia: formData.get('dataCompetencia'),
-                descricao: formData.get('descricao'),
-                valor: parseFloat(formData.get('valor')),
-                categoria: formData.get('categoria'),
-                formaPagamento: formData.get('formaPagamento'),
-                createdAt: new Date().toISOString()
-            };
-            
-            data.financialEntries.push(revenue);
-            saveData();
-            e.target.reset();
-            setTodayDate();
-            updateFinancialEntriesList();
-            showNotification('✅ Receita cadastrada!', 'success');
-        }
-
-        function handleExpenseSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            const expense = {
-                id: Date.now(),
-                type: 'despesa',
-                fornecedor: formData.get('fornecedor'),
-                dataCompetencia: formData.get('dataCompetencia'),
-                descricao: formData.get('descricao'),
-                valor: parseFloat(formData.get('valor')),
-                categoria: formData.get('categoria'),
-                formaPagamento: formData.get('formaPagamento'),
-                createdAt: new Date().toISOString()
-            };
-            
-            data.financialEntries.push(expense);
-            saveData();
-            e.target.reset();
-            setTodayDate();
-            updateFinancialEntriesList();
-            showNotification('✅ Despesa cadastrada!', 'success');
-        }
-
-        function updateFinancialEntriesList() {
-            const container = document.getElementById('financialEntriesList');
-            
-            if (data.financialEntries.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-money-bill-wave"></i><h3>Nenhum lançamento</h3><p>Adicione receitas e despesas</p></div>';
-                return;
-            }
-            
-            const sortedEntries = [...data.financialEntries].sort((a, b) => 
-                new Date(b.dataCompetencia) - new Date(a.dataCompetencia)
-            );
-            
-            container.innerHTML = sortedEntries.map(entry => {
-                const fornecedorName = getFornecedorName(entry.fornecedor);
-                const date = new Date(entry.dataCompetencia).toLocaleDateString('pt-BR');
-                const isReceita = entry.type === 'receita';
-                const icon = isReceita ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
-                const colorClass = isReceita ? 'positive' : 'negative';
-                const typeText = isReceita ? 'RECEITA' : 'DESPESA';
-                
-                return `
-                    <div class="item">
-                        <div class="item-info">
-                            <div class="item-name">
-                                <span class="stat-change ${colorClass}">
-                                    <i class="${icon}"></i> ${typeText}
-                                </span>
-                                ${entry.descricao}
-                            </div>
-                            <div class="item-details">
-                                📅 ${date} | 🏢 ${fornecedorName} | 📂 ${entry.categoria}<br>
-                                💰 R$ ${entry.valor.toFixed(2)} | 💳 ${entry.formaPagamento || 'Não informado'}
-                            </div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn btn-sm btn-danger" onclick="deleteFinancialEntry(${entry.id})">
-                                <i class="fas fa-trash"></i> Excluir
-                            </button>
-                        </div>
+                <div id="financial-revenues" class="tab-content">
+                    <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 12px; margin-bottom: 20px; color: #155724;">
+                        <strong>Notas baixadas da Receita!</strong>
                     </div>
-                `;
-            }).join('');
-        }
 
-        function getFornecedorName(fornecedorId) {
-            if (!fornecedorId) return 'Não informado';
-            const client = data.clients.find(c => c.id == fornecedorId);
-            return client ? client.razaoSocial : 'Não encontrado';
-        }
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px;">
+                        <h3 style="margin-bottom: 24px; color: #495057; font-size: 24px; font-weight: 600;">Nova receita</h3>
+                        
+                        <form id="revenueForm">
+                            <div style="margin-bottom: 24px;">
+                                <h4 style="margin-bottom: 16px; color: #6c757d; font-size: 16px; font-weight: 600;">Informações do lançamento</h4>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 2fr 1fr 2fr; gap: 16px; margin-bottom: 24px;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Cliente</label>
+                                        <select class="form-select" name="clienteReceita" style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: white;">
+                                            <option value="">Selecione...</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Data de competência <span style="color: #dc3545;">*</span></label>
+                                        <input type="date" class="form-input" name="dataCompetenciaReceita" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Descrição <span style="color: #dc3545;">*</span></label>
+                                        <input type="text" class="form-input" name="descricaoReceita" placeholder="" required style="width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; color: #495057; font-weight: 500;">Valor <span style="color: #dc3545;">*</span></label>
+                                        <div style="position: relative;">
+                                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6c757d; background: #f8f9fa; padding: 0 6px; border-radius: 4px; font-size: 14px;">R$</span>
+                                            <input type="number" class="form-input" name="valorReceita" placeholder="0,00" step="0.01" required style="width: 100%; padding: 12px 12px 12px 50px; border: 1px solid #ced4da; border-radius: 6px;">
+                                        </div>
+                                    </div>
+                                </div>
 
-        function deleteFinancialEntry(id) {
-            if (confirm('Excluir lançamento?')) {
-                data.financialEntries = data.financialEntries.filter(e => e.id !== id);
-                saveData();
-                updateFinancialEntriesList();
-                showNotification('✅ Lançamento excluído!', 'success');
-            }
-        }
-
-        function filterEntries() {
-            const filter = document.getElementById('entryFilter').value;
-            const items = document.querySelectorAll('#financialEntriesList .item');
-            
-            items.forEach(item => {
-                const typeSpan = item.querySelector('.stat-change');
-                const isReceita = typeSpan.textContent.includes('RECEITA');
-                const isDespesa = typeSpan.textContent.includes('DESPESA');
-                
-                let show = true;
-                if (filter === 'receita' && !isReceita) show = false;
-                if (filter === 'despesa' && !isDespesa) show = false;
-                
-                item.style.display = show ? 'flex' : 'none';
-            });
-        }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const text = document.getElementById('notificationText');
-            
-            text.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+                                <div style="display: grid; grid-template-columns: 1fr
